@@ -1,0 +1,344 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>mercadopago.Fakes</name>
+    </assembly>
+    <members>
+        <member name="T:mercadopago.Fakes.ShimJSON">
+            <summary>Tipo de correcciones de compatibilidad (shim) de mercadopago.JSON</summary>
+        </member>
+        <member name="M:mercadopago.Fakes.ShimJSON.#ctor">
+            <summary>Inicializa una nueva instancia de correcciones de compatibilidad (shim)</summary>
+        </member>
+        <member name="M:mercadopago.Fakes.ShimJSON.#ctor(mercadopago.JSON)">
+            <summary>Inicializa nuevas correcciones de compatibilidad (shim) para la instancia especificada</summary>
+        </member>
+        <member name="T:mercadopago.Fakes.ShimJSON.AllInstances">
+            <summary>Definir correcciones de compatibilidad (shim) para todos los miembros de instancia</summary>
+        </member>
+        <member name="M:mercadopago.Fakes.ShimJSON.BehaveAsCurrent">
+            <summary>Asigna el comportamiento &apos;Current&apos; a todos los métodos del tipo corregido para compatibilidad</summary>
+        </member>
+        <member name="M:mercadopago.Fakes.ShimJSON.BehaveAsNotImplemented">
+            <summary>Asigna el comportamiento &apos;NotImplemented&apos; a todos los métodos del tipo corregido para compatibilidad</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimJSON.Behavior">
+            <summary>Asigna el comportamiento a todos los métodos del tipo corregido para compatibilidad</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimJSON.Constructor">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de JSON.JSON()</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimJSON.EatWhitespaceCharArrayInt32Ref">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de JSON.EatWhitespace(Char[] json, Int32&amp; index)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimJSON.GetLastIndexOfNumberCharArrayInt32">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de JSON.GetLastIndexOfNumber(Char[] json, Int32 index)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimJSON.JsonDecodeString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de JSON.JsonDecode(String json)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimJSON.JsonDecodeStringBooleanRef">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de JSON.JsonDecode(String json, Boolean&amp; success)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimJSON.JsonEncodeObject">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de JSON.JsonEncode(Object json)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimJSON.LookAheadCharArrayInt32">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de JSON.LookAhead(Char[] json, Int32 index)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimJSON.NextTokenCharArrayInt32Ref">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de JSON.NextToken(Char[] json, Int32&amp; index)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimJSON.ParseArrayCharArrayInt32RefBooleanRef">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de JSON.ParseArray(Char[] json, Int32&amp; index, Boolean&amp; success)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimJSON.ParseNumberCharArrayInt32RefBooleanRef">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de JSON.ParseNumber(Char[] json, Int32&amp; index, Boolean&amp; success)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimJSON.ParseObjectCharArrayInt32RefBooleanRef">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de JSON.ParseObject(Char[] json, Int32&amp; index, Boolean&amp; success)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimJSON.ParseStringCharArrayInt32RefBooleanRef">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de JSON.ParseString(Char[] json, Int32&amp; index, Boolean&amp; success)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimJSON.ParseValueCharArrayInt32RefBooleanRef">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de JSON.ParseValue(Char[] json, Int32&amp; index, Boolean&amp; success)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimJSON.SerializeArrayArrayListStringBuilder">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de JSON.SerializeArray(ArrayList anArray, StringBuilder builder)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimJSON.SerializeNumberDoubleStringBuilder">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de JSON.SerializeNumber(Double number, StringBuilder builder)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimJSON.SerializeObjectHashtableStringBuilder">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de JSON.SerializeObject(Hashtable anObject, StringBuilder builder)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimJSON.SerializeStringStringStringBuilder">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de JSON.SerializeString(String aString, StringBuilder builder)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimJSON.SerializeValueObjectStringBuilder">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de JSON.SerializeValue(Object value, StringBuilder builder)</summary>
+        </member>
+        <member name="T:mercadopago.Fakes.ShimMP">
+            <summary>Tipo de correcciones de compatibilidad (shim) de mercadopago.MP</summary>
+        </member>
+        <member name="M:mercadopago.Fakes.ShimMP.#ctor">
+            <summary>Inicializa una nueva instancia de correcciones de compatibilidad (shim)</summary>
+        </member>
+        <member name="M:mercadopago.Fakes.ShimMP.#ctor(mercadopago.MP)">
+            <summary>Inicializa nuevas correcciones de compatibilidad (shim) para la instancia especificada</summary>
+        </member>
+        <member name="T:mercadopago.Fakes.ShimMP.AllInstances">
+            <summary>Definir correcciones de compatibilidad (shim) para todos los miembros de instancia</summary>
+        </member>
+        <member name="M:mercadopago.Fakes.ShimMP.AllInstances.buildQueryOf1DictionaryOfStringM0``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{mercadopago.MP,System.Collections.Generic.Dictionary{System.String,``0},System.String})">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.buildQuery(Dictionary`2&lt;String,!!0&gt; parameters)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.cancelPaymentString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.cancelPayment(String id)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.cancelPreapprovalPaymentString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.cancelPreapprovalPayment(String id)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.createPreapprovalPaymentHashtable">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.createPreapprovalPayment(Hashtable preapprovalPayment)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.createPreapprovalPaymentString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.createPreapprovalPayment(String preapprovalPayment)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.createPreferenceHashtable">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.createPreference(Hashtable preference)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.createPreferenceString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.createPreference(String preference)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.deleteString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.delete(String uri)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.deleteStringDictionaryOfStringString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.delete(String uri, Dictionary`2&lt;String,String&gt; parameters)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.getAccessToken">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.getAccessToken()</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.getAuthorizedPaymentString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.getAuthorizedPayment(String id)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.getPaymentInfoString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.getPaymentInfo(String id)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.getPaymentString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.getPayment(String id)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.getPreapprovalPaymentString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.getPreapprovalPayment(String id)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.getPreferenceString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.getPreference(String id)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.getStringBoolean">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.get(String uri, Boolean authenticate)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.getStringDictionaryOfStringString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.get(String uri, Dictionary`2&lt;String,String&gt; parameters)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.getStringDictionaryOfStringStringBoolean">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.get(String uri, Dictionary`2&lt;String,String&gt; parameters, Boolean authenticate)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.postStringHashtable">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.post(String uri, Hashtable data)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.postStringHashtableDictionaryOfStringString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.post(String uri, Hashtable data, Dictionary`2&lt;String,String&gt; parameters)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.postStringString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.post(String uri, String data)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.postStringStringDictionaryOfStringString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.post(String uri, String data, Dictionary`2&lt;String,String&gt; parameters)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.putStringHashtable">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.put(String uri, Hashtable data)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.putStringHashtableDictionaryOfStringString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.put(String uri, Hashtable data, Dictionary`2&lt;String,String&gt; parameters)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.putStringString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.put(String uri, String data)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.putStringStringDictionaryOfStringString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.put(String uri, String data, Dictionary`2&lt;String,String&gt; parameters)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.refundPaymentString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.refundPayment(String id)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.sandboxMode">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.sandboxMode()</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.sandboxModeBoolean">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.sandboxMode(Boolean enable)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.searchPaymentDictionaryOfStringStringInt64Int64">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.searchPayment(Dictionary`2&lt;String,String&gt; filters, Int64 offset, Int64 limit)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.updatePreferenceStringHashtable">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.updatePreference(String id, Hashtable preference)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.AllInstances.updatePreferenceStringString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.updatePreference(String id, String preference)</summary>
+        </member>
+        <member name="M:mercadopago.Fakes.ShimMP.BehaveAsCurrent">
+            <summary>Asigna el comportamiento &apos;Current&apos; a todos los métodos del tipo corregido para compatibilidad</summary>
+        </member>
+        <member name="M:mercadopago.Fakes.ShimMP.BehaveAsNotImplemented">
+            <summary>Asigna el comportamiento &apos;NotImplemented&apos; a todos los métodos del tipo corregido para compatibilidad</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.Behavior">
+            <summary>Asigna el comportamiento a todos los métodos del tipo corregido para compatibilidad</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.ConstructorString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.MP(String ll_access_token)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.ConstructorStringString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.MP(String client_id, String client_secret)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.StaticConstructor">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.MP()</summary>
+        </member>
+        <member name="M:mercadopago.Fakes.ShimMP.buildQueryOf1DictionaryOfStringM0``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Collections.Generic.Dictionary{System.String,``0},System.String})">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.buildQuery(Dictionary`2&lt;String,!!0&gt; parameters)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.cancelPaymentString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.cancelPayment(String id)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.cancelPreapprovalPaymentString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.cancelPreapprovalPayment(String id)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.createPreapprovalPaymentHashtable">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.createPreapprovalPayment(Hashtable preapprovalPayment)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.createPreapprovalPaymentString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.createPreapprovalPayment(String preapprovalPayment)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.createPreferenceHashtable">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.createPreference(Hashtable preference)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.createPreferenceString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.createPreference(String preference)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.deleteString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.delete(String uri)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.deleteStringDictionaryOfStringString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.delete(String uri, Dictionary`2&lt;String,String&gt; parameters)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.getAccessToken">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.getAccessToken()</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.getAuthorizedPaymentString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.getAuthorizedPayment(String id)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.getPaymentInfoString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.getPaymentInfo(String id)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.getPaymentString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.getPayment(String id)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.getPreapprovalPaymentString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.getPreapprovalPayment(String id)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.getPreferenceString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.getPreference(String id)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.getStringBoolean">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.get(String uri, Boolean authenticate)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.getStringDictionaryOfStringString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.get(String uri, Dictionary`2&lt;String,String&gt; parameters)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.getStringDictionaryOfStringStringBoolean">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.get(String uri, Dictionary`2&lt;String,String&gt; parameters, Boolean authenticate)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.postStringHashtable">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.post(String uri, Hashtable data)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.postStringHashtableDictionaryOfStringString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.post(String uri, Hashtable data, Dictionary`2&lt;String,String&gt; parameters)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.postStringString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.post(String uri, String data)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.postStringStringDictionaryOfStringString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.post(String uri, String data, Dictionary`2&lt;String,String&gt; parameters)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.putStringHashtable">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.put(String uri, Hashtable data)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.putStringHashtableDictionaryOfStringString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.put(String uri, Hashtable data, Dictionary`2&lt;String,String&gt; parameters)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.putStringString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.put(String uri, String data)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.putStringStringDictionaryOfStringString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.put(String uri, String data, Dictionary`2&lt;String,String&gt; parameters)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.refundPaymentString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.refundPayment(String id)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.sandboxMode">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.sandboxMode()</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.sandboxModeBoolean">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.sandboxMode(Boolean enable)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.searchPaymentDictionaryOfStringStringInt64Int64">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.searchPayment(Dictionary`2&lt;String,String&gt; filters, Int64 offset, Int64 limit)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.updatePreferenceStringHashtable">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.updatePreference(String id, Hashtable preference)</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.ShimMP.updatePreferenceStringString">
+            <summary>Establecer el Correcciones de compatibilidad (shim) de MP.updatePreference(String id, String preference)</summary>
+        </member>
+        <member name="T:mercadopago.Fakes.StubJSON">
+            <summary>Tipo stub de mercadopago.JSON</summary>
+        </member>
+        <member name="M:mercadopago.Fakes.StubJSON.#ctor">
+            <summary>Inicializa una nueva instancia</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.StubJSON.CallBase">
+            <summary>Obtiene o establece un valor que indica si debe llamarse al método base en lugar del comportamiento de reserva</summary>
+        </member>
+        <member name="M:mercadopago.Fakes.StubJSON.InitializeStub">
+            <summary>Inicializa una nueva instancia de type StubJSON</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.StubJSON.InstanceBehavior">
+            <summary>Obtiene o establece el comportamiento de instancia.</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.StubJSON.InstanceObserver">
+            <summary>Obtiene o establece el observador de la instancia.</summary>
+        </member>
+        <member name="T:mercadopago.Fakes.StubMP">
+            <summary>Tipo stub de mercadopago.MP</summary>
+        </member>
+        <member name="M:mercadopago.Fakes.StubMP.#ctor(System.String)">
+            <summary>Inicializa una nueva instancia</summary>
+        </member>
+        <member name="M:mercadopago.Fakes.StubMP.#ctor(System.String,System.String)">
+            <summary>Inicializa una nueva instancia</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.StubMP.CallBase">
+            <summary>Obtiene o establece un valor que indica si debe llamarse al método base en lugar del comportamiento de reserva</summary>
+        </member>
+        <member name="M:mercadopago.Fakes.StubMP.InitializeStub">
+            <summary>Inicializa una nueva instancia de type StubMP</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.StubMP.InstanceBehavior">
+            <summary>Obtiene o establece el comportamiento de instancia.</summary>
+        </member>
+        <member name="P:mercadopago.Fakes.StubMP.InstanceObserver">
+            <summary>Obtiene o establece el observador de la instancia.</summary>
+        </member>
+    </members>
+</doc>

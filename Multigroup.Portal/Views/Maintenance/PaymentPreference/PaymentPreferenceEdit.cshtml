@@ -1,0 +1,145 @@
+﻿<!-- VISTA: Maintenance/PaymentPreferenceEdit.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.Maintenance.PaymentPreferenceVm
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-folder"></i>
+                    <span class="caption-subject bold uppercase">Editar Forma de Pago</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-default" id="btnAddPaymentPreference">Añadir</a>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnEditPaymentPreference" disabled="disabled">
+                            Editar
+                        </a>
+                    </div>
+                </div>
+            </div>
+            @using (Ajax.BeginForm("Edit", "PaymentPreference", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnBegin = "OnStart",
+                OnComplete = "OnComplete",
+                OnFailure = "FailMessage",
+                OnSuccess = "SuccessMessage",
+                UpdateTargetId = "dashboard"
+            }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.PaymentPreferenceId)
+                <div class="portlet-body form">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Descripción:</label>
+                                    <div class="col-md-6">
+                                        @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Description, string.Empty, new { @class = "validate-error" })
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Activo:</label>
+                                    <div class="col-md-8">
+                                        @Html.CheckBoxFor(model => model.Active)
+                                        @Html.ValidationMessageFor(model => model.Active)
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Asignación:</label>
+                                    <div class="col-md-8">
+                                        @Html.CheckBoxFor(model => model.Assing)
+                                        @Html.ValidationMessageFor(model => model.Assing)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!-- BEGIN Portlet PORTLET-->
+                            <div class="portlet box blue-dark">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-calculator"></i>Medios de Pago
+                                    </div>
+                                    <div class="actions">
+                                        <a class="btn default" data-toggle="modal" data-target="#paymentMethodModal">
+                                            <i class="fa fa-plus"></i> Añadir
+                                        </a>
+                                        <a id="btnRemovePaymentMethod" class="btn default" disabled="disabled">
+                                            <i class="fa fa-remove"></i> Eliminar
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div id="paymentMethodTableDiv" style="position: relative; overflow: hidden; width: auto; min-height: 200px;">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END Portlet PORTLET-->
+                        </div>
+
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-5">
+                                <button class="btn btn-primary" id="btnProcess">Guardar</button>
+                                <button type="button" class="btn default" id="btnCancel">Volver</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $('#Active').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
+        $('#Assing').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
+        CallBackGet(function (data) {
+            $("#paymentMethodTableDiv").html(data);
+        }, "/paymentPreference/IndexPaymentMethod");
+
+        $('#btnCancel').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+
+            }, "/PaymentPreference/Index", null)
+        });
+    });
+</script>
+
+
+
+

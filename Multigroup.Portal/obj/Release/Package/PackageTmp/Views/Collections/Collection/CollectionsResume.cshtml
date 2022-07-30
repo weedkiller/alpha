@@ -1,0 +1,19 @@
+﻿@model Multigroup.Portal.Models.Collection.CollectionsResumeTableVm
+<div class="form-group">
+    <table id="tableresume" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <thead>
+            <tr></tr>
+            <tr></tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CollectionsList)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Value)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

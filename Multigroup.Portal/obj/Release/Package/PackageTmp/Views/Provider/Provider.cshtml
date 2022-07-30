@@ -1,0 +1,154 @@
+﻿<!-- VISTA: Maintenance/Provider.cshtml -->
+@model Multigroup.Portal.Models.Administration.ProviderFilterVm
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-Provider"></i>
+                    <span class="caption-subject bold uppercase">Proveedores</span>
+                </div>
+				<div class="actions">
+					<a class="btn btn-default" id="btnAddProvider">Añadir</a>
+					<div class="tooltipAai btn-group" id="idTooltipAai">
+						<a class="btn btn-default bootstro" id="btnEditProvider" disabled="disabled">
+							Editar
+						</a>
+					</div>
+					<a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+					</a>
+				</div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Tipo Proveedor:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.SelectedProviderType, Model.ListProviderType, new { @size = "2" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha Desde:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateFrom" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha Hasta:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateTo" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Monto Desde:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.BalanceFrom, new { @class = "form-control", @type = "number", @Value = "" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Monto Hasta:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.BalanceTo, new { @class = "form-control", @type = "number", @Value = "" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Activo:</label>
+                            <div class="col-md-8" id="sandbox-container">
+                                @*<input type="checkbox" id="changePassword"/>*@
+                                @Html.CheckBoxFor(model => model.Active, new { @id = "isActive", @checked = true })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button id="btnBuscar" class="btn btn-default">Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" id="modalEditProvider">
+
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#isActive').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
+        $('.date-picker').datepicker();
+        $('select').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+        });
+        $('.tooltipAai').tooltip({
+            container: 'body',
+			title: "Seleccione un proveedor"
+        });
+        $('.tooltipProvider1').tooltip({
+            container: 'body',
+            title: 'Seleccione un proveedor'
+        });
+        $('#btnEditProvider').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/Provider/Edit?id=" + id, null)
+        });
+
+        $('#btnAddProvider').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/Provider/Create", null)
+        });
+
+		$('#btnBuscar').click(function (event) {
+			var params = {};
+            params.SelectedProviderType = $('#SelectedProviderType').val();
+            params.BalanceFrom = $('#BalanceFrom').val();
+            params.BalanceTo = $('#BalanceTo').val();
+            params.DateFrom = $('#txtDateFrom').val();
+            params.DateTo = $('#txtDateTo').val();
+            if ($('#isActive').is(':checked') == true) {
+                params.isActive = '1';
+            } else {
+                params.isActive = '0';
+            }
+			CallBackGet(function (data) {
+				$("#acciones").html(data);
+			}, "/Provider/GetTable", params)
+		});
+			
+    });
+</script>
+

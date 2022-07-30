@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Multigroup.Portal.Models.Shared.DataUploadFilesResultVm>
+<div class="modal-dialog" role="document">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<h4 class="modal-title" id="myModalLabel">Adjuntar</h4>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-md-12">
+					<script src="~/Scripts/dropzone.js"></script>
+					<form method="post" class="dropzone" id="uploadFiles"></form>
+				</div>
+			</div>
+			<div class="row">
+				@{
+					foreach (var item in Model)
+					{
+						<div class="col-md-12">
+							<div class="form-group">
+								<div class="attach-content">
+									<a class="dO" href="/@item.Path/@item.Name" target="_blank">
+										<div class="attach-name">@item.Name</div>
+										<div class="attach-size">(@item.Length K)</div>
+									</a>
+									<div id="divDeleteAttachment" onclick="DeleteSavedFile('@item.Name');" role="button" class="attach-delete" tabindex="-1">
+									</div>
+								</div>
+							</div>
+						</div>
+					}
+				}
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal" id="cancelFiles">Cancelar</button>
+			<button type="submit" class="btn btn-primary" data-dismiss="modal" id="saveFiles">Guardar</button>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.attach-delete').click(function (event) {
+            $(this).parent().remove();
+        });
+    });
+    function DeleteSavedFile(fileName) {
+        var params = new Object;
+		params.ContractId = $('#SpendingId').val();
+        params.FileName = fileName;
+        CallSericeAjax(function (data) {
+        }, "/Spending/DeleteSavedFile", params, HttpActions.POST);
+    }
+</script>

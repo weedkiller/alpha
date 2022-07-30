@@ -1,0 +1,239 @@
+ @model Multigroup.Portal.Models.Maintenance.MercadoPagoTableVm
+ <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>ID Cuenta MP</th>
+            <th>Monto Minimo</th>
+            <th>Monto Maximo</th>
+            <th>Vendedor</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.PaymentMethodsList)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.MPSellerAccountId)</td>
+                <td>@Html.DisplayFor(modelItem => item.MPAccountId)</td>
+                <td>@Html.DisplayFor(modelItem => item.MinAmount)</td>
+                <td>@Html.DisplayFor(modelItem => item.MaxAmount)</td>
+                <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div id="myModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title"></h4>
+			</div>
+			<div class="modal-body">
+        <input type="hidden" id="MPSellerAccountId">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">ID Cuenta MP:</label>
+							<div class="col-md-8">
+								<input id="MPAccountId" class="form-control" type="number"> 
+							</div>
+						</div>
+					</div>
+                    <div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">Pass MP:</label>
+							<div class="col-md-8">
+								<input id="Pass" class="form-control">
+							</div>
+						</div>
+					</div>
+				</div>
+                <div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">Monto Minimo:</label>
+							<div class="col-md-8">
+								<input id="MinAmount" class="form-control" type="number">
+							</div>
+						</div>
+					</div>
+                    <div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">Monto Maximo:</label>
+							<div class="col-md-8">
+								<input id="MaxAmount" class="form-control" type="number">
+							</div>
+						</div>
+					</div>
+				</div>
+                <div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">Token:</label>
+							<div class="col-md-8">
+								<input id="Token"  class="form-control">
+							</div>
+						</div>
+					</div>
+                    <div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">Vendedor:</label>
+							<div class="col-md-8">
+								<select id="UserId"></select>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+                <button type="button" class="btn btn-pimary" data-dismiss="modal" id="GenerateMPAccount">Guardar</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function () {
+            $('#chkIncludedAll').iCheck({
+                checkboxClass: 'icheckbox_square-grey',
+                radioClass: 'iradio_square-grey',
+                increaseArea: '20%' // optional
+            });
+            CallSericeAjax(function (data) {
+               $("#UserId").empty();
+              for (var i = 0; i < data.length; i++) {
+                $('#UserId').append('<option value="' + data[i].UserId + '">' + data[i].Names + ' - ' + data[i].Surname+'</option>')
+              }
+              $("#UserId").destroy();
+              $("#UserId").multiselect();
+
+            }, "/User/GetSellers", null, 'GET')
+            $('#GenerateMPAccount').click(function (event) {
+              event.preventDefault();
+                event.stopPropagation();
+                if($('#MPSellerAccountId').val() == null || $('#MPSellerAccountId').val() == '') {
+                  var params = new Object;
+                  params.MPAccountId = $('#MPAccountId').val();
+                  params.UserId = $('#UserId').val();
+                  params.Pass = $('#Pass').val();
+                  params.MinAmount = $('#MinAmount').val();
+                  params.MaxAmount = $('#MaxAmount').val();
+                  params.Token = $('#Token').val();
+                  CallBackGet(function (data) {
+                      $("#table").html(data);
+                      $('.modal-backdrop').remove();
+                      SuccessMessage("success", "Cuenta generada con exito");
+                  }, "/PaymentMethods/GenerateMPAccount", params)
+                } else {
+                  var params = new Object;
+                  params.MPSellerAccountId = $('#MPSellerAccountId').val();
+                  params.MPAccountId = $('#MPAccountId').val();
+                  params.UserId = $('#UserId').val();
+                  params.Pass = $('#Pass').val();
+                  params.MinAmount = $('#MinAmount').val();
+                  params.MaxAmount = $('#MaxAmount').val();
+                  params.Token = $('#Token').val();
+                  CallBackGet(function (data) {
+                      $("#table").html(data);
+                      $('.modal-backdrop').remove();
+                      SuccessMessage("success", "Cuenta editada con exito");
+                  }, "/PaymentMethods/EditMercadoPago", params)
+                }
+            });
+
+            function formatTableToolsButton(node) {
+                $(node).removeClass('DTTT_button');
+                $(node).addClass('btn btn-default');
+            }
+            var table = $('#tabla_id').dataTable({
+                "destroy": true,
+                "aaSorting": [],
+				"bServerSide": false,
+				"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+                "dom": 'Blfrtip',
+				"buttons": [
+					{ extend: 'copy', text: 'Copiar' },
+					'csv',
+					'excel',
+					'pdf',
+					{ extend: 'print', text: 'Imprimir' },
+				],
+                "sScrollYInner": "100%",
+                "sScrollX": "100%",
+                "sScrollXInner": "100%",
+                "scrollCollapse": true,
+                "bProcessing": false
+            });
+
+            $('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+                event.stopPropagation();
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                    $("#btnDeletePaymentMethods").attr("disabled", "disabled");
+                    $("#idTooltipDelete").removeClass('tooltipAai');
+                    $('#idTooltipDelete').tooltip({
+                        container: 'body',
+                        title: 'Seleccione una cuenta'
+                    });
+                    $("#btnEditPaymentMethods").attr("disabled", "disabled");
+                    $("#idTooltipAai").removeClass('tooltipAai');
+                    $('#idTooltipAai').tooltip({
+                        container: 'body',
+                        title: "Seleccione una cuenta"
+                    });
+                }
+                else {
+                    $('#tabla_id tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                    $("#btnEditPaymentMethods").removeAttr("disabled", "disabled");
+                    $("#idTooltipAai").tooltip('destroy');
+                    $("#btnDeletePaymentMethods").removeAttr("disabled", "disabled");
+                    $("#idTooltipDelete").tooltip('destroy');
+                    id = table.fnGetData(this)[0];
+                }
+            });
+            $('.tooltipDelete').tooltip({
+                container: 'body',
+                title: "Seleccione una cuenta"
+            });
+            $('.tooltipAai').tooltip({
+                container: 'body',
+                title: 'Seleccione una cuenta'
+            });
+
+            $('#btnEditPaymentMethods').click(function (event) {
+                CallSericeAjax(function (data) {
+                    $('#myModal').modal('show');
+                    $('.modal-title').html('Editar Cuenta');
+                    $('#MPSellerAccountId').val(data.MPSellerAccountId)
+                    $('#MPAccountId').val(data.MPAccountId)
+                    $('#UserId').val(data.UserId);
+                    $("#UserId").multiselect('refresh');
+                    $('#Pass').val(data.Pass);
+                    $('#MinAmount').val(data.MinAmount);
+                    $('#MaxAmount').val(data.MaxAmount);
+                    $('#Token').val(data.Token);
+                }, "/PaymentMethods/EditMP?id=" + id, null, 'GET')
+            });
+
+            $('#btnAddPaymentMethods').click(function (event) {
+              $('#MPSellerAccountId').val('')
+                    $('#MPAccountId').val('')
+                    $('#UserId').val('');
+                    $("#UserId").multiselect('refresh');
+                    $('#Pass').val('');
+                    $('#MinAmount').val('');
+                    $('#MaxAmount').val('');
+                    $('#Token').val('');
+                $('#myModal').modal('show');
+                $('.modal-title').html('Agregar Cuenta');
+
+            });
+            $('#btnDeletePaymentMethods').click(function (event) {
+                CallBackGet(function (data) {
+                    
+                }, "/PaymentMethods/DeleteMP?id="+id, null)
+            });
+       });
+</script>

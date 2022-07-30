@@ -1,0 +1,88 @@
+﻿@model Multigroup.Portal.Models.Collection.CollectorAssigmmentVm
+<div class="modal-dialog">
+    @using (Ajax.BeginForm("AssignCollector", "Collector", new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnBegin = "OnStart",
+        OnComplete = "OnComplete",
+        OnFailure = "FailMessage",
+        OnSuccess = "SuccessMessage",
+        UpdateTargetId = "dashboard"
+    }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.AssignPaymentPreferenceId)
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Aisgnar Cobrador</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Cobrador:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.ddlCollector.SelectedItem, Model.ddlCollector.ListItems, new { @size = 2 })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" id="monthDiv">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha Visita:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.VisitDate, new { @class = "form-control form-control-inline date-picker", @placeholder = "dd/mm/aaaa" })
+                                @Html.ValidationMessageFor(model => model.VisitDate, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table id="NavigationAccesTable" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Fecha Visita</th>
+                                    <th>Cobrador</th>
+                                    <th>Activo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Asignaciones)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Date)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.VisitDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.User)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Active)
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnProcess" type="submit">Guardar</button>
+                    <button type="button" class="btn default" id="btnCancel" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $('#btnProcess').click(function () {
+        $("#modalAssign").modal('hide');
+    });
+    $('.date-picker').datepicker();
+    $('select').multiselect();
+
+</script>

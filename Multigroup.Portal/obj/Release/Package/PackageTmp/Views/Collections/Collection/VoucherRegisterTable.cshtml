@@ -1,0 +1,85 @@
+﻿@model Multigroup.Portal.Models.Collection.VoucherTableVm
+<div class="form-group">
+    <table id="tablaa" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <thead>
+            <tr>
+                <th style="display: none">Id</th>
+                <th>Cuota</th>
+                <th>Monto</th>
+                <th>Pagado</th>
+                <th>Metodo Pago</th>
+                <th>Canal</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.VoucherList)
+            {
+            <tr style="color: @item.Color; font-weight: bold">
+                <td style="display: none">@Html.DisplayFor(modelItem => item.AssignPaymentPreferenceId)</td>
+                <td>@Html.DisplayFor(modelItem => item.Cuota)</td>
+                <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                <td>@Html.DisplayFor(modelItem => item.PaymentAmount)</td>
+                <td>@Html.DisplayFor(modelItem => item.PaymentMethod)</td>
+                <td>@Html.DisplayFor(modelItem => item.Channel)</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    var tableee;
+    function formatTableToolsButton(node) {
+        $(node).removeClass('DTTT_button');
+        $(node).addClass('btn btn-default');
+    }
+    var table = $('#tablaa').dataTable({
+        "destroy": true,
+        "aaSorting": [],
+        "bServerSide": false,
+        "buttons": [
+            { extend: 'copy', text: 'Copiar' },
+            'csv',
+            'excel',
+            'pdf',
+            { extend: 'print', text: 'Imprimir' },
+        ],
+        "dom": 'Blfrtip',
+        "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+        "sScrollYInner": "100%",
+        "sScrollX": "100%",
+        "sScrollXInner": "100%",
+        "scrollCollapse": true,
+        "bProcessing": false
+    });
+
+    $('#tablaa tbody').unbind("click").on('click', 'tr', function (event) {
+        event.stopPropagation();
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+            $("#idTooltipAai").removeClass('tooltipAai');
+            $('#idTooltipAai').tooltip({
+                container: 'body',
+                title: "Seleccione un rol"
+            });
+        }
+        else {
+            saldado = table.fnGetData(this)[3];
+            $('#tablaa tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+            $("#idTooltipAai").tooltip('destroy');
+            AssignPaymentPreferenceId = table.fnGetData(this)[0];
+        }
+    });
+
+
+    $('.tooltipAai').tooltip({
+        container: 'body',
+        title: "Seleccione un pago"
+    });
+    $('.tooltipCustomer1').tooltip({
+        container: 'body',
+        title: 'Seleccione un pago'
+    });
+</script>

@@ -1,0 +1,81 @@
+﻿@using Resources
+@model Multigroup.Portal.Models.Administration.ContributionAllocationVm
+
+<table id="partnersTable" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+    <thead>
+        <tr>
+            <th style="display: none">Id</th>
+            <th>Nombre</th>
+            <th>% Capital</th>
+            <th>Ganancia Asignada</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Partners)
+        {
+        <tr>
+            <td style="display: none">@item.PartnerId</td>
+            <td>@item.Partner</td>
+            <td>@item.Percentage</td>
+            <td>@item.Amount</td>
+        </tr>
+        }
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('select').multiselect();
+
+
+        $('#partnersTable tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            ParterId = tableArticles.fnGetData(this)[0];
+          
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                $('#partnersTable tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+        $('#btnAddArticle').click(function (event) {
+            var param = new Object;
+            param.QuantityArticle = $('#QuantityArticle').val();
+            param.ArticleId = $('#Articles').val();
+            param.PriceArticle = $('#PriceArticle').val();
+            param.DescriptionArticle = $('#DescriptionArticle').val();
+            if (param.PriceArticle == '' || param.QuantityArticle == '') {
+                Command: toastr["error"]("El Precio y la Cantidad son Obligatorios.")
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-center",
+                    "preventDuplicates": true,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            }
+            else
+            CallBackGet(function (data) {
+                $('#partnersModal').modal('hide');
+                $('.modal-backdrop').remove();
+                $("#partnersTableDiv").html(data);
+                $("#btnPurchase").attr("disabled", "disabled");
+                $("#btnScheduled").attr("disabled", "disabled");
+                $("#btnExpense").attr("disabled", "disabled");
+                $('#Amount').val(total);
+            }, "/ContributionAllocation/Articles", param)
+        });
+    });
+</script>

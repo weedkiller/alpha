@@ -1,0 +1,199 @@
+﻿<!-- VISTA: User/UserList.cshtml -->
+@model Multigroup.Portal.Models.ContactCallModel.ContactCallTableVm
+
+<div class="form-group">
+	<table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+		<thead>
+            <tr>
+                <th><input type="checkbox" id="checkAll"></th>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Telefono</th>
+                <th>Vehículo</th>
+                <th>Fecha Carga</th>
+                <th>Fecha Contacto</th>
+                <th>Horario de Contacto</th>
+                <th>Aclaración de Contacto</th>
+                <th>Estado Contacto</th>
+                <th>Gerente</th>
+                <th>Supervisor</th>
+                <th>Vendedor</th>
+            </tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model.ContactCallList)
+			{
+            <tr style="color: @item.Color; font-weight: bold">
+                <th><input type="checkbox" class="checkboxes"></th>
+                <td>@Html.DisplayFor(modelItem => item.ContactCallId)</td>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Surname)</td>
+                <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+                <td>@Html.DisplayFor(modelItem => item.Vehicle)</td>
+                <td>@Html.DisplayFor(modelItem => item.SystemDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.ContactDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.ContactTime)</td>
+                <td>@Html.DisplayFor(modelItem => item.Commentary)</td>
+                <td>@Html.DisplayFor(modelItem => item.ContactCallState)</td>
+                <td>@Html.DisplayFor(modelItem => item.Manager)</td>
+                <td>@Html.DisplayFor(modelItem => item.Supervisor)</td>
+                <td>@Html.DisplayFor(modelItem => item.Seller)</td>
+            </tr>
+			}
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        if ($('#SelectedStatus').val() == null || $('#SelectedStatus').val().includes("5")) {
+            $("#btnManager").attr("disabled", "disabled");
+            $("#btnSupervisor").attr("disabled", "disabled");
+            $("#btnSeller").attr("disabled", "disabled");
+        }
+        else {
+            $("#btnManager").removeAttr("disabled", "disabled");
+            $("#btnSupervisor").removeAttr("disabled", "disabled");
+            $("#btnSeller").removeAttr("disabled", "disabled");
+        }
+
+        $('#checkAll').click(function () {
+
+
+
+            if ($(this).is(":checked")) {
+                $('input.checkboxes').each(function () {
+                    $(this).prop('checked', true);
+                    $(this).attr('checked', true);
+                });
+            } else {
+                $('input.checkboxes').each(function () {
+                    $(this).prop('checked', false);
+                    $(this).attr('checked', false);
+                });
+            }
+
+        });
+
+
+		function formatTableToolsButton(node) {
+			$(node).removeClass('DTTT_button');
+			$(node).addClass('btn btn-default');
+		}
+		var table = $('#tabla_id').dataTable({
+			"destroy": true,
+			"aaSorting": [],
+			"bServerSide": false,
+			"dom": 'Blfrtip',
+			"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+			"buttons": [
+				{ extend: 'copy', text: 'Copiar' },
+				'csv',
+				'excel',
+				'pdf',
+				{ extend: 'print', text: 'Imprimir' },
+			],
+			"sScrollYInner": "100%",
+			"sScrollX": "100%",
+			"sScrollXInner": "100%",
+			"scrollCollapse": true,
+			"bProcessing": false
+		});
+
+		$('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+			event.stopPropagation();
+			if ($(this).hasClass('selected')) {
+				$(this).removeClass('selected');;
+                $("#btnCall").attr("disabled", "disabled");
+				$("#idTooltipAai").removeClass('tooltipAai');
+				$('#idTooltipAai').tooltip({
+					container: 'body',
+					title: "Seleccione un contacto"
+				});
+			}
+            else {
+                status = table.fnGetData(this)[8];
+				$('#tabla_id tr.selected').removeClass('selected');
+				$(this).addClass('selected');
+                $("#idTooltipAai").tooltip('destroy');
+                $("#btnCall").removeAttr("disabled", "disabled");               
+                if (status == "Terminado") {
+                    $("#btnCall").attr("disabled", "disabled");
+                }
+                else {
+                    $("#btnCall").removeAttr("disabled", "disabled");
+
+                }
+                id = table.fnGetData(this)[0];
+			}                
+          
+        });
+
+        $('#btnManagerOk').click(function (event) {
+            var menuItems = [];
+            $('input.checkboxes').each(function () {
+                if ($(this).is(":checked")) {
+                    var menuId = $(this).closest('tr').find("td").eq(0).html()
+                    menuItems.push(menuId.trim());
+                }
+            });
+            var params = {};
+            params.Contacts = menuItems;
+            params.Manager = $('#ddlManager').val()
+            CallSericeAjax(function (data) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+                    $('.modal-backdrop').remove();
+                    SuccessMessage("success", "Contactos asignados con exito");
+                }, "/ContactCall/Index", null)
+            }, "/ContactCall/AssignManager", params, 'POST')
+        });
+
+        $('#btnSupervisorOk').click(function (event) {
+            var menuItems = [];
+            $('input.checkboxes').each(function () {
+                if ($(this).is(":checked")) {
+                    var menuId = $(this).closest('tr').find("td").eq(0).html()
+                    menuItems.push(menuId.trim());
+                }
+            });
+            var params = {};
+            params.Contacts = menuItems;
+            params.Supervisor = $('#ddlSupervisor').val();
+            CallSericeAjax(function (data) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+                    $('.modal-backdrop').remove();
+                    SuccessMessage("success", "Contactos asignados con exito");
+                }, "/ContactCall/Index", null)
+            }, "/ContactCall/AssignSupervisor", params, 'POST')
+        });
+
+        $('#btnSellerOk').click(function (event) {
+            var menuItems = [];
+            $('input.checkboxes').each(function () {
+                if ($(this).is(":checked")) {
+                    var menuId = $(this).closest('tr').find("td").eq(0).html()
+                    menuItems.push(menuId.trim());
+                }
+            });
+            var params = {};
+            params.Contacts = menuItems;
+            params.Seller = $('#ddlSeller').val();
+            CallSericeAjax(function (data) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+                    $('.modal-backdrop').remove();
+                    SuccessMessage("success", "Contactos asignados con exito");
+                }, "/ContactCall/Index", null)
+            }, "/ContactCall/AssignSeller", params, 'POST')
+        });       
+	});
+	function loadModal() {
+		CallBackGet(function (data) {
+			$("#modalCall").html(data);
+			$("#modalCall").modal('show');
+		}, "/ContactCall/CallStatus?id=" + id, null)
+	}
+</script>

@@ -1,0 +1,123 @@
+﻿@model Multigroup.Portal.Models.Collection.AssignPaymentPreferenceCollectorTableVm
+<div class="form-group">
+    <table id="tablaa" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <thead>
+            <tr>
+                <th style="display: none">ID</th>
+                <th style="display: none">IdCuota</th>
+                <th>Contrato</th>
+                <th>Cliente</th>
+                <th>Celular</th>
+                <th>Cuota</th>
+                <th>Monto</th>
+                <th>Fecha Cobro</th>
+                <th>Telemarketer</th>
+                <th>Asignado</th>
+                <th>Rendido</th>
+                <th>Procesado</th>
+                <th>Cobrador</th>
+                <th>Fecha Visita</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.AssignPaymentPreferenceCollectorList)
+            {
+                <tr>
+                    <td style="display:none">@Html.DisplayFor(modelItem => item.AssignPaymentPreferenceId)</td>
+                    <td style="display:none">@Html.DisplayFor(modelItem => item.InstallmentId)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Number)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Customer)</td>
+                    <td>@Html.DisplayFor(modelItem => item.CustomerMobile)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Cuota)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PaymentDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Telemarketer)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Assign)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Surrender)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Register)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Collector)</td>
+                    <td>@Html.DisplayFor(modelItem => item.VisitDate)</td>
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    var tableee;
+    function formatTableToolsButton(node) {
+        $(node).removeClass('DTTT_button');
+        $(node).addClass('btn btn-default');
+    }
+    var table = $('#tablaa').dataTable({
+        "destroy": true,
+        "aaSorting": [],
+        "bServerSide": false,
+        "buttons": [
+            { extend: 'copy', text: 'Copiar' },
+            'csv',
+            'excel',
+            'pdf',
+            { extend: 'print', text: 'Imprimir' },
+        ],
+        "dom": 'Blfrtip',
+        "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+        "sScrollYInner": "100%",
+        "sScrollX": "100%",
+        "sScrollXInner": "100%",
+        "scrollCollapse": true,
+        "bProcessing": false
+    });
+
+    $('#tablaa tbody').unbind("click").on('click', 'tr', function (event) {
+        event.stopPropagation();
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+            $("#asd").attr("disabled", "disabled");
+            $("#btnAssign").attr("disabled", "disabled");
+            $("#idTooltipAai").removeClass('tooltipAai');
+            $('#idTooltipAai').tooltip({
+                container: 'body',
+                title: "Seleccione un rol"
+            });
+        }
+        else {
+            asignado = table.fnGetData(this)[9];
+            rendido = table.fnGetData(this)[10];
+            registrado = table.fnGetData(this)[11];
+            monto = table.fnGetData(this)[6];
+            $('#tablaa tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+            $("#asd").removeAttr("disabled", "disabled");
+            if (rendido == '<input class="check-box" disabled="disabled" type="checkbox">' && monto != "0") {
+                $("#btnAssign").removeAttr("disabled", "disabled");
+            }
+            else {
+                $("#btnAssign").attr("disabled", "disabled");
+            }
+            $("#idTooltipAai").tooltip('destroy');
+            AssignPaymentPreferenceId = table.fnGetData(this)[0];
+            installment = table.fnGetData(this)[1];
+            Contract = table.fnGetData(this)[2];
+        }
+    });
+
+
+    function loadModal() {
+        CallBackGet(function (data) {
+            $("#modalAssign").html(data);
+            $("#modalAssign").modal('show');
+        }, "/Collector/Assign?id=" + AssignPaymentPreferenceId, null)
+    }
+
+    $('.tooltipAai').tooltip({
+        container: 'body',
+        title: "Seleccione un pago"
+    });
+    $('.tooltipCustomer1').tooltip({
+        container: 'body',
+        title: 'Seleccione un pago'
+    });
+</script>

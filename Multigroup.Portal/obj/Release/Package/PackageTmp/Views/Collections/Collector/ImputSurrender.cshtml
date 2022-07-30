@@ -1,0 +1,164 @@
+﻿@model Multigroup.Portal.Models.Collection.CollectorAdvancementVm
+<div class="modal-dialog">
+    @using (Ajax.BeginForm("ImputSurrender", "Collector", new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnBegin = "OnStart",
+        OnComplete = "OnComplete",
+        OnFailure = "FailMessage",
+        OnSuccess = "SuccessMessage",
+        UpdateTargetId = "dashboard"
+    }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.CollectorId)
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Imputación de Saldos</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Monto:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", @type = "number" })
+                                @Html.ValidationMessageFor(model => model.Amount, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                </div>              
+                <br>
+                <br>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-6">Rendiciones:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-6">Avances:</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <table id="tabla_id3" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Monto</th>
+                                        <th>Saldo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.rendiciones)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.Date)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Balance)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <table id="tabla_id4" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Monto</th>
+                                        <th>Saldo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.avances)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.Date)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Balance)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="btnProcess" type="submit">Guardar</button>
+                <button type="button" class="btn default" id="btnCancel" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $(document).ready(function () {
+        function formatTableToolsButton(node) {
+            $(node).removeClass('DTTT_button');
+            $(node).addClass('btn btn-default');
+        }
+        $('#tabla_id3').dataTable({
+            "destroy": true,
+            "buttons": [
+                { extend: 'copy', text: 'Copiar' },
+                'csv',
+                'excel',
+                'pdf',
+                { extend: 'print', text: 'Imprimir' },
+            ],
+            "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+            "aaSorting": [],
+            "bServerSide": false,
+            "dom": 'Blfrtip',
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false
+        });
+
+        $('#tabla_id4').dataTable({
+            "destroy": true,
+            "buttons": [
+                { extend: 'copy', text: 'Copiar' },
+                'csv',
+                'excel',
+                'pdf',
+                { extend: 'print', text: 'Imprimir' },
+            ],
+            "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+            "aaSorting": [],
+            "bServerSide": false,
+            "dom": 'Blfrtip',
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false
+        });
+     
+        $('.tooltipAai').tooltip({
+            container: 'body',
+            title: "Seleccione un visita"
+        });
+        $('.tooltipCustomer1').tooltip({
+            container: 'body',
+            title: 'Seleccione una visita'
+        });
+
+    });
+    $('#btnProcess').click(function () {
+        $("#modalImput").modal('hide');
+    });
+    $('.date-picker').datepicker();
+    $('select').multiselect();
+</script>

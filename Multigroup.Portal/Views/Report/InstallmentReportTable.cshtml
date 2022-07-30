@@ -1,0 +1,71 @@
+﻿<!-- VISTA: User/UserList.cshtml -->
+@model Multigroup.Portal.Models.Maintenance.InstallmentReportTableVm
+
+<div class="form-group">
+	<table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+		<thead>
+            <tr>
+                <th>Contrato</th>
+                <th>Cliente</th>
+                <th>Documento</th>
+                <th>Provincia</th>
+                <th>Telefono</th>
+                <th>Celular</th>
+                <th>E-mail</th>
+                <th>Cuota Actual</th>
+                <th>Cuotas Adeudadas</th>
+                <th>Valor Cuota</th>
+                <th>Último Pago</th>
+                <th>Estado</th>
+            </tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model.CustomerList)
+			{
+            <tr  style="color: @item.Color; font-weight: bold">
+                <td>@Html.DisplayFor(modelItem => item.Number)</td>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.IdentificationNumber)</td>
+                <td>@Html.DisplayFor(modelItem => item.State)</td>
+                <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+                <td>@Html.DisplayFor(modelItem => item.CellPhone)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                <td>@Html.DisplayFor(modelItem => item.CuotaActual)</td>
+                <td>@Html.DisplayFor(modelItem => item.CuotasDebe)</td>
+                <td>@Html.DisplayFor(modelItem => item.CuotaValor)</td>
+                <td>@Html.DisplayFor(modelItem => item.PaymentDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.Status)</td>
+
+            </tr>
+			}
+		</tbody>
+	</table>   
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+		function formatTableToolsButton(node) {
+			$(node).removeClass('DTTT_button');
+			$(node).addClass('btn btn-default');
+		}
+		var table = $('#tabla_id').dataTable({
+			"destroy": true,
+			"aaSorting": [],
+			"bServerSide": false,
+			"buttons": [
+				{ extend: 'copy', text: 'Copiar' },
+				'csv',
+				'excel',
+				'pdf',
+				{ extend: 'print', text: 'Imprimir' },
+			],
+			"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+			"dom": 'Blfrtip',
+			"sScrollYInner": "100%",
+			"sScrollX": "100%",
+			"sScrollXInner": "100%",
+			"scrollCollapse": true,
+			"bProcessing": false
+		});
+	});
+</script>

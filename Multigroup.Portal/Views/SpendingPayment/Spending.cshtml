@@ -1,0 +1,225 @@
+﻿<!-- VISTA: Maintenance/Spending.cshtml -->
+@model Multigroup.Portal.Models.Administration.SpendingFilterVm
+<div class="filter-container">
+</div>
+        <div class="row">
+            <div class="col-md-12 column">
+                <div class="portlet light bordered">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-Spending"></i>
+                            <span class="caption-subject bold uppercase">Imputación de Gastos en Pagos</span>
+                        </div>
+                        <div class="actions">
+                            <div class="actions">
+                                <a class="btn btn-default" data-toggle="modal" data-target="#ImputModal" id="btnImputSpending" disabled="disabled">ImputarPago</a>
+                            </div>
+                            <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Fecha Ejecución Desde:</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control form-control-inline date-picker" id="txtDateFromExecution" placeholder="dd/mm/aaaa" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Fecha Ejecución Hasta:</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control form-control-inline date-picker" id="txtDateToExecution" placeholder="dd/mm/aaaa" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Fecha Vencimiento Desde:</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control form-control-inline date-picker" id="txtDateFromExpiration" placeholder="dd/mm/aaaa" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Fecha Vencimiento Hasta:</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control form-control-inline date-picker" id="txtDateToExpiration" placeholder="dd/mm/aaaa" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Monto Desde:</label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.AmountFrom, new { @class = "form-control", @type = "number", @Value = "" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Monto Hasta:</label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.AmountTo, new { @class = "form-control", @type = "number", @Value = "" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Número Comprobante:</label>
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(model => model.Receipt, new { @class = "form-control", @type = "number", @Value = "" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Saldo Desde:</label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.BalanceFrom, new { @class = "form-control", @type = "number", @Value = "" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Saldo Hasta:</label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.BalanceTo, new { @class = "form-control", @type = "number", @Value = "" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <button id="btnBuscarSpending" class="btn btn-default">Buscar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="table">
+                            <div class="col-md-12" id="accionesSpending">
+
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Total Imputado:</label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.Imput, new { @class = "form-control", @type = "number", @readonly = true })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Saldo:</label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.Balance, new { @class = "form-control", @type = "number", @readonly = true })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-5">
+                                    <a class="btn btn-primary" id="btnVolver">Volver</a>
+                                    <a class="btn btn-primary" id="btnVolverCA"  style="display: none">Volver</a>
+                                    <a class="btn btn-primary" id="btnGuardar">Guardar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="portlet portlet-sortable-empty">
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" role="dialog" id="modalImputPayment">
+
+        </div>
+        <!-- Note the missing multiple attribute! -->
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                var provider = @ViewBag.provider;
+
+                if (provider != null && provider != '-10') {
+                    $('#btnVolverCA').show();
+                    $('#btnVolver').hide();
+                }
+
+
+                $('.date-picker').datepicker();
+                $('select').multiselect({
+                    includeSelectAllOption: true,
+                    enableFiltering: false,
+                });
+                $('.tooltipAai').tooltip({
+                    container: 'body',
+                    title: "Seleccione un gasto"
+                });
+                $('.tooltipSpending1').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un gasto'
+                });
+
+                    CallBackGet(function (data) {
+                        $("#accionesSpending").html(data);
+                    }, "/SpendingPayment/GetTableImputAll")
+
+                $('#btnBuscarSpending').click(function (event) {
+                    var params = {};
+                    params.AmountFrom = $('#AmountFrom').val();
+                    params.AmountTo = $('#AmountTo').val();
+                    params.BalanceFrom = $('#BalanceFrom').val();
+                    params.BalanceTo = $('#BalanceTo').val();
+                    params.DateFromExecution = $('#txtDateFromExecution').val();
+                    params.DateToExecution = $('#txtDateToExecution').val();
+                    params.DateFromExpiration = $('#txtDateFromExpiration').val();
+                    params.DateToExpiration = $('#txtDateToExpiration').val();
+                    params.Receipt = $('#Receipt').val();
+                    CallBackGet(function (data) {
+                        $("#accionesSpending").html(data);
+                    }, "/SpendingPayment/GetTableImput", params)
+                });
+
+                $('#btnVolver').click(function (event) {
+                    CallBackGet(function (data) {
+                        $("#dashboard").html(data);
+                    }, "/SpendingPayment/Index", null)
+                });
+
+                $('#btnGuardar').click(function (event) {
+                    var sp = {};
+
+                    CallSericeAjax(function (data) {
+                    }, "/SpendingPayment/CreateImput", sp, 'POST')
+
+                    CallBackGet(function (data) {
+                        $("#dashboard").html(data);
+                    }, "/SpendingPayment/Index", null)
+                });
+
+                $('#btnVolverCA').click(function (event) {
+                    CallBackGet(function (data) {
+                        $("#dashboard").html(data);
+                    }, "/Provider/IndexProviderCurrentAccount?id=" + provider, null)
+                });
+            });
+        </script>
+

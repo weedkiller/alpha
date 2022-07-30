@@ -1,0 +1,65 @@
+﻿<!-- VISTA: Maintenance/Agency.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.Collection.AgencyPaymentHistoryTableVm
+<div class="clearfix">
+</div>
+<div class="row">
+	<div class="col-md-12 column">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-Agency"></i>
+					<span class="caption-subject bold uppercase">Historial de observaciones</span>
+				</div>
+				<div class="actions">
+					<a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+					</a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<div class="row">
+					<div class="col-md-12" id="acciones">
+						<div class="form-group">
+							<table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+								<thead>
+									<tr>
+										<th>Fecha</th>
+										<th>Telemarketer</th>
+										<th>Fecha de pago estimada</th>
+                                        <th>Observación</th>
+									</tr>
+								</thead>
+								<tbody>
+									@foreach (var item in Model.AgencyPaymentHistoryList)
+									{
+									<tr>
+										<td>@Html.DisplayFor(modelItem => item.Date)</td>
+										<td>@Html.DisplayFor(modelItem => item.User)</td>
+										<td>@Html.DisplayFor(modelItem => item.ScheduledPaymentDate)</td>
+										<td>@Html.DisplayFor(modelItem => item.Observations)</td>
+									</tr>
+									}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="portlet portlet-sortable-empty">
+		</div>
+	</div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).ready(function () {
+
+           
+
+            
+       });
+    });
+</script>
+
+

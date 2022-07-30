@@ -1,0 +1,660 @@
+﻿<!-- VISTA: Contract/ContractCreate.cshtml -->
+@model Multigroup.Portal.Models.ContractModel.ContractVm
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+	<div class="col-md-12 column">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-user"></i>
+					<span class="caption-subject bold uppercase">Cargar Contrato</span>
+				</div>
+				<div class="actions"  style="display: none">
+					<a class="btn btn-default" data-toggle="modal" data-target="#myModal">Añadir cliente existente</a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+                <div class="form-body">
+                    <h3>Datos del Cliente</h3>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Nombre:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="Name" />
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Apellido:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="Surname" />
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Fecha de Nacimiento:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control form-control-inline date-picker" placeholder="dd/mm/aaaa" id="Birthdate" />
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Tipo Documento:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.ddlIdentificationType.SelectedItem, Model.ddlIdentificationType.ListItems, new { @id = "ddlIdentificationType", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">CUIT/CUIL:</label>
+                                <div class="col-md-8">
+                                    <input type="number" class="form-control" id="CUIT" />
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">N Documento:</label>
+                                <div class="col-md-8">
+                                    <input type="number" class="form-control" id="IdentificationNumber" />
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Estado Civil:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.ddlMaritalStatus.SelectedItem, Model.ddlMaritalStatus.ListItems, new { @id = "ddlMaritalStatus", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Direccion:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="Address" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!--/span-->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Ciudad:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.ddlCity.SelectedItem, Model.ddlCity.ListItems, new { @id = "ddlCity", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Provincia:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.ddlState.SelectedItem, Model.ddlState.ListItems, new { @id = "ddlState", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Codigo Postal:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="ZipCode" />
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Telefono:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="Phone" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!--/span-->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Celular:</label>
+                                <div class="col-md-8">
+                                    <input type="number" class="form-control" id="CellPhone" />
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">E-mail:</label>
+                                <div class="col-md-8">
+                                    <input type="email" class="form-control" id="Email" />
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Ocupacion:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="Occupation" />
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Horario de Contacto:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="ContactHours" />
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Nombre Conyuge:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="SpouseName" />
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Apellido Conyuge:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="SpouseSurname" />
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Tipo Documento Conyuge:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.ddlSpouseIdentificationType.SelectedItem, Model.ddlSpouseIdentificationType.ListItems, new { @id = "ddlSpouseIdentificationType", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">N Documento Conyuge:</label>
+                                <div class="col-md-8">
+                                    <input type="number" class="form-control" id="SpouseIdentificationNumber" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-12">Detalle Dirección:</label>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" id="AddressDetail" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <h3>Datos del Contrato</h3>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Tipo de Contrato:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.ddlContractType.SelectedItem, Model.ddlContractType.ListItems, new { @id = "ddlContractType", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Bien Solicitado:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.GoodRequested, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.GoodRequested, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Color:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.GoodRequestedColour, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.GoodRequestedColour, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Lugar de Pago:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.ddlPaymentPlace.SelectedItem, Model.ddlPaymentPlace.ListItems, new { @id = "ddlPaymentPlace", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Usado Marca:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.VehicleBrand, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.VehicleBrand, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Usado Modelo:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.VehicleModel, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.VehicleModel, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Usado KM:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.VehicleMileage, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.VehicleMileage, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Usado Patente:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.VehicleRegistrationPlate, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.VehicleRegistrationPlate, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Fecha de pedido:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.RegistrationDate, new { @class = "form-control form-control-inline date-picker", @placeholder = "dd/mm/aaaa" })
+                                    @Html.ValidationMessageFor(model => model.RegistrationDate, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Agencia:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.ddlAgency.SelectedItem, Model.ddlAgency.ListItems, new { @id = "ddlAgency", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Preferencia de pago:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.ddlPaymentPreference.SelectedItem, Model.ddlPaymentPreference.ListItems, new { @id = "ddlPaymentPreference", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Supervisor:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.ddlSupervisor.SelectedItem, Model.ddlSupervisor.ListItems, new { @id = "ddlSupervisor", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Gerente:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.ddlManager.SelectedItem, Model.ddlManager.ListItems, new { @id = "ddlManager", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Cuota N 1:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.FirstAdvanceAmount, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.FirstAdvanceAmount, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Cuota N 2 al 36:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.AdvancesAmount, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.AdvancesAmount, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Suscripcion:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.SubscriptionAmount, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.SubscriptionAmount, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Fecha de pago:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.ddlPaymentDate.SelectedItem, Model.ddlPaymentDate.ListItems, new { @id = "ddlPaymentDate", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">6 a 12 Anticipo:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.FirstAdvanceDiscount, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.FirstAdvanceDiscount, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">13 a 18 anticipo:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.SecondAdvanceDiscount, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.SecondAdvanceDiscount, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">19 a 36 anticipo:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.ThirdAdvanceDiscount, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.ThirdAdvanceDiscount, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Cotización $:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.Quotation, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Quotation, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Cotización USD:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.QuotationDolar, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.QuotationDolar, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Fecha de cotización:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.QuotationDate, new { @class = "form-control form-control-inline date-picker", @placeholder = "dd/mm/aaaa" })
+                                    @Html.ValidationMessageFor(model => model.QuotationDate, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-12">Observaciones:</label>
+                                <div class="col-md-12">
+                                    @Html.TextAreaFor(model => model.Observations, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Observations, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				<div class="form-actions">
+					<div class="row">
+						<div class="col-md-offset-5">
+							<button class="btn btn-primary" id="btnProcess">Guardar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="portlet portlet-sortable-empty">
+		</div>
+		<input type="text" id="customerId" style="display:none" />
+	</div>
+</div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Anadir cliente existente</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">N de documento:</label>
+                            <div class="col-md-8">
+                                <input type="number" class="form-control" id="modalDocument" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="btnAddCustomer">Cargar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#adjuntar').click(function (event) {
+			var myDropzone = new Dropzone("form#uploadFiles", {
+				url: '/Contract/LoadFileWeb', addRemoveLinks: true, maxFilesize: 5, init: function () {
+					this.on("removedfileWeb", function (file) {
+						var params = new Object;
+						params.fileDelete = file.name;
+						CallSericeAjax(function (data) {
+							//SuccessMessage();
+						}, "/Contract/RemoveFilesWeb", params, 'POST');
+					});
+				}
+			});
+		});
+
+	    $('#btnAddCustomer').click(function (event) {
+			CallSericeAjax(function (customer) {
+				$('#Name').val(customer.Name);
+				$('#Name').attr('disabled');
+				$('#Surname').val(customer.Surname);
+				$('#Surname').attr('disabled');
+				$('#ddlIdentificationType option[value=' + customer.ddlIdentificationType.SelectedItem + ']').prop('selected', 'selected');
+				$('#IdentificationNumber').val(customer.IdentificationNumber);
+				$('#IdentificationNumber').attr('disabled');
+				$('#CUIT').val(customer.CUIT);
+				$('#CUIT').attr('disabled');
+				$('#Birthdate').val(customer.Birthdate);
+				$('#Birthdate').attr('disabled');
+				$('#ddlMaritalStatus option[value=' + customer.ddlMaritalStatus.SelectedItem + ']').prop('selected', 'selected');
+				$('#Address').val(customer.Address);
+				$('#Address').attr('disabled');
+				$('#AddressDetail').val(customer.AddressDetail);
+				$('#AddressDetail').attr('disabled');
+				$('#ddlCity option[value=' + customer.ddlCity.SelectedItem + ']').prop('selected', 'selected');
+				$('#ddlState option[value=' + customer.ddlState.SelectedItem + ']').prop('selected', 'selected');
+				$('#ZipCode').val(customer.ZipCode);
+				$('#ZipCode').attr('disabled');
+				$('#Phone').val(customer.Phone);
+				$('#Phone').attr('disabled');
+				$('#CellPhone').val(customer.CellPhone);
+				$('#CellPhone').attr('disabled');
+				$('#Email').val(customer.Email);
+				$('#Email').attr('disabled');
+				$('#Occupation').val(customer.Occupation);
+				$('#Occupation').attr('disabled');
+				$('#ContactHours').val(customer.ContactHours);
+				$('#ContactHours').attr('disabled');
+				$('#ddlSpouseIdentificationType option[value=' + customer.ddlSpouseIdentificationType.SelectedItem + ']').prop('selected', 'selected');
+				$('#SpouseIdentificationNumber').val(customer.SpouseIdentificationNumber);
+				$('#SpouseIdentificationNumber').attr('disabled');
+				$('#SpouseName').val(customer.SpouseName);
+				$('#SpouseName').attr('disabled');
+				$('#SpouseSurname').val(customer.SpouseSurname);
+				$('#SpouseSurname').attr('disabled');
+				$('#myModal').modal('hide');
+				$('select').multiselect('refresh');
+			}, "/Customer/GetByDocumentNumber?DocumentNumber="+$('#modalDocument').val(), null, 'GET')
+		});
+		$('#btnProcess').click(function (event) {
+            $('#spinner').show();
+			if ($('#customerId').val() === '' || $('#customerId').val() === null) {
+				var customer = {};
+				customer.Name = $('#Name').val();
+				customer.Surname = $('#Surname').val();
+				customer.ddlIdentificationType = { SelectedItem: $('#ddlIdentificationType').val() };
+				customer.IdentificationNumber = $('#IdentificationNumber').val();
+				customer.CUIT = $('#CUIT').val();
+				customer.Birthdate = $('#Birthdate').val();
+				customer.ddlMaritalStatus = { SelectedItem: $('#ddlMaritalStatus').val() };
+				customer.Address = $('#Address').val();
+				customer.ddlCity = { SelectedItem: $('#ddlCity').val() };
+				customer.ddlState = { SelectedItem: $('#ddlState').val() };
+				customer.ZipCode = $('#ZipCode').val();
+				customer.Phone = $('#Phone').val();
+				customer.CellPhone = $('#CellPhone').val();
+				customer.Email = $('#Email').val();
+				customer.Occupation = $('#Occupation').val();
+				customer.ContactHours = $('#ContactHours').val();
+				customer.ddlSpouseIdentificationType = { SelectedItem: $('#ddlSpouseIdentificationType').val() };
+				customer.SpouseIdentificationNumber = $('#SpouseIdentificationNumber').val();
+				customer.SpouseName = $('#SpouseName').val();
+				customer.SpouseSurname = $('#SpouseSurname').val();
+				CallSericeAjax(function (data) {
+					var contract = {};
+					contract.RegistrationDate = $('#RegistrationDate').val();
+					contract.ddlAgency = { SelectedItem: $('#ddlAgency').val() };
+					contract.AdmissionDatepublic = $('#AdmissionDatepublic').val();
+					contract.Number = $('#Number').val();
+					contract.ddlAgency = { SelectedItem: $('#AgencyId').val() };
+					$('#customerId').val(data.CustomerId);
+					contract.CustomerId = data.CustomerId;
+					contract.GoodRequested = $('#GoodRequested').val();
+					contract.GoodRequestedColour = $('#GoodRequestedColour').val();
+					contract.ddlPaymentDate = { SelectedItem: $('#ddlPaymentDate').val() };
+					contract.VehicleBrand = $('#VehicleBrand').val();
+					contract.VehicleModel = $('#VehicleModel').val();
+					contract.VehicleMileage = $('#VehicleMileage').val();
+					contract.VehicleRegistrationPlate = $('#VehicleRegistrationPlate').val();
+					contract.ddlSeller = { SelectedItem: $('#ddlSeller').val() };
+					contract.ddlSupervisor = { SelectedItem: $('#ddlSupervisor').val() };
+					contract.ddlManager = { SelectedItem: $('#ddlManager').val() };
+					contract.ddlAgency = { SelectedItem: $('#ddlAgency').val() };
+					contract.ddlPaymentPreference = { SelectedItem: $('#ddlPaymentPreference').val() };
+					contract.ddlPaymentPlace = { SelectedItem: $('#ddlPaymentPlace').val() };
+					contract.ddlContractType = { SelectedItem: $('#ddlContractType').val() };
+					contract.SubscriptionAmount = $('#SubscriptionAmount').val();
+					contract.FirstAdvanceAmount = $('#FirstAdvanceAmount').val();
+					contract.AdvancesAmount = $('#AdvancesAmount').val();
+					contract.Observations = $('#Observations').val();
+					contract.Discount = $('#Discount').val();
+					contract.FirstAdvanceDiscount = $('#FirstAdvanceDiscount').val();
+					contract.SecondAdvanceDiscount = $('#SecondAdvanceDiscount').val();
+                    contract.ThirdAdvanceDiscount = $('#ThirdAdvanceDiscount').val();
+                    contract.Quotation = $('#Quotation').val();
+                    contract.QuotationDolar = $('#QuotationDolar').val();
+                    contract.QuotationDate = $('#QuotationDate').val();
+                    CallSericeAjax(function (data) {
+                        CallBackGet(function (aaaa) {
+
+                            $("#dashboard").html(aaaa);
+                        }, "/Contract/IndexWeb", null)
+					}, "/Contract/CreateWeb", contract, 'POST')
+				}, "/Customer/CreateContract", customer, 'POST')
+			} else {
+				var contract = {};
+				contract.RegistrationDate = $('#RegistrationDate').val();
+				contract.ddlAgency = { SelectedItem: $('#ddlAgency').val() };
+				contract.AdmissionDatepublic = $('#AdmissionDatepublic').val();
+				contract.Number = $('#Number').val();
+				contract.ddlAgency = { SelectedItem: $('#AgencyId').val() };
+				contract.CustomerId = $('#customerId').val();
+				contract.GoodRequested = $('#GoodRequested').val();
+				contract.GoodRequestedColour = $('#GoodRequestedColour').val();
+				contract.ddlPaymentDate = { SelectedItem: $('#ddlPaymentDate').val() };
+				contract.VehicleBrand = $('#VehicleBrand').val();
+				contract.VehicleModel = $('#VehicleModel').val();
+				contract.VehicleMileage = $('#VehicleMileage').val();
+				contract.VehicleRegistrationPlate = $('#VehicleRegistrationPlate').val();
+				contract.ddlSeller = { SelectedItem: $('#ddlSeller').val() };
+				contract.ddlManager = { SelectedItem: $('#ddlManager').val() };
+				contract.ddlSupervisor = { SelectedItem: $('#ddlSupervisor').val() };
+				contract.ddlAgency = { SelectedItem: $('#ddlAgency').val() };
+				contract.ddlPaymentPreference = { SelectedItem: $('#ddlPaymentPreference').val() };
+                contract.SubscriptionAmount = $('#SubscriptionAmount').val();
+                contract.ddlContractType = { SelectedItem: $('#ddlContractType').val() };
+				contract.FirstAdvanceAmount = $('#FirstAdvanceAmount').val();
+				contract.AdvancesAmount = $('#AdvancesAmount').val();
+				contract.Observations = $('#Observations').val();
+				contract.Discount = $('#Discount').val();
+				contract.FirstAdvanceDiscount = $('#FirstAdvanceDiscount').val();
+				contract.SecondAdvanceDiscount = $('#SecondAdvanceDiscount').val();
+                contract.ThirdAdvanceDiscount = $('#ThirdAdvanceDiscount').val();
+                contract.Quotation = $('#Quotation').val();
+                contract.QuotationDolar = $('#QuotationDolar').val();
+                contract.QuotationDate = $('#QuotationDate').val();
+                CallSericeAjax(function (data) {
+                    CallBackGet(function (aaaa) {
+                        $("#dashboard").html(aaaa);
+                    }, "/Contract/IndexWeb", null)
+				}, "/Contract/CreateWeb", contract, 'POST')
+			}
+
+		});
+		$('select').multiselect();
+		$(".date-picker").datepicker();
+
+	});
+</script>
+
+
+
+

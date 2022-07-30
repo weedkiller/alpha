@@ -1,0 +1,99 @@
+﻿<!-- VISTA: Maintenance/Receip.cshtml -->
+@model Multigroup.Portal.Models.Maintenance.ReceipFilterVm
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-Receip"></i>
+                    <span class="caption-subject bold uppercase">Recibos</span>
+                </div>
+				<div class="actions">
+					<a class="btn btn-default" id="btnAddReceip">Añadir</a>
+					<div class="tooltipAai btn-group" id="idTooltipAai">
+						<a class="btn btn-default bootstro" id="btnEditReceip" disabled="disabled">
+							Editar
+						</a>
+					</div>
+					<div class="tooltipAai btn-group" id="idTooltipAai">
+						<a class="btn btn-default bootstro" id="btnStatus" onclick="loadModal()">
+							Actualizar Estado
+						</a>
+					</div>
+					<a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+					</a>
+				</div>
+            </div>
+			<div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Estado:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.SelectedStatus, Model.ListStatus, new { @size = "2" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button id="btnBuscar" class="btn btn-default">Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				<div class="row">
+					<div class="col-md-12" id="acciones">
+
+					</div>
+				</div>
+			</div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" id="modalEditReceip">
+
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+  $(document).ready(function () {
+        $('select').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+        });
+        $('.tooltipAai').tooltip({
+            container: 'body',
+			title: "Seleccione un contrato"
+        });
+        $('.tooltipReceip1').tooltip({
+            container: 'body',
+            title: 'Seleccione un contrato'
+        });
+        $('#btnEditReceip').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/Receip/Edit?id=" + id, null)
+        });
+
+        $('#btnAddReceip').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/Receip/Create", null)
+        });
+
+		$('#btnBuscar').click(function (event) {
+			var params = {};
+            params.SelectedStatus = $('#SelectedStatus').val();
+            params.SelectedContractType = $('#ddlContractType').val()
+			CallBackGet(function (data) {
+				$("#acciones").html(data);
+			}, "/Receip/GetTable", params)
+		});
+			
+    });
+</script>
+

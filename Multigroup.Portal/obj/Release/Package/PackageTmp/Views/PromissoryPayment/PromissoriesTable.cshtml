@@ -1,0 +1,214 @@
+﻿@using Resources
+@model Multigroup.Portal.Models.Administration.PromissoryPaymentVm
+<div id="paymentMethodModal" class="modal fade" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Ingresar Medios de Pago</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Total: </label>
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.AmountPayment, new { @class = "form-control", @type = "number", @readonly = "readonly " })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br /><br />
+                <div class="row" id="PaymentMethodDiv">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Forma de Pago:</label>
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(m => m.ddlPaymentMethodPM.SelectedItem, Model.ddlPaymentMethodPM.ListItems, new { @id = "ddlPaymentMethodPM", @size = 2 })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Monto</label>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(model => model.AmountByPaymentMethod, new { @class = "form-control", @id = "AmountByPaymentMethod", @type = "number", @Value = "1" })
+                                @Html.ValidationMessageFor(model => model.AmountByPaymentMethod, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <button type="button" id="btnAddPaymentMethod" class="btn btn-primary">Añadir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="PaymentMethodsDiv">
+                    <div class="col-md-12">
+                        <!-- BEGIN Portlet PORTLET-->
+                        <div class="portlet box blue-dark">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-calculator"></i>Metodos de Pago
+                                </div>
+                                <div class="actions">
+                                    <a id="btnRemovePaymentMethod" class="btn default" disabled="disabled">
+                                        <i class="fa fa-remove"></i> Eliminar
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div id="paymentMethodTableDiv" style="position: relative; overflow: hidden; width: auto; min-height: 200px;">
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END Portlet PORTLET-->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnAddPaymentMethods" class="btn btn-primary">Guardar</button>
+                <button type="button" id="btnCancelPM" class="btn btn-primary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin Modal -->
+<table id="promissoriesTable" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+    <thead>
+        <tr>
+            <th></th>
+            <th style="display: none">Id</th>
+            <th>Descripción</th>
+            <th>Fecha Vencimiento</th>
+            <th>Monto</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.PromissoriesAll)
+        {
+        <tr>
+            <td><input type="checkbox" id="@item.PromissoryId" name="@item.Amount" /></td>
+            <td style="display: none">@item.PromissoryId</td>
+            <td>@item.Description</td>
+            <td>@item.CollectionDate</td>
+            <td>@item.Amount</td>
+        </tr>
+        }
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+            $("table#promissoriesTable input[type=checkbox]").change(function () {
+                if ($(this).is(":checked")) {
+                    $(this).closest("tr").find("td").each(function () {
+                        $(this).addClass("green");                       
+                    });
+                } else {
+                    $(this).closest("tr").find("td").each(function () {
+                        $(this).removeClass("green");
+                    });
+                }
+                var sList = [];
+                var total = 0;
+                    $('#promissoriesTable input[type=checkbox]').each(function () {
+                        if (this.checked) {
+                            sList.push($(this).attr('id'));
+                            total = parseFloat(total) + parseFloat($(this).attr('name'));
+                        }
+                    });
+                    $('#Amount').val(total);
+                    var params = new Object;
+                    params.list = sList;
+                    CallBackGet(function (data) {
+                    }, "/PromissoryPayment/CalculateAmount", params)
+            });
+
+
+        CallBackGet(function (data) {
+            $("#paymentMethodTableDiv").html(data);
+        }, "/PromissoryPayment/IndexPaymentMethod");
+
+        $('#btnAddPaymentMethods').click(function (event) {
+            var param = new Object;
+            param.PaymentDate = $('#PaymentDate').val();
+            CallBackGet(function (data) {
+                $('#paymentMethodModal').modal('hide');
+                $('#PMDiv').hide();
+                $('#PM2Div').show();
+                }, "/PromissoryPayment/PaymentMethods", param)
+        });
+
+        $('#btnCancelPM').click(function (event) {;
+            CallBackGet(function (data) {
+                $("#paymentMethodTableDiv").html(data);
+                $('#paymentMethodModal').modal('hide');
+            }, "/PromissoryPayment/CancelPaymentMethods", null)
+        });
+
+        $('#btnAddPaymentMethod').click(function (event) {
+            var param = new Object;
+            param.Amount = $('#AmountByPaymentMethod').val();
+            param.PaymentMethod = $('#ddlPaymentMethodPM').val();
+            CallBackGet(function (data) {
+                $('#AmountByPaymentMethod').val('1');
+                $("#paymentMethodTableDiv").html(data);
+                }, "/PromissoryPayment/PaymentMethod", param)
+        });
+
+        $('#btnRemovePaymentMethod').click(function (event) {
+            var param = new Object;
+            param.id = paymentId
+            CallBackGet(function (data) {
+                $("#paymentMethodTableDiv").html(data);
+            }, "/PromissoryPayment/RemovePaymentMethod", param)
+        });
+
+        $('select').multiselect();
+
+
+        var errorArticle = @ViewBag.ErrorMessageTrabajo
+
+        var tablePromissories = $('#promissoriesTable').dataTable({
+            "destroy": true,
+            "aaSorting": [],
+            "bServerSide": false,
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false,
+            "searching": false,
+            "bLengthChange": false
+        });
+
+        $('#promissoriesTable tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+        });
+
+
+        $('.date-picker').datepicker();
+        $('select').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+        });
+        $('.tooltipAai').tooltip({
+            container: 'body',
+            title: "Seleccione un gasto"
+        });
+        $('.tooltipPurchaseRequest1').tooltip({
+            container: 'body',
+            title: 'Seleccione un gasto'
+        });
+
+
+
+    });
+
+</script>

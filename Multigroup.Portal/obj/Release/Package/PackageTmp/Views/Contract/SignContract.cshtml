@@ -1,0 +1,1433 @@
+﻿@model Multigroup.Portal.Models.ContractModel.ContractVm
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MG</title>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Scripts/dropzone.js"></script>
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="~/Scripts/pivot.es.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/gchart_renderers.js"></script>
+    <link rel="apple-touch-icon" sizes="57x57" href="~/Assets/icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="~/Assets/icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="~/Assets/icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="~/Assets/icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="~/Assets/icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="~/Assets/icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="~/Assets/icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="~/Assets/icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="~/Assets/icons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="~/Assets/icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/Assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="~/Assets/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/Assets/icons/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="~/Assets/icons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <script src="~/Scripts/d3.min.js"></script>
+</head>
+<body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed-hide-logo page-container-bg-solid" id="">
+    <div id="spinner" class="spinner" style="display:none;">
+        <img id="img-spinner" src="~/Assets/img/spinner.gif" alt="Cargando" />
+    </div>
+    <div id="errorAjax" class="alert alert-danger spinner" style="display:none;">
+        <strong>Error!</strong> al cargar contenido
+    </div>
+    <!-- COMIENZO HEADER -->
+    <div class="page-header navbar navbar-fixed-top">
+        <!-- COMIENZO HEADER INNER -->
+        <div class="page-header-inner">
+            <!-- COMIENZO LOGO -->
+            <div class="page-logo">
+                <a href="#">
+                    <img src="~/Assets/img/logo.png" alt="logo" class="logo-default" />
+                </a>
+                <div class="menu-toggler sidebar-toggler hide">
+                </div>
+            </div>
+            <!-- FIN LOGO -->
+            <!-- COMIENZO MENU TOGGLER -->
+            <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+            </a>
+            <!-- FIN MENU TOGGLER -->
+            <!-- COMIENZO BUSCAR -->
+            <!-- <div class="search" id="main-search">
+                <input type="text" class="form-control underline-input" placeholder="Buscar...">
+            </div> -->
+            <!-- FIN BUSCAR -->
+            <!-- COMIENZO BARRA SUPERIOR -->
+            <div class="top-menu">
+            </div>
+            <!-- FIN TOP BARRA SUPERIOR -->
+        </div>
+    </div>
+    <!-- FIN HEADER -->
+    <div class="clearfix">
+    </div>
+    <!-- COMIENZO CONTAINER -->
+    <div class="page-container">
+        <!-- COMIENZO SIDEBAR -->
+        <!-- FIN SIDEBAR -->
+        <!-- COMIENZO CONTENT -->
+        <div class="page-content-wrapper">
+            <div class="page-content" id="homeIndex">
+                <div class="clearfix">
+                </div>
+                <div class="row">
+                    <div class="col-md-12 column">
+                        <div class="portlet light bordered">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-paper"></i>
+                                    <span class="caption-subject bold uppercase">Contrato</span>
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+                                <div class="form-body">
+                                    @Html.HiddenFor(model => model.ContractId)
+                                    <div class="row">
+                                        <div class="col-md-12 contrato">
+                                            <p><span>RESPONSABILIDAD DE LA EMPRESA:</span> La empresa velará por la debida promoción y celebración de la Solicitud de Adhesión, así como de su correcta y leal ejecución hasta la entrega del bien, siempre que el suscriptor haya cumplido con las condiciones generales establecidas en el presente, y/o liquidación final, y su responsabilidad se extenderá a las consecuencias de los actos de sus agentes, en cuanto se refieran a esta operatoria dentro del marco de las presentes Condiciones Generales.</p>
+                                            <p>Son nulas todas y cada una de las bonificaciones y/o compromisos que otorgue, o comprometan los agentes y/o promotores respecto de la empresa y/o terminal respecto de situaciones no previstas en estas condiciones generales. Sin perjuicio de ello, el Suscriptor deberá denunciar por escrito, dentro de los treinta (30) días de suscrita la solicitud, los compromisos, promesas u otras obligaciones que hubiere asumido el agente y/o promotor de la solicitud, respecto de situaciones no previstas en estas condiciones generales. A partir de la recepción de la misma la Empresa tiene un mismo plazo para expedirse acerca de la aceptación o no del compromiso del agente y/o promotor. En caso de que el suscriptor no denuncie por escrito y dentro del plazo dispuesto precedente tales compromisos, promesas u obligaciones, las mismas se entenderán pactadas entre el Suscriptor y el agente y/o promotor y ajenas a la relación jurídica que se entable entre el Suscriptor y la Empresa, que será tercera y carente de toda responsabilidad civil y penal, respecto de las citadas promesas o compromisos, a excepción de aquellas que expresamente se autoricen.</p>
+                                            <p>Los agentes y/o promotores de la Solicitud de Adhesión no se encuentran autorizados a cobrar el importe de los anticipos, ni recibir importe alguno del Suscriptor por conceptos vinculados a estas condiciones generales. En consecuencia, la empresa carece de toda responsabilidad por pagos realizados por el Suscriptor a terceros, agentes y/o promotores de solicitudes, salvo en lo relativo a suscripción, gastos, timbrados, y sellados, al momento de la suscripción.</p>
+                                            <p>La Empresa conforme lo establecido en el  art. 4 de la ley  24.240 Ley de defensa del consumidor, declara haber informado eficaz y fehacientemente al Suscriptor de todos los alcances de la presente ,quien manifiesta expresa y libremente tener el conocimiento de los términos ,alcances , modalidad del presente contrato , prestando la total conformidad  del mismo.</p>
+
+                                            <p>
+                                                <span>CLÁUSULA 1 - DEFINICIONES:</span>
+                                            </p><p>
+                                                1.1. Empresa: “WORLD CAR & MOTORCYCLE S.A.S”, denominada Empresa para todos los efectos contenidos en estas condiciones generales, es la sociedad que ejerce los derechos y asume las obligaciones en ellas contenidas, frente a cada suscriptor.
+                                            </p><p>
+                                                1.2. Solicitante: Es toda persona física o jurídica que presenta a la Empresa una Solicitud de Adhesión.
+                                            </p><p>
+                                                1.3. Suscriptor: Es todo solicitante admitido por la Empresa.
+                                            </p><p>
+                                                1.4. Suscriptor Adjudicatario: Es todo suscriptor que, habiendo sido favorecido con la aceptación de una propuesta económica, aún no ha completado los procedimientos previstos en estas condiciones generales para la entrega efectiva del bien tipo.
+                                            </p><p>
+                                                1.5. Suscriptor Adjudicado: Es el Suscriptor al cual la Empresa ha entregado el bien tipo.
+                                            </p><p>
+                                                1.6. Bien tipo: Son los bienes muebles prendables, asegurables, nuevos, nacionales o importados, con todos los accesorios de origen necesario para su inmediato y normal funcionamiento; cubierto por la garantía normal exigible en el país por el fabricante nacional o el representante exclusivo en el país del fabricante exportador según corresponda. Estos bienes son los indicados en la respectiva Solicitud de Adhesión.
+                                            </p><p>
+                                                1.7. Valor móvil: Es el precio de lista de venta al público al contado sugerido o indicado periódicamente por la Empresa, el cual es actualizado al momento de la entrega.  Mientras el precio no haya sido totalmente aportado, el saldo será modificado en la misma proporción en que varíe el Valor Móvil. Se incluirán en dicho valor todos los impuestos nacionales o provinciales que integren el precio de acuerdo a las disposiciones legales vigentes al momento de su total cancelación.
+                                                Valor del bien solicitado según fábrica en modelos 0km y/o estimado según infoauto en modelos usados a la fecha: @Html.DisplayFor(model => model.QuotationDate, new { @class = "form-control", @readonly = "readonly" }) es de $ @Html.DisplayFor(model => model.QuotationString, new { @class = "form-control", @readonly = "readonly" }) o u$d  @Html.DisplayFor(model => model.QuotationDolarString, new { @class = "form-control", @readonly = "readonly" })
+                                            </p><p>
+                                                1.8. Formulario de pago: Es aquel que la empresa entrega al suscriptor o pone a disposición para efectuar los anticipos mensuales correspondientes a las obligaciones emergentes de estas condiciones generales.
+                                            </p><p>
+                                                1.9. Anticipo Neto: Es el importe a abonar por el suscriptor, resultante de deducir al monto de anticipo mensual, los derechos y cargas.
+                                            </p><p>
+                                                1.10. Anticipo mensual: Los anticipos serán fijos y en pesos y se abonarán mediante cobrador designado o en el lugar y/o forma establecido por la Empresa. Estará integrado por:
+                                            </p><p>
+                                                i) Anticipo Neto;
+                                            </p><p>
+                                                ii) Cargas Administrativas;
+                                            </p><p>
+                                                iii) Intereses y todo otro cargo que resulte de estas Condiciones Generales.
+                                            </p><p>
+                                                1.11. Integración mínima: Es la cantidad de anticipos mensuales que debe tener cancelados el Suscriptor para estar en condiciones de realizar la propuesta económica. La integración mínima será de cuatro (4) anticipos mensuales consecutivos.
+                                            </p><p>
+                                                1.12. Derechos y Cargas: Son los importes que el Solicitante y Suscriptor debe abonar en la Empresa conforme las presentes Condiciones Generales y son adquiridos por ésta en forma definitiva, siendo ellos los que a continuación se mencionan:
+                                            </p><p>
+                                                I) Suscripción: En el momento que el Solicitante suscribe la Solicitud de Adhesión, abonará el Primer Anticipo. Este importe no constituye base para efectuar el reintegro, en caso de decidir rescindir el presente.
+                                            </p><p>
+                                                II) Cargas y/o Gastos Administrativos: Conjuntamente con cada anticipo se devengará un arancel en concepto de cargas y/o gastos administrativos de conformidad con los valores establecidos por la Empresa. Dichos montos se harán efectivos en el momento que la Empresa lo determine.
+                                            </p><p>
+                                                II) Derecho de Suscripción: El solicitante para ser admitido como Suscriptor, debe abonar un derecho de Suscripción equivalente al tres por ciento (3%) del valor móvil del bien tipo elegido, el cual podrá ser prorrateado e incluido en los primeros anticipos mensuales. Además, deberá abonar al contado en dicha oportunidad el IVA por el total del Derecho de Suscripción.
+
+                                            </p><p>
+                                                III) Derecho de Adjudicación: En la oportunidad indicada en el ítem 9.2 el Suscriptor Adjudicatario deberá abonar a la Empresa el tres por ciento (3%) del valor básico vigente al momento de la adjudicación. Además, deberá abonar al contado en dicha oportunidad el IVA por el total del Derecho de Adjudicación.
+                                            </p><p>
+                                                1.13 Terminal: Es el fabricante de Bienes Tipo o el representante exclusivo en el país del fabricante exportador.
+                                            </p><p>
+                                                1.14 Propuesta Económica: Es la propuesta en firme realizada por un suscriptor, una vez alcanzada la integración mínima.
+                                            </p><p>
+                                                1.15 Garantía Suficiente:  Es toda medida de refuerzo que se añade a la propuesta económica para adjudicar un vehículo, y asegurar la satisfacción del crédito. Cada garantía debe representar el trescientos por ciento (300%) de la cuota mensual a abonar. El mínimo de garantías es de dos (2) y deberán tener una antigüedad mayor a seis (6) meses.
+
+                                            </p><p>
+                                                <span>
+                                                    CLÁUSULA 2 - OBJETO:
+                                                </span> El presente contrato tiene por fin la adjudicación por parte del Suscriptor del bien tipo solicitado, siempre que haya dado cumplimiento a las Condiciones Generales establecidas en el presente, y la efectiva integración de los anticipos mensuales  que deberán alcanzar el 50% del valor del bien, pudiendo el Suscriptor anticipar la adjudicación del bien cuando haya efectuado la integración mínima de cuatro  anticipos mensuales consecutivos, mediante propuesta económica sujeta a evaluación y aprobación de la Empresa.
+
+                                            </p><p>
+                                                <span>
+                                                    CLÁUSULA 3 - NOTIFICACIONES:
+                                                </span> La Empresa efectuará las notificaciones que surjan de estas Condiciones Generales al Suscriptor mediante: (a) Notificación personal bajo firma de la parte notificada o por Escribano Público. (b) Telegrama colacionado. (c) Telegrama con copia certificada y Aviso de Entrega. (d) Carta Documento. (e) Cualquier otro medio o comunicación epistolar a través de la cual se pueda acreditar el envío y/o recepción de la pieza y el contenido enviado en la misma. (f)E-mail declarado. (g) Todo otro medio fehaciente.
+
+                                            </p><p>
+                                                <span>
+                                                    CLÁUSULA 4 - SOLICITUD DE ADHESIÓN:
+                                                </span> 4.1 Los requisitos que debe cumplir el Solicitante, serán los siguientes:
+                                                I) En el caso de personas Físicas: contar con una edad mínima de 18 años, o ser menores emancipados.
+                                                II) En el caso de personas jurídicas presentar la documentación societaria que solicite la Empresa y acreditar adecuadamente a juicio de ésta, la personería invocada.
+                                                III) Abonar el importe correspondiente a la suscripción.
+                                            </p><p>
+                                                <span>
+                                                    CLÁUSULA 5 - PAGO DE ANTICIPOS:
+                                                </span>
+                                            </p><p>
+                                                5.1 Los Anticipos Mensuales deberán abonarse dentro de los diez (10) primeros días de cada mes, en forma mensual y consecutiva. Cuando el décimo día coincidiera con un día no hábil, el pago deberá efectuarse el día hábil inmediato posterior. Los pagos deberán realizarse mediante Formulario y exclusivamente en el lugar que la Empresa le indique al Suscriptor. En ningún caso, la falta de recepción o extravío del Formulario de Pago por el Suscriptor, lo desligará de efectuar el mismo en término, debiendo procurarse el Formulario de Pago sustituto que la Empresa pondrá a su disposición.
+                                            </p><p>
+                                                5.2 El monto de los Anticipos Mensuales nunca podrá ser inferior al 1%, ni superior al 3% del Valor del Bien Tipo Solicitado. Si se depositaran importes inferiores a los que correspondan, la Empresa acreditará el importe recibido al pago parcial del Anticipo Mensual a cancelar y modificará proporcionalmente el saldo adecuado de acuerdo con el Anticipo vigente en el próximo vencimiento, con más los intereses previstos en la Cláusula 10.1, según corresponda. Los intereses se calcularán desde la fecha de vencimiento del Anticipo Mensual hasta la del efectivo pago. El importe que surja del cálculo de los intereses será comunicado en el Formulario de Pago posterior al de la fecha del efectivo pago. Sin perjuicio de ello, se entenderá que el Suscriptor se halla en mora y no podrá realizar Propuestas económica.
+                                            </p><p>
+                                                5.3. Si se abonará un importe superior al que corresponda, la Empresa aplicará los fondos, en primer término, al pago de anticipos vencidos, si correspondiera, y el excedente a la cancelación de anticipos no vencidos comenzando por la última. De no existir sumas a pagar, los fondos excedentes se pondrán a disposición del Suscriptor en lo posible dentro de los sesenta (60) días siguientes desde que la Empresa haya tomado conocimiento de dicho pago.
+                                            </p><p>
+                                                <span>
+                                                    CLÁUSULA 6:
+                                                </span> REINTEGROS ORIGINADOS EN RENUNCIA DEL SUSCRIPTOR.
+                                            </p><p>
+                                                6.1: El Suscriptor, podrá comunicar su decisión de no continuar pagando sus cuotas a la Empresa por medio fehaciente, con treinta -30- días de anticipación, quedando resuelta a su respecto la solicitud de adhesión a partir de la fecha de recepción de dicha comunicación. Según el caso, la Empresa tendrá noventa -90- días para analizar si procederá el reintegro de la manera que se indica.
+                                                Toda vez que el suscriptor haya cancelado un mínimo de dieciocho (18) anticipos mensuales, tendrá derecho al reintegro de los anticipos netos que efectivamente hubiese cancelado. Dicho reintegro procederá en función de lo imputado en concepto de anticipos, sin incluir el primero de ellos, con deducción del treinta y cinco (35%)  por ciento por gastos administrativos e indemnizatorios por daños y perjuicios ocasionados por la renuncia.  En el supuesto de que el Suscriptor opte por renunciar sin haber cancelado el mínimo de 18 anticipos mensuales, las sumas abonadas serán retenidas en concepto de indemnización por daños y perjuicios, no procediendo el reintegro de importe alguno.  Las sumas en concepto de indemnización por daños y perjuicios serán percibidas por la administración.
+                                                En cualquier caso que corresponda la devolución se realizará en las mismas cantidad de cuotas que fueron abonadas.
+											</p><p>                                             
+											 <span>
+                                                    CLÁUSULA 7 - TRANSFERENCIA DE PLAN::
+                                                </span>El suscriptor podrá ceder su plan a cualquier persona mayor de edad o menor emancipado legalmente siempre y cuando haya abonado un mínimo de cinco (5) anticipos y dicho plan se encuentre en estado activo o moroso no mayor a cuatro (4) anticipos; y sin haber pasado por un turno de adjudicación. El costo de la operación será determinado por la Empresa al momento de la solicitud de formulario de  transferencia. Estará sujeta a la aprobación de la Empresa en un plazo de treinta (30) días de notificada fehacientemente la intención de transferir.
+                                            </p><p>    
+												<span>
+                                                    CLÁUSULA 8 - ELECCIÓN DE OTRO BIEN TIPO:
+                                                </span>
+                                            </p><p>
+                                                8.1. Una vez cumplida la integración mínima, el suscriptor podrá solicitar la entrega de un Bien de distinta marca, modelo o versión que el indicado en la Solicitud de Adhesión, de entre los ofrecidos por la Terminal según corresponda. Será facultad de la Empresa aceptar o denegar dicha entrega, condicionada a las disponibilidades de fabricación u stock.
+                                                Por su parte, para el caso de aceptación de cambio por otro Bien, se establecerá un plazo adicional de ciento ochenta (180) días, dependiendo si el vehículo es importado, sobre el plazo original previsto en la Cláusula 7.1 de estas Condiciones Generales para la entrega del Bien Tipo.
+                                                En todos los casos hasta la entrega efectiva del Bien será facultad de la Empresa aceptar o denegar dicho cambio de marca, modelo o versión del Bien Tipo indicado en la Solicitud. Para el caso que la Terminal discontinuara la fabricación o importación del bien, la Empresa podrá reemplazarlo por uno de similares características.
+                                            </p><p>
+                                                8.2. En caso que el valor del Bien solicitado sea mayor que el valor básico del Bien Tipo indicado en la Solicitud, la diferencia según la lista de precios aplicable al Bien elegido al momento de la aceptación deberá ser abonada antes de la entrega de este Bien dentro del plazo que establecerá la Empresa.
+                                            </p><p>
+                                                8.3. En cualquier caso, el Derecho de Adjudicación siempre será abonado en función del Bien de mayor valor.
+                                            </p><p>
+                                                <span>
+                                                    CLÁUSULA 9 – OBLIGACIONES DE LAS PARTES:
+                                                </span>
+                                            </p><p>
+                                                9.1. Del Suscriptor Adjudicatario:
+                                            </p><p>
+                                                9.1.1. Pagar el Derecho de Suscripción, el cual podrá ser prorrateado e incluido en los seis primeros anticipos mensuales.
+
+                                            </p><p>
+                                                9.1.2. Pagar el Derecho de Adjudicación o la parte proporcional en caso de prorrateo del mismo, dentro de los diez (10) días hábiles contados desde la fecha de recepción de la notificación mencionada en la Cláusula 9.2.
+                                            </p><p>
+                                                9.1.3. Retirar el Bien Adjudicado dentro de los treinta (30) días corridos a contar desde la fecha en la que se le notifique fehacientemente que aquel se encuentra a su disposición.
+
+                                            </p><p>
+                                                9.1.4. El Suscriptor Adjudicatario podrá retirar el Bien adjudicado previo cumplimiento de los siguientes requisitos:
+                                            </p><p>
+                                                a) Efectuar una propuesta económica, a través de la cual se ofrezca garantía suficiente de pago. La misma se encontrará sujeta a aprobación de la empresa, quien aceptará o rechazará la misma, en el término de 30 días. Expresamente se dispone que será rechazada toda propuestas económicas que incluya sujetos con antecedentes en el sistema financiero o Veraz, de manera negativa. En caso de rechazo de las garantías presentadas, el suscriptor adjudicatario tendrá un plazo de sesenta (60) días corridos dentro del cual podrá presentar nuevas garantías. En caso de ser rechazadas estas últimas, perderá el derecho de adjudicar el bien tipo hasta que cumpla con las condiciones, para lo cual deberá transcurrir un plazo de 90 días para efectuar una nueva propuesta económica. En todos los casos, la Empresa garantiza que dicha información será privada y confidencial.
+                                            </p><p>
+                                                b) Haber abonado el Derecho de Adjudicación y hallarse al día con los pagos correspondientes a la Empresa.
+                                            </p><p>
+                                                c) Abonar todo gravamen, patente y/o tributo que las disposiciones legales le impongan con relación a la compra o habilitación del Bien Tipo. El pago de los mismos deberá realizarse dentro de los plazos legales establecidos.
+
+                                            </p><p>
+                                                d) Suscribir por el valor total de los Anticipos Mensuales impagos a vencer, la garantía real de prenda con registro, en primer grado y a favor de la Empresa o de quien ésta indique, abonando las erogaciones necesarias que originen su constitución e inscripción.
+
+                                            </p><p>
+                                                e) Ofrecer en todos los casos, antes de retirar el Bien adjudicado y cualquiera sea el monto de los anticipos pagados, codeudores y/o fiadores solidarios, quienes deberán renunciar a su derecho de exigir a la Empresa que justifique haber interpelado al deudor judicialmente y en forma previa, todo ello sujeto a la entera satisfacción de la Empresa, que deberá decidir su aceptación o no. Si la Empresa rechazara nuevamente a los codeudores y fiadores, la adjudicación se dará por caduca. Los gastos de gestión que resulten de este ítem estarán a cargo del Suscriptor Adjudicatario cuyo valor no se halle incluido en el monto del Anticipo Mensual.
+
+                                            </p><p>
+                                                f) Contratar y pagar un seguro que cubra los riesgos asegurables del Bien, a entera satisfacción de la Empresa, con endoso a favor de la misma, y cláusula de ajuste, en una de las compañías aseguradoras que determine la Empresa; la cual podrá proceder al cambio de compañía si lo estima conveniente. La cancelación de la última cuota concluirá la vigencia de los seguros contratados. En todos los casos de robo, hurto o siniestro del bien asegurado, el adjudicatario deberá cumplir con los requisitos legales y los que se establezcan en las respectivas pólizas, sin perjuicio de notificar fehacientemente a la Empresa, dentro de las 24 horas de ocurrido el siniestro informando detalles y circunstancias del mismo.
+                                            </p><p>
+                                                g) Abonar todos los impuestos nacionales, provinciales, municipales y tasas que recaigan sobre el bien adjudicado, incluyendo los distintos gastos correspondientes a la prenda del mismo.
+                                            </p><p>
+                                                h) Abonar el flete y demás gastos ocasionados por el transporte del Bien adjudicado hasta el sitio donde deba efectivizarse la entrega. La contratación indicada deberá realizarse en una de las compañías de seguro establecidas por la Empresa.
+                                            </p><p>
+                                                9.1.5.  En caso de no retirarse el Bien adjudicado dentro del plazo establecido, el Suscriptor Adjudicatario deberá abonar hasta un 2/000 (dos por mil) diario, del Valor Básico vigente al vencimiento de dicho plazo en concepto de gastos de garaje y seguro. De mantenerse el incumplimiento por más de treinta (30) días, sin perjuicio de la mora incurrida, la Empresa podrá decretar la caducidad de la adjudicación y requerir el pago de una indemnización por daños y perjuicios. La Empresa notificará fehacientemente al Suscriptor, dentro del plazo previsto. Para que este proceda al retiro del Bien.
+
+                                            </p><p>
+                                                9.1.6. El Suscriptor cuyo contrato esté vigente no podrá cederlo, sin previa autorización de la Empresa.
+
+                                            </p><p>
+                                                9.2. De la Empresa:
+                                            </p><p>
+                                                9.2.1. Cumplir con la notificación establecida en la Cláusula 3.
+                                            </p><p>
+                                                9.2.2.  Poner a disposición del Suscriptor Adjudicatario el Bien Tipo adjudicado, dentro de los ciento veinte (120) días hábiles, dependiendo si el bien tipo es importado, contados desde la aceptación de la propuesta económica, salvo imposibilidad originada en caso fortuito o fuerza mayor, lo que excluye su responsabilidad en los términos de los art. 1730 siguientes y concordantes del Código Civil y Comercial de la Nación (Ley N° 26.994).  En el supuesto en que no exista stock del vehículo seleccionado, la Empresa podrá ofrecer un modelo diferente, pero de similares características técnicas.  En los casos en los que el Suscriptor Adjudicatario haya solicitado un cambio de modelo en los términos de la Cláusula 7 precedente y este haya sido aceptado por la Empresa, será de aplicación el plazo adicional de entrega previsto en esa misma Cláusula 7, en caso de corresponder.
+                                            </p><p>
+                                                <span>
+                                                    CLÁUSULA 10 - ADJUDICACIONES:
+                                                </span>
+                                            </p><p>
+                                                10.1: En la entrega pre acordada del bien adquirido, el suscriptor deberá haber abonado el cincuenta por ciento (50%) del valor móvil del bien en 36 anticipos según lo pactado, cumplido dicho requisito, recién se hará efectiva la adjudicación. En caso de que hayan sido integrados los 36 anticipos y faltare alcanzar el porcentaje referido, el suscriptor deberá abonar el monto necesario hasta alcanzar dicho porcentual para hacer efectiva la misma. Las partes acuerdan que el saldo adeudado se cancelará en 12, 24, 36 pagos mensuales consecutivos, financiado por la Empresa o por terceros, con el interés compensatorio que no podrá exceder la tasa activa que percibe el Banco Nación en las operaciones del descuento de documentos a 30 días. Dicha financiación incluirá un interés por mora de no haber cumplido con lo pactado.
+                                            </p><p>
+                                                10.2. Transcurrido el plazo establecido por la Empresa y acreditado el cumplimiento de los requisitos de modo y forma en cuanto a la integración mínima de anticipos que debe realizar el Suscriptor, comenzará la recepción y evaluación de las Propuestas Económicas en el lugar designado por la Empresa.
+
+                                            </p><p>
+                                                10.3. El suscriptor que resulte favorecido será notificado en forma fehaciente dentro de los treinta (30) días hábiles.
+                                            </p><p>
+                                                10.4. Podrá ser Adjudicatario todo suscriptor que se halle al día en sus obligaciones con respecto a la Empresa, de acuerdo con las normas establecidas en estas condiciones generales, a cuyo fin la situación del Suscriptor se tomará al día diez (10) del mes inmediato anterior. La regularización hecha después de dicha fecha, no dará derecho a realizar Propuestas económica del periodo que corresponda.
+                                            </p><p>
+                                                10.5. El importe correspondiente al Derecho de Adjudicación podrá ser prorrateado por la Empresa en el número de anticipos que considere conveniente.
+                                            </p><p>
+                                                10.6. La recepción y evaluación de Propuesta económica, se realizará en forma trimestral una vez abonada la cantidad de anticipos previstos como Integración Mínima por la Empresa.
+
+                                            </p><p>
+                                                10.7. La propuesta económica podrá realizarse:
+                                            </p><p>
+                                                I) Con cheque o giro únicamente negociable por la Empresa.
+                                            </p><p>
+                                                II) Con depósito bancario, transferencia, u otro medio, en la cuenta que indique la Empresa.
+                                            </p><p>
+                                                10.8. No será considerada la propuesta económica, en caso de incumplimiento de cualquiera de los requisitos indicados anteriormente.
+
+                                            </p><p>
+                                                10.9. El suscriptor favorecido tendrá un plazo de diez (10) días desde la fecha de recepción de la notificación mencionada en el ítem 9.2. Para abonar el Derecho de Adjudicación correspondiente, bajo apercibimiento de decretarse la caducidad de la adjudicación.
+                                            </p><p>
+                                                10.10 El suscriptor adjudicatario tiene un plazo de 30 días corridos para presentar la documentación requerida. Caso contrario, se dará de baja a la solicitud automáticamente en la instancia de adjudicación.
+                                            </p><p>
+                                                CLÁUSULA 11 – SANCIONES POR INCUMPLIMIENTO
+                                            </p><p>
+                                                11.1. EI pago fuera de término de una o más Cuotas Mensuales por parte del Suscriptor dará lugar al devengamiento de intereses punitorios calculados a una tasa no superior a la tasa pasiva del Banco de la Nación Argentina para colocaciones a plazo fijo.
+                                            </p><p>
+                                                11.2. La mora en la que incurra el Suscriptor le hará perder el derecho a participar en todo Acto de Adjudicación hasta que regularice su situación. A dichos fines, serán aplicables las disposiciones del art. 869 y 870 del Código Civil y Comercial de la Nación (Ley N° 26.994).
+
+                                            </p><p>
+                                                11.3. En caso de adeudar 3 (tres) Cuotas Mensuales, consecutivas o no, se producirá la rescisión de la Solicitud de Adhesión del Suscriptor Ahorrista o Adjudicatario, previa notificación al efecto, acordándole un plazo de quince (15) días hábiles para que regularice su situación. Al Suscriptor, rescindido por la causa mencionada, se le reintegrará su haber según lo determinado en la Cláusula 6.
+
+                                            </p><p>
+                                                11.4. La falta de pago por parte de un Suscriptor Adjudicado, de cualquiera de las Cuotas Mensuales y/o el incumplimiento de cualquiera de las obligaciones asumidas en la Solicitud de Adhesión, podrá producir la mora para el resto de la deuda a vencer impaga, previa intimación de pago por notificación fehaciente consignando plazo y deuda, dando derecho a la Administradora a dar por decaídos todos los plazos, a exigir el pago total de la deuda, a Suscriptor y/o fiador,  de acuerdo a las disposiciones del art. 1590 del Código Civil y Comercial de la Nación,  calculando las Cuotas Mensuales a abonar de acuerdo al Valor Básico vigente a ese momento y a ejecutar la garantía real de prenda y obligaciones accesorias que le competen.
+                                            </p><p>
+                                                11.5. La Empresa se obliga a respetar el plazo de entrega establecido, salvo en los supuestos del art. los art. 1730 siguientes y concordantes del Código Civil y Comercial de la Nación (Ley N° 26.994). En caso de incumplimiento serán de aplicación automática las normas que sobre responsabilidad contractual contemplen los códigos de fondo y leyes complementarias.
+
+                                            </p><p>
+                                                <span>
+                                                    CLÁUSULA 12- IMPUESTOS:
+                                                </span> Los impuestos, tasas y contribuciones de cualquier índole, creados o a crearse, que eventualmente se deban abonar por esta Solicitud de Adhesión o cualquiera de las operaciones a que la misma diere lugar, así como los que no se hallan incluidos por cualquier circunstancia en el Valor del Bien Tipo, estarán a cargo del Suscriptor y deberán ser abonados en la época y oportunidad que correspondan hacerse.
+                                            </p><p>
+                                                <span>
+                                                    CLÁUSULA 13 - PUESTA A DISPOSICIÓN DE FONDOS:
+                                                </span> Para los casos en que deban ponerse fondos a disposición del Suscriptor, el domicilio de pago será donde determine la Empresa, incluyendo transferencia bancaria.
+                                            </p><p>
+                                                <span>
+                                                    CLÁUSULA 14 - SITUACIONES NO PREVISTAS:
+                                                </span> La Empresa podrá:
+                                            </p><p>
+                                                a) Resolver equitativamente las situaciones no previstas en estas condiciones generales.
+                                            </p><p>
+                                                b) Adoptar otras medidas que resulten necesarias a los intereses del Suscriptor.
+                                            </p><p>
+                                                c) Modificar estas Condiciones Generales para el Suscriptor.
+                                            </p><p>
+                                                d) Adoptar las soluciones diferentes de modo de contemplar en la mejor forma posible el interés del Suscriptor. Las presentes Condiciones Generales constituyen autorización irrevocable que Solicitante y/o Suscriptor, en sus diferentes categorías, otorgan a la Empresa para realizar todos y cada uno de los actos necesarios para el debido cumplimiento de su objeto.
+                                            </p><p>
+                                                <span>
+                                                    CLÁUSULA 15 - FALLECIMIENTO DEL SUSCRIPTOR:
+                                                </span> En caso de fallecimiento del suscriptor sus herederos deberán notificarlo en forma fehaciente a la Empresa, dentro de los 30 días de ocurrido el hecho y podrán optar por continuar con la adjudicación, o solicitar el reintegro  según lo determinado en Cláusula 6.
+                                            </p><p>
+                                                <span>CLÁUSULA 16 - DOMICILIO Y JURISDICCIÓN:</span> A todos los efectos legales, las Condiciones Generales se consideran como parte integrante de la Solicitud de Adhesión, constituyendo domicilio la Empresa y el Suscriptor en los indicados en el frente de la misma. Los cambios de domicilio del Suscriptor deberán ser comunicados a la Empresa mediante notificación fehaciente, caso contrario no tendrán efecto alguno. Toda cuestión judicial de cualquier naturaleza que surja entre Empresa y Suscriptor, deberá sustanciarse ante los Tribunales Ordinarios de la ciudad de Córdoba, provincia de Córdoba, renunciando a cualquier otro fuero o jurisdicción que pudiere corresponder, inclusive el Federal. En prueba de conformidad se firman dos ejemplares de un mismo tenor e igual contenido, quedando uno en poder del Suscriptor y otro en poder de la Empresa.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12" style="text-align: center">
+                                            <img src="http://adm.concesionariamg.com/Assets/img/logocontrato1.png" />
+                                        </div>
+                                    </div>
+                                    <h3>
+                                        Solicitud N°:
+                                        @Html.DisplayFor(model => model.Number, new { @class = "form-control", @readonly = "readonly" })
+                                    </h3>
+                                    <span>
+                                        Código de seguridad:
+                                        @Html.DisplayFor(model => model.Clave, new { @class = "form-control", @readonly = "readonly", @stlyle="font-size: 9px" })
+                                    </span>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">N° de solicitud:</label>
+                                                <div class="col-md-8">
+                                                    @Html.DisplayFor(model => model.Number, new { @class = "form-control", @readonly = "readonly" })
+                                                    @Html.ValidationMessageFor(model => model.Number, string.Empty, new { @class = "validate-error" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">Bien Solicitado:</label>
+                                                <div class="col-md-3">
+                                                    @Html.DisplayFor(model => model.ContractType, new { @class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                                <div class="col-md-5">
+                                                    @Html.DisplayFor(model => model.GoodRequested, new { @class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">Color:</label>
+                                                <div class="col-md-8">
+                                                    @Html.DisplayFor(model => model.GoodRequestedColour, new { @class = "form-control", @readonly = "readonly" })
+                                                    @Html.ValidationMessageFor(model => model.GoodRequestedColour, string.Empty, new { @class = "validate-error" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h3>DATOS PERSONALES</h3>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">Nombre:</label>
+                                                <div class="col-md-5">
+                                                    @Html.DisplayFor(model => model.Name, new { @class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                                <div class="col-md-4">
+                                                    @Html.DisplayFor(model => model.Surname, new { @class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Tipo Documento:</label>
+                                                    <div class="col-md-3">
+                                                        @Html.DisplayFor(model => model.IdentificationType, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        @Html.DisplayFor(model => model.IdentificationNumber, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Fecha de Nacimiento:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.Birthdate, new { @class = "form-control form-control-inline date-picker", @readonly = "readonly" })
+                                                        @Html.ValidationMessageFor(model => model.Surname, string.Empty, new { @class = "validate-error", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Estado Civil:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.MaritalStatus, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-1">Direccion:</label>
+                                                    <div class="col-md-11">
+                                                        @Html.DisplayFor(model => model.Address, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <!--/span-->
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Ciudad:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.City, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Provincia:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.State, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Codigo Postal:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.ZipCode, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Celular:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.CellPhone, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Telefono:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.Phone, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">E-mail:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.Email, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Ocupacion:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.Occupation, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Horario de Contacto:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.ContactHours, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Fecha de pago:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.PaymentDate, new { @class = "form-control", @readonly = "readonly" })
+                                                        de cada mes
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-1">Conyuge:</label>
+                                                    <div class="col-md-11">
+                                                        @Html.DisplayFor(model => model.SpouseName, new { @class = "form-control", @readonly = "readonly", @style = "display: inline-block;" })
+                                                        @Html.DisplayFor(model => model.SpouseSurname, new { @class = "form-control", @readonly = "readonly", @style = "display: inline-block;" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <!--/span-->
+                                            <!--/span-->
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Tipo Documento Conyuge:</label>
+                                                    <div class="col-md-9">
+                                                        @Html.DisplayFor(model => model.SpouseIdentificationType, new { @class = "form-control", @readonly = "readonly", @style = "display: inline-block;" })
+                                                        @Html.DisplayFor(model => model.SpouseIdentificationNumber, new { @class = "form-control", @readonly = "readonly", @style = "display: inline-block;" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <h3>USADO:</h3>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Marca:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.VehicleBrand, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Modelo:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.VehicleModel, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">KM:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.VehicleMileage, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Dominio:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.VehicleRegistrationPlate, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Productor:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.Seller, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Solicitud N°:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.Number, new { @class = "form-control", @readonly = "readonly" })
+                                                        @Html.TextBoxFor(model => model.Number, new { @id = "ContractId", @class = "form-control", @style = "display: none" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Fecha de pedido:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.RegistrationDate, new { @class = "form-control form-control-inline date-picker", @placeholder = "dd/mm/aaaa", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p>WORLD CAR & MOTORCYCLE: Solicito ser incorporado el presente contrato de condiciones generales cuyas caracteristicas declaro conocer y aceptar, las cuales forman parte de esta solicitud, por lo cual como prueba firmo de conformidad al pie de sus carillas, asi tambien expreso en caracter de declaración jurada que mis datos personales son verdaderos.</p>
+                                                <p>Declaro conocer mi derecho de solicitar adjudicación a partir de la cancelación de la cuota 4 o 6 obligado a continuar con los pagos hasta el momento del turno.</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-12">BONIFICACIONES:</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">6 a 12 Anticipo:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.FirstAdvanceDiscount, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">13 a 18 anticipo:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.SecondAdvanceDiscount, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">19 a 36 anticipo:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.ThirdAdvanceDiscount, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p>RECIBO AUTORIZADO DE SUSCRICIÓN.</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Recibí de</label>
+                                                    @Html.DisplayFor(model => model.Name, new { @class = "form-control", @readonly = "readonly", @style = "display: inline-block; max-width: 150px" })
+                                                    @Html.DisplayFor(model => model.Surname, new { @class = "form-control", @readonly = "readonly", @style = "display: inline-block; max-width: 150px" })
+                                                    <label class="control-label">la suma de</label>
+                                                    @Html.DisplayFor(model => model.SubscriptionAmount, new { @class = "form-control", @readonly = "readonly", @style = "display: inline-block; max-width: 150px" })
+                                                    <label class="control-label">en concepto de suscripción, cuyo importe no es reintegrable.</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-12">FORMA DE PAGO:</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Anticipo N° 1:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.FirstAdvanceAmount, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Anticipo N° 2 al 36:</label>
+                                                    <div class="col-md-8">
+                                                        @Html.DisplayFor(model => model.AdvancesAmount, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-12">Observaciones:</label>
+                                                    <div class="col-md-12">
+                                                        @Html.TextAreaFor(model => model.Observations, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group" style="text-align: center; font-weight:bold ">
+                                                    <p>Ingrese su firma en el recuadro:</p>
+                                                    <div id="signature" style="text-align: center"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-md-12" style="text-align: center; font-weight:bold ">
+                                                <p>Suba una foto del frente de su DNI:</p>
+                                                <form method="post" class="dropzone" id="uploadFiles"></form>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-md-12" style="text-align: center; font-weight:bold ">
+                                                <p>Suba una foto del dorso de su DNI:</p>
+                                                <form method="post" class="dropzone" id="uploadFiles1"></form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions">
+                                        <div class="row">
+                                            <div class="col-md-offset-5">
+                                                <button class="btn btn-primary" id="btnProcess">Guardar</button>
+                                                <button type="button" class="btn default" id="btnCancel">Volver</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="portlet portlet-sortable-empty">
+                        </div>
+                        <input type="text" id="customerId" style="display:none" />
+                    </div>
+                </div>
+                <div class="row" style="display: none">
+                    <div class="col-md-12 column">
+                        <div class="portlet light bordered">
+                            <div class="portlet-body form">
+                                <div class="form-body" id="contractHTML">
+                                    <div>
+                                        @Html.HiddenFor(model => model.ContractId)
+                                        <div class="row">
+                                            <div class="col-md-12 contrato">
+                                                <p><span>RESPONSABILIDAD DE LA EMPRESA:</span> La empresa velará por la debida promoción y celebración de la Solicitud de Adhesión, así como de su correcta y leal ejecución hasta la entrega del bien, siempre que el suscriptor haya cumplido con las condiciones generales establecidas en el presente, y/o liquidación final, y su responsabilidad se extenderá a las consecuencias de los actos de sus agentes, en cuanto se refieran a esta operatoria dentro del marco de las presentes Condiciones Generales.</p>
+                                                <p>Son nulas todas y cada una de las bonificaciones y/o compromisos que otorgue, o comprometan los agentes y/o promotores respecto de la empresa y/o terminal respecto de situaciones no previstas en estas condiciones generales. Sin perjuicio de ello, el Suscriptor deberá denunciar por escrito, dentro de los treinta (30) días de suscrita la solicitud, los compromisos, promesas u otras obligaciones que hubiere asumido el agente y/o promotor de la solicitud, respecto de situaciones no previstas en estas condiciones generales. A partir de la recepción de la misma la Empresa tiene un mismo plazo para expedirse acerca de la aceptación o no del compromiso del agente y/o promotor. En caso de que el suscriptor no denuncie por escrito y dentro del plazo dispuesto precedente tales compromisos, promesas u obligaciones, las mismas se entenderán pactadas entre el Suscriptor y el agente y/o promotor y ajenas a la relación jurídica que se entable entre el Suscriptor y la Empresa, que será tercera y carente de toda responsabilidad civil y penal, respecto de las citadas promesas o compromisos, a excepción de aquellas que expresamente se autoricen.</p>
+                                                <p>Los agentes y/o promotores de la Solicitud de Adhesión no se encuentran autorizados a cobrar el importe de los anticipos, ni recibir importe alguno del Suscriptor por conceptos vinculados a estas condiciones generales. En consecuencia, la empresa carece de toda responsabilidad por pagos realizados por el Suscriptor a terceros, agentes y/o promotores de solicitudes, salvo en lo relativo a suscripción, gastos, timbrados, y sellados, al momento de la suscripción.</p>
+                                                <p>La Empresa conforme lo establecido en el  art. 4 de la ley  24.240 Ley de defensa del consumidor, declara haber informado eficaz y fehacientemente al Suscriptor de todos los alcances de la presente ,quien manifiesta expresa y libremente tener el conocimiento de los términos ,alcances , modalidad del presente contrato , prestando la total conformidad  del mismo.</p>
+
+                                                <p>
+                                                    <span>CLÁUSULA 1 - DEFINICIONES:</span>
+                                                </p><p>
+                                                    1.1. Empresa: “WORLD CAR & MOTORCYCLE S.A.S”, denominada Empresa para todos los efectos contenidos en estas condiciones generales, es la sociedad que ejerce los derechos y asume las obligaciones en ellas contenidas, frente a cada suscriptor.
+                                                </p><p>
+                                                    1.2. Solicitante: Es toda persona física o jurídica que presenta a la Empresa una Solicitud de Adhesión.
+                                                </p><p>
+                                                    1.3. Suscriptor: Es todo solicitante admitido por la Empresa.
+                                                </p><p>
+                                                    1.4. Suscriptor Adjudicatario: Es todo suscriptor que, habiendo sido favorecido con la aceptación de una propuesta económica, aún no ha completado los procedimientos previstos en estas condiciones generales para la entrega efectiva del bien tipo.
+                                                </p><p>
+                                                    1.5. Suscriptor Adjudicado: Es el Suscriptor al cual la Empresa ha entregado el bien tipo.
+                                                </p><p>
+                                                    1.6. Bien tipo: Son los bienes muebles prendables, asegurables, nuevos, nacionales o importados, con todos los accesorios de origen necesario para su inmediato y normal funcionamiento; cubierto por la garantía normal exigible en el país por el fabricante nacional o el representante exclusivo en el país del fabricante exportador según corresponda. Estos bienes son los indicados en la respectiva Solicitud de Adhesión.
+                                                </p><p>
+                                                    1.7. Valor móvil: Es el precio de lista de venta al público al contado sugerido o indicado periódicamente por la Empresa, el cual es actualizado al momento de la entrega.  Mientras el precio no haya sido totalmente aportado, el saldo será modificado en la misma proporción en que varíe el Valor Móvil. Se incluirán en dicho valor todos los impuestos nacionales o provinciales que integren el precio de acuerdo a las disposiciones legales vigentes al momento de su total cancelación.
+                                                    Valor del bien solicitado según fábrica en modelos 0km y/o estimado según infoauto en modelos usados a la fecha: @Html.DisplayFor(model => model.QuotationDate, new { @class = "form-control", @readonly = "readonly" }) es de $ @Html.DisplayFor(model => model.QuotationString, new { @class = "form-control", @readonly = "readonly" }) o u$d  @Html.DisplayFor(model => model.QuotationDolarString, new { @class = "form-control", @readonly = "readonly" })
+                                                </p><p>
+                                                    1.8. Formulario de pago: Es aquel que la empresa entrega al suscriptor o pone a disposición para efectuar los anticipos mensuales correspondientes a las obligaciones emergentes de estas condiciones generales.
+                                                </p><p>
+                                                    1.9. Anticipo Neto: Es el importe a abonar por el suscriptor, resultante de deducir al monto de anticipo mensual, los derechos y cargas.
+                                                </p><p>
+                                                    1.10. Anticipo mensual: Los anticipos serán fijos y en pesos y se abonarán mediante cobrador designado o en el lugar y/o forma establecido por la Empresa. Estará integrado por:
+                                                </p><p>
+                                                    i) Anticipo Neto;
+                                                </p><p>
+                                                    ii) Cargas Administrativas;
+                                                </p><p>
+                                                    iii) Intereses y todo otro cargo que resulte de estas Condiciones Generales.
+                                                </p><p>
+                                                    1.11. Integración mínima: Es la cantidad de anticipos mensuales que debe tener cancelados el Suscriptor para estar en condiciones de realizar la propuesta económica. La integración mínima será de cuatro (4) anticipos mensuales consecutivos.
+                                                </p><p>
+                                                    1.12. Derechos y Cargas: Son los importes que el Solicitante y Suscriptor debe abonar en la Empresa conforme las presentes Condiciones Generales y son adquiridos por ésta en forma definitiva, siendo ellos los que a continuación se mencionan:
+                                                </p><p>
+                                                    I) Suscripción: En el momento que el Solicitante suscribe la Solicitud de Adhesión, abonará el Primer Anticipo. Este importe no constituye base para efectuar el reintegro, en caso de decidir rescindir el presente.
+                                                </p><p>
+                                                    II) Cargas y/o Gastos Administrativos: Conjuntamente con cada anticipo se devengará un arancel en concepto de cargas y/o gastos administrativos de conformidad con los valores establecidos por la Empresa. Dichos montos se harán efectivos en el momento que la Empresa lo determine.
+                                                </p><p>
+                                                    II) Derecho de Suscripción: El solicitante para ser admitido como Suscriptor, debe abonar un derecho de Suscripción equivalente al tres por ciento (3%) del valor móvil del bien tipo elegido, el cual podrá ser prorrateado e incluido en los primeros anticipos mensuales. Además, deberá abonar al contado en dicha oportunidad el IVA por el total del Derecho de Suscripción.
+
+                                                </p><p>
+                                                    III) Derecho de Adjudicación: En la oportunidad indicada en el ítem 9.2 el Suscriptor Adjudicatario deberá abonar a la Empresa el tres por ciento (3%) del valor básico vigente al momento de la adjudicación. Además, deberá abonar al contado en dicha oportunidad el IVA por el total del Derecho de Adjudicación.
+                                                </p><p>
+                                                    1.13 Terminal: Es el fabricante de Bienes Tipo o el representante exclusivo en el país del fabricante exportador.
+                                                </p><p>
+                                                    1.14 Propuesta Económica: Es la propuesta en firme realizada por un suscriptor, una vez alcanzada la integración mínima.
+                                                </p><p>
+                                                    1.15 Garantía Suficiente:  Es toda medida de refuerzo que se añade a la propuesta económica para adjudicar un vehículo, y asegurar la satisfacción del crédito. Cada garantía debe representar el trescientos por ciento (300%) de la cuota mensual a abonar. El mínimo de garantías es de dos (2) y deberán tener una antigüedad mayor a seis (6) meses.
+
+                                                </p><p>
+                                                    <span>
+                                                        CLÁUSULA 2 - OBJETO:
+                                                    </span> El presente contrato tiene por fin la adjudicación por parte del Suscriptor del bien tipo solicitado, siempre que haya dado cumplimiento a las Condiciones Generales establecidas en el presente, y la efectiva integración de los anticipos mensuales  que deberán alcanzar el 50% del valor del bien, pudiendo el Suscriptor anticipar la adjudicación del bien cuando haya efectuado la integración mínima de cuatro  anticipos mensuales consecutivos, mediante propuesta económica sujeta a evaluación y aprobación de la Empresa.
+
+                                                </p><p>
+                                                    <span>
+                                                        CLÁUSULA 3 - NOTIFICACIONES:
+                                                    </span> La Empresa efectuará las notificaciones que surjan de estas Condiciones Generales al Suscriptor mediante: (a) Notificación personal bajo firma de la parte notificada o por Escribano Público. (b) Telegrama colacionado. (c) Telegrama con copia certificada y Aviso de Entrega. (d) Carta Documento. (e) Cualquier otro medio o comunicación epistolar a través de la cual se pueda acreditar el envío y/o recepción de la pieza y el contenido enviado en la misma. (f)E-mail declarado. (g) Todo otro medio fehaciente.
+
+                                                </p><p>
+                                                    <span>
+                                                        CLÁUSULA 4 - SOLICITUD DE ADHESIÓN:
+                                                    </span> 4.1 Los requisitos que debe cumplir el Solicitante, serán los siguientes:
+                                                    I) En el caso de personas Físicas: contar con una edad mínima de 18 años, o ser menores emancipados.
+                                                    II) En el caso de personas jurídicas presentar la documentación societaria que solicite la Empresa y acreditar adecuadamente a juicio de ésta, la personería invocada.
+                                                    III) Abonar el importe correspondiente a la suscripción.
+                                                </p><p>
+                                                    <span>
+                                                        CLÁUSULA 5 - PAGO DE ANTICIPOS:
+                                                    </span>
+                                                </p><p>
+                                                    5.1 Los Anticipos Mensuales deberán abonarse dentro de los diez (10) primeros días de cada mes, en forma mensual y consecutiva. Cuando el décimo día coincidiera con un día no hábil, el pago deberá efectuarse el día hábil inmediato posterior. Los pagos deberán realizarse mediante Formulario y exclusivamente en el lugar que la Empresa le indique al Suscriptor. En ningún caso, la falta de recepción o extravío del Formulario de Pago por el Suscriptor, lo desligará de efectuar el mismo en término, debiendo procurarse el Formulario de Pago sustituto que la Empresa pondrá a su disposición.
+                                                </p><p>
+                                                    5.2 El monto de los Anticipos Mensuales nunca podrá ser inferior al 1%, ni superior al 3% del Valor del Bien Tipo Solicitado. Si se depositaran importes inferiores a los que correspondan, la Empresa acreditará el importe recibido al pago parcial del Anticipo Mensual a cancelar y modificará proporcionalmente el saldo adecuado de acuerdo con el Anticipo vigente en el próximo vencimiento, con más los intereses previstos en la Cláusula 10.1, según corresponda. Los intereses se calcularán desde la fecha de vencimiento del Anticipo Mensual hasta la del efectivo pago. El importe que surja del cálculo de los intereses será comunicado en el Formulario de Pago posterior al de la fecha del efectivo pago. Sin perjuicio de ello, se entenderá que el Suscriptor se halla en mora y no podrá realizar Propuestas económica.
+                                                </p><p>
+                                                    5.3. Si se abonará un importe superior al que corresponda, la Empresa aplicará los fondos, en primer término, al pago de anticipos vencidos, si correspondiera, y el excedente a la cancelación de anticipos no vencidos comenzando por la última. De no existir sumas a pagar, los fondos excedentes se pondrán a disposición del Suscriptor en lo posible dentro de los sesenta (60) días siguientes desde que la Empresa haya tomado conocimiento de dicho pago.
+                                                </p><p>
+                                                    <span>
+                                                        CLÁUSULA 6:
+                                                    </span> REINTEGROS ORIGINADOS EN RENUNCIA DEL SUSCRIPTOR.
+                                                </p><p>
+                                                    6.1: El Suscriptor, podrá comunicar su decisión de no continuar pagando sus cuotas a la Empresa por medio fehaciente, con treinta -30- días de anticipación, quedando resuelta a su respecto la solicitud de adhesión a partir de la fecha de recepción de dicha comunicación. Según el caso, la Empresa tendrá noventa -90- días para analizar si procederá el reintegro de la manera que se indica.
+                                                    Toda vez que el suscriptor haya cancelado un mínimo de dieciocho (18) anticipos mensuales, tendrá derecho al reintegro de los anticipos netos que efectivamente hubiese cancelado. Dicho reintegro procederá en función de lo imputado en concepto de anticipos, sin incluir el primero de ellos, con deducción del treinta y cinco (35%)  por ciento por gastos administrativos e indemnizatorios por daños y perjuicios ocasionados por la renuncia.  En el supuesto de que el Suscriptor opte por renunciar sin haber cancelado el mínimo de 18 anticipos mensuales, las sumas abonadas serán retenidas en concepto de indemnización por daños y perjuicios, no procediendo el reintegro de importe alguno.  Las sumas en concepto de indemnización por daños y perjuicios serán percibidas por la administración.
+                                                    En cualquier caso que corresponda la devolución se realizará en las mismas cantidad de cuotas que fueron abonadas.
+                                                </p><p>
+                                                    <span>
+                                                        CLÁUSULA 7 - TRANSFERENCIA DE PLAN::
+                                                    </span>El suscriptor podrá ceder su plan a cualquier persona mayor de edad o menor emancipado legalmente siempre y cuando haya abonado un mínimo de cinco (5) anticipos y dicho plan se encuentre en estado activo o moroso no mayor a cuatro (4) anticipos; y sin haber pasado por un turno de adjudicación. El costo de la operación será determinado por la Empresa al momento de la solicitud de formulario de  transferencia. Estará sujeta a la aprobación de la Empresa en un plazo de treinta (30) días de notificada fehacientemente la intención de transferir.
+                                                </p><p>
+                                                    <span>
+                                                        CLÁUSULA 8 - ELECCIÓN DE OTRO BIEN TIPO:
+                                                    </span>
+                                                </p><p>
+                                                    8.1. Una vez cumplida la integración mínima, el suscriptor podrá solicitar la entrega de un Bien de distinta marca, modelo o versión que el indicado en la Solicitud de Adhesión, de entre los ofrecidos por la Terminal según corresponda. Será facultad de la Empresa aceptar o denegar dicha entrega, condicionada a las disponibilidades de fabricación u stock.
+                                                    Por su parte, para el caso de aceptación de cambio por otro Bien, se establecerá un plazo adicional de ciento ochenta (180) días, dependiendo si el vehículo es importado, sobre el plazo original previsto en la Cláusula 7.1 de estas Condiciones Generales para la entrega del Bien Tipo.
+                                                    En todos los casos hasta la entrega efectiva del Bien será facultad de la Empresa aceptar o denegar dicho cambio de marca, modelo o versión del Bien Tipo indicado en la Solicitud. Para el caso que la Terminal discontinuara la fabricación o importación del bien, la Empresa podrá reemplazarlo por uno de similares características.
+                                                </p><p>
+                                                    8.2. En caso que el valor del Bien solicitado sea mayor que el valor básico del Bien Tipo indicado en la Solicitud, la diferencia según la lista de precios aplicable al Bien elegido al momento de la aceptación deberá ser abonada antes de la entrega de este Bien dentro del plazo que establecerá la Empresa.
+                                                </p><p>
+                                                    8.3. En cualquier caso, el Derecho de Adjudicación siempre será abonado en función del Bien de mayor valor.
+                                                </p><p>
+                                                    <span>
+                                                        CLÁUSULA 9 – OBLIGACIONES DE LAS PARTES:
+                                                    </span>
+                                                </p><p>
+                                                    9.1. Del Suscriptor Adjudicatario:
+                                                </p><p>
+                                                    9.1.1. Pagar el Derecho de Suscripción, el cual podrá ser prorrateado e incluido en los seis primeros anticipos mensuales.
+
+                                                </p><p>
+                                                    9.1.2. Pagar el Derecho de Adjudicación o la parte proporcional en caso de prorrateo del mismo, dentro de los diez (10) días hábiles contados desde la fecha de recepción de la notificación mencionada en la Cláusula 9.2.
+                                                </p><p>
+                                                    9.1.3. Retirar el Bien Adjudicado dentro de los treinta (30) días corridos a contar desde la fecha en la que se le notifique fehacientemente que aquel se encuentra a su disposición.
+
+                                                </p><p>
+                                                    9.1.4. El Suscriptor Adjudicatario podrá retirar el Bien adjudicado previo cumplimiento de los siguientes requisitos:
+                                                </p><p>
+                                                    a) Efectuar una propuesta económica, a través de la cual se ofrezca garantía suficiente de pago. La misma se encontrará sujeta a aprobación de la empresa, quien aceptará o rechazará la misma, en el término de 30 días. Expresamente se dispone que será rechazada toda propuestas económicas que incluya sujetos con antecedentes en el sistema financiero o Veraz, de manera negativa. En caso de rechazo de las garantías presentadas, el suscriptor adjudicatario tendrá un plazo de sesenta (60) días corridos dentro del cual podrá presentar nuevas garantías. En caso de ser rechazadas estas últimas, perderá el derecho de adjudicar el bien tipo hasta que cumpla con las condiciones, para lo cual deberá transcurrir un plazo de 90 días para efectuar una nueva propuesta económica. En todos los casos, la Empresa garantiza que dicha información será privada y confidencial.
+                                                </p><p>
+                                                    b) Haber abonado el Derecho de Adjudicación y hallarse al día con los pagos correspondientes a la Empresa.
+                                                </p><p>
+                                                    c) Abonar todo gravamen, patente y/o tributo que las disposiciones legales le impongan con relación a la compra o habilitación del Bien Tipo. El pago de los mismos deberá realizarse dentro de los plazos legales establecidos.
+
+                                                </p><p>
+                                                    d) Suscribir por el valor total de los Anticipos Mensuales impagos a vencer, la garantía real de prenda con registro, en primer grado y a favor de la Empresa o de quien ésta indique, abonando las erogaciones necesarias que originen su constitución e inscripción.
+
+                                                </p><p>
+                                                    e) Ofrecer en todos los casos, antes de retirar el Bien adjudicado y cualquiera sea el monto de los anticipos pagados, codeudores y/o fiadores solidarios, quienes deberán renunciar a su derecho de exigir a la Empresa que justifique haber interpelado al deudor judicialmente y en forma previa, todo ello sujeto a la entera satisfacción de la Empresa, que deberá decidir su aceptación o no. Si la Empresa rechazara nuevamente a los codeudores y fiadores, la adjudicación se dará por caduca. Los gastos de gestión que resulten de este ítem estarán a cargo del Suscriptor Adjudicatario cuyo valor no se halle incluido en el monto del Anticipo Mensual.
+
+                                                </p><p>
+                                                    f) Contratar y pagar un seguro que cubra los riesgos asegurables del Bien, a entera satisfacción de la Empresa, con endoso a favor de la misma, y cláusula de ajuste, en una de las compañías aseguradoras que determine la Empresa; la cual podrá proceder al cambio de compañía si lo estima conveniente. La cancelación de la última cuota concluirá la vigencia de los seguros contratados. En todos los casos de robo, hurto o siniestro del bien asegurado, el adjudicatario deberá cumplir con los requisitos legales y los que se establezcan en las respectivas pólizas, sin perjuicio de notificar fehacientemente a la Empresa, dentro de las 24 horas de ocurrido el siniestro informando detalles y circunstancias del mismo.
+                                                </p><p>
+                                                    g) Abonar todos los impuestos nacionales, provinciales, municipales y tasas que recaigan sobre el bien adjudicado, incluyendo los distintos gastos correspondientes a la prenda del mismo.
+                                                </p><p>
+                                                    h) Abonar el flete y demás gastos ocasionados por el transporte del Bien adjudicado hasta el sitio donde deba efectivizarse la entrega. La contratación indicada deberá realizarse en una de las compañías de seguro establecidas por la Empresa.
+                                                </p><p>
+                                                    9.1.5.  En caso de no retirarse el Bien adjudicado dentro del plazo establecido, el Suscriptor Adjudicatario deberá abonar hasta un 2/000 (dos por mil) diario, del Valor Básico vigente al vencimiento de dicho plazo en concepto de gastos de garaje y seguro. De mantenerse el incumplimiento por más de treinta (30) días, sin perjuicio de la mora incurrida, la Empresa podrá decretar la caducidad de la adjudicación y requerir el pago de una indemnización por daños y perjuicios. La Empresa notificará fehacientemente al Suscriptor, dentro del plazo previsto. Para que este proceda al retiro del Bien.
+
+                                                </p><p>
+                                                    9.1.6. El Suscriptor cuyo contrato esté vigente no podrá cederlo, sin previa autorización de la Empresa.
+
+                                                </p><p>
+                                                    9.2. De la Empresa:
+                                                </p><p>
+                                                    9.2.1. Cumplir con la notificación establecida en la Cláusula 3.
+                                                </p><p>
+                                                    9.2.2.  Poner a disposición del Suscriptor Adjudicatario el Bien Tipo adjudicado, dentro de los ciento veinte (120) días hábiles, dependiendo si el bien tipo es importado, contados desde la aceptación de la propuesta económica, salvo imposibilidad originada en caso fortuito o fuerza mayor, lo que excluye su responsabilidad en los términos de los art. 1730 siguientes y concordantes del Código Civil y Comercial de la Nación (Ley N° 26.994).  En el supuesto en que no exista stock del vehículo seleccionado, la Empresa podrá ofrecer un modelo diferente, pero de similares características técnicas.  En los casos en los que el Suscriptor Adjudicatario haya solicitado un cambio de modelo en los términos de la Cláusula 7 precedente y este haya sido aceptado por la Empresa, será de aplicación el plazo adicional de entrega previsto en esa misma Cláusula 7, en caso de corresponder.
+                                                </p><p>
+                                                    <span>
+                                                        CLÁUSULA 10 - ADJUDICACIONES:
+                                                    </span>
+                                                </p><p>
+                                                    10.1: En la entrega pre acordada del bien adquirido, el suscriptor deberá haber abonado el cincuenta por ciento (50%) del valor móvil del bien en 36 anticipos según lo pactado, cumplido dicho requisito, recién se hará efectiva la adjudicación. En caso de que hayan sido integrados los 36 anticipos y faltare alcanzar el porcentaje referido, el suscriptor deberá abonar el monto necesario hasta alcanzar dicho porcentual para hacer efectiva la misma. Las partes acuerdan que el saldo adeudado se cancelará en 12, 24, 36 pagos mensuales consecutivos, financiado por la Empresa o por terceros, con el interés compensatorio que no podrá exceder la tasa activa que percibe el Banco Nación en las operaciones del descuento de documentos a 30 días. Dicha financiación incluirá un interés por mora de no haber cumplido con lo pactado.
+                                                </p><p>
+                                                    10.2. Transcurrido el plazo establecido por la Empresa y acreditado el cumplimiento de los requisitos de modo y forma en cuanto a la integración mínima de anticipos que debe realizar el Suscriptor, comenzará la recepción y evaluación de las Propuestas Económicas en el lugar designado por la Empresa.
+
+                                                </p><p>
+                                                    10.3. El suscriptor que resulte favorecido será notificado en forma fehaciente dentro de los treinta (30) días hábiles.
+                                                </p><p>
+                                                    10.4. Podrá ser Adjudicatario todo suscriptor que se halle al día en sus obligaciones con respecto a la Empresa, de acuerdo con las normas establecidas en estas condiciones generales, a cuyo fin la situación del Suscriptor se tomará al día diez (10) del mes inmediato anterior. La regularización hecha después de dicha fecha, no dará derecho a realizar Propuestas económica del periodo que corresponda.
+                                                </p><p>
+                                                    10.5. El importe correspondiente al Derecho de Adjudicación podrá ser prorrateado por la Empresa en el número de anticipos que considere conveniente.
+                                                </p><p>
+                                                    10.6. La recepción y evaluación de Propuesta económica, se realizará en forma trimestral una vez abonada la cantidad de anticipos previstos como Integración Mínima por la Empresa.
+
+                                                </p><p>
+                                                    10.7. La propuesta económica podrá realizarse:
+                                                </p><p>
+                                                    I) Con cheque o giro únicamente negociable por la Empresa.
+                                                </p><p>
+                                                    II) Con depósito bancario, transferencia, u otro medio, en la cuenta que indique la Empresa.
+                                                </p><p>
+                                                    10.8. No será considerada la propuesta económica, en caso de incumplimiento de cualquiera de los requisitos indicados anteriormente.
+
+                                                </p><p>
+                                                    10.9. El suscriptor favorecido tendrá un plazo de diez (10) días desde la fecha de recepción de la notificación mencionada en el ítem 9.2. Para abonar el Derecho de Adjudicación correspondiente, bajo apercibimiento de decretarse la caducidad de la adjudicación.
+                                                </p><p>
+                                                    10.10 El suscriptor adjudicatario tiene un plazo de 30 días corridos para presentar la documentación requerida. Caso contrario, se dará de baja a la solicitud automáticamente en la instancia de adjudicación.
+                                                </p><p>
+                                                    CLÁUSULA 11 – SANCIONES POR INCUMPLIMIENTO
+                                                </p><p>
+                                                    11.1. EI pago fuera de término de una o más Cuotas Mensuales por parte del Suscriptor dará lugar al devengamiento de intereses punitorios calculados a una tasa no superior a la tasa pasiva del Banco de la Nación Argentina para colocaciones a plazo fijo.
+                                                </p><p>
+                                                    11.2. La mora en la que incurra el Suscriptor le hará perder el derecho a participar en todo Acto de Adjudicación hasta que regularice su situación. A dichos fines, serán aplicables las disposiciones del art. 869 y 870 del Código Civil y Comercial de la Nación (Ley N° 26.994).
+
+                                                </p><p>
+                                                    11.3. En caso de adeudar 3 (tres) Cuotas Mensuales, consecutivas o no, se producirá la rescisión de la Solicitud de Adhesión del Suscriptor Ahorrista o Adjudicatario, previa notificación al efecto, acordándole un plazo de quince (15) días hábiles para que regularice su situación. Al Suscriptor, rescindido por la causa mencionada, se le reintegrará su haber según lo determinado en la Cláusula 6.
+
+                                                </p><p>
+                                                    11.4. La falta de pago por parte de un Suscriptor Adjudicado, de cualquiera de las Cuotas Mensuales y/o el incumplimiento de cualquiera de las obligaciones asumidas en la Solicitud de Adhesión, podrá producir la mora para el resto de la deuda a vencer impaga, previa intimación de pago por notificación fehaciente consignando plazo y deuda, dando derecho a la Administradora a dar por decaídos todos los plazos, a exigir el pago total de la deuda, a Suscriptor y/o fiador,  de acuerdo a las disposiciones del art. 1590 del Código Civil y Comercial de la Nación,  calculando las Cuotas Mensuales a abonar de acuerdo al Valor Básico vigente a ese momento y a ejecutar la garantía real de prenda y obligaciones accesorias que le competen.
+                                                </p><p>
+                                                    11.5. La Empresa se obliga a respetar el plazo de entrega establecido, salvo en los supuestos del art. los art. 1730 siguientes y concordantes del Código Civil y Comercial de la Nación (Ley N° 26.994). En caso de incumplimiento serán de aplicación automática las normas que sobre responsabilidad contractual contemplen los códigos de fondo y leyes complementarias.
+
+                                                </p><p>
+                                                    <span>
+                                                        CLÁUSULA 12- IMPUESTOS:
+                                                    </span> Los impuestos, tasas y contribuciones de cualquier índole, creados o a crearse, que eventualmente se deban abonar por esta Solicitud de Adhesión o cualquiera de las operaciones a que la misma diere lugar, así como los que no se hallan incluidos por cualquier circunstancia en el Valor del Bien Tipo, estarán a cargo del Suscriptor y deberán ser abonados en la época y oportunidad que correspondan hacerse.
+                                                </p><p>
+                                                    <span>
+                                                        CLÁUSULA 13 - PUESTA A DISPOSICIÓN DE FONDOS:
+                                                    </span> Para los casos en que deban ponerse fondos a disposición del Suscriptor, el domicilio de pago será donde determine la Empresa, incluyendo transferencia bancaria.
+                                                </p><p>
+                                                    <span>
+                                                        CLÁUSULA 14 - SITUACIONES NO PREVISTAS:
+                                                    </span> La Empresa podrá:
+                                                </p><p>
+                                                    a) Resolver equitativamente las situaciones no previstas en estas condiciones generales.
+                                                </p><p>
+                                                    b) Adoptar otras medidas que resulten necesarias a los intereses del Suscriptor.
+                                                </p><p>
+                                                    c) Modificar estas Condiciones Generales para el Suscriptor.
+                                                </p><p>
+                                                    d) Adoptar las soluciones diferentes de modo de contemplar en la mejor forma posible el interés del Suscriptor. Las presentes Condiciones Generales constituyen autorización irrevocable que Solicitante y/o Suscriptor, en sus diferentes categorías, otorgan a la Empresa para realizar todos y cada uno de los actos necesarios para el debido cumplimiento de su objeto.
+                                                </p><p>
+                                                    <span>
+                                                        CLÁUSULA 15 - FALLECIMIENTO DEL SUSCRIPTOR:
+                                                    </span> En caso de fallecimiento del suscriptor sus herederos deberán notificarlo en forma fehaciente a la Empresa, dentro de los 30 días de ocurrido el hecho y podrán optar por continuar con la adjudicación, o solicitar el reintegro  según lo determinado en Cláusula 6.
+                                                </p><p>
+                                                    <span>CLÁUSULA 16 - DOMICILIO Y JURISDICCIÓN:</span> A todos los efectos legales, las Condiciones Generales se consideran como parte integrante de la Solicitud de Adhesión, constituyendo domicilio la Empresa y el Suscriptor en los indicados en el frente de la misma. Los cambios de domicilio del Suscriptor deberán ser comunicados a la Empresa mediante notificación fehaciente, caso contrario no tendrán efecto alguno. Toda cuestión judicial de cualquier naturaleza que surja entre Empresa y Suscriptor, deberá sustanciarse ante los Tribunales Ordinarios de la ciudad de Córdoba, provincia de Córdoba, renunciando a cualquier otro fuero o jurisdicción que pudiere corresponder, inclusive el Federal. En prueba de conformidad se firman dos ejemplares de un mismo tenor e igual contenido, quedando uno en poder del Suscriptor y otro en poder de la Empresa.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12" style="text-align: center">
+                                                <img src="http://adm.concesionariamg.com/Assets/img/logocontrato2.png" />
+                                            </div>
+                                        </div>
+                                        <h3>
+                                                Solicitud N°:
+                                                @Html.DisplayFor(model => model.Number, new { @class = "form-control", @readonly = "readonly" })
+                                         </h3>
+                                        <p style="font-size:8px">
+                                            Código de seguridad:
+                                            @Html.DisplayFor(model => model.Clave, new { @class = "form-control", @readonly = "readonly", @style = "font-size: 3px" })
+                                        </p>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Bien Solicitado:</label>
+                                                    @Html.DisplayFor(model => model.ContractType, new { @class = "form-control", @readonly = "readonly" })
+                                                    @Html.DisplayFor(model => model.GoodRequested, new { @class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-md-offset-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Color:</label>
+                                                    @Html.DisplayFor(model => model.GoodRequestedColour, new { @class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h3>DATOS PERSONALES</h3>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Nombre:</label>
+                                                    @Html.DisplayFor(model => model.Name, new { @class = "form-control", @readonly = "readonly", @style = "color: black; background: #ececec;border: 0; padding: 4px; width: auto;" })
+                                                    @Html.DisplayFor(model => model.Surname, new { @class = "form-control", @readonly = "readonly", @style = "color: black; background: #ececec;border: 0; padding: 4px; width: auto;" })
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Tipo Documento:</label>
+                                                    @Html.DisplayFor(model => model.IdentificationType, new { @class = "form-control", @readonly = "readonly" })
+                                                    @Html.DisplayFor(model => model.IdentificationNumber, new { @class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Fecha de Nacimiento:</label>
+                                                    @Html.DisplayFor(model => model.Birthdate, new { @class = "form-control form-control-inline date-picker", @readonly = "readonly" })
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Estado Civil:</label>
+                                                    @Html.DisplayFor(model => model.MaritalStatus, new { @class = "form-control form-control-inline date-picker", @readonly = "readonly" })
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-1">Direccion:</label>
+                                                    @Html.DisplayFor(model => model.Address, new { @class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <!--/span-->
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Ciudad:</label>
+                                                    @Html.DisplayFor(model => model.City, new { @class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Provincia:</label>
+                                                    @Html.DisplayFor(model => model.State, new { @class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Codigo Postal:</label>
+                                                    @Html.DisplayFor(model => model.ZipCode, new { @class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Celular:</label>
+                                                    @Html.DisplayFor(model => model.CellPhone, new { @class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Telefono:</label>
+                                                    @Html.DisplayFor(model => model.Phone, new { @class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">E-mail:</label>
+                                                    @Html.DisplayFor(model => model.Email, new { @class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Ocupacion:</label>
+                                                    @Html.DisplayFor(model => model.Occupation, new { @class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Horario de Contacto:</label>
+                                                    @Html.DisplayFor(model => model.ContactHours, new { @class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Fecha de pago:</label>
+                                                    @Html.DisplayFor(model => model.PaymentDate, new { @class = "form-control", @readonly = "readonly" })
+                                                    de cada mes
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-1">Conyuge:</label>
+                                                    @Html.DisplayFor(model => model.SpouseName, new { @class = "form-control", @readonly = "readonly", @style = "display: inline-block;" })
+                                                    @Html.DisplayFor(model => model.SpouseSurname, new { @class = "form-control", @readonly = "readonly", @style = "display: inline-block;" })
+
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <!--/span-->
+                                            <!--/span-->
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Tipo Documento Conyuge:</label>
+                                                    <div class="col-md-9">
+                                                        @Html.DisplayFor(model => model.SpouseIdentificationType, new { @class = "form-control", @readonly = "readonly" })
+                                                        @Html.DisplayFor(model => model.SpouseIdentificationNumber, new { @class = "form-control", @readonly = "readonly", @style = "display: inline-block;" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <h3>USADO:</h3>
+                                        <div class="row"
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">Marca:</label>
+                                                            @Html.DisplayFor(model => model.VehicleBrand, new { @class = "form-control", @readonly = "readonly" })
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">Modelo:</label>
+                                                            @Html.DisplayFor(model => model.VehicleModel, new { @class = "form-control", @readonly = "readonly" })
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">KM:</label>
+
+                                                            @Html.DisplayFor(model => model.VehicleMileage, new { @class = "form-control", @readonly = "readonly" })
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">Dominio:</label>
+
+                                                            @Html.DisplayFor(model => model.VehicleRegistrationPlate, new { @class = "form-control", @readonly = "readonly" })
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Productor:</label>
+
+                                                    @Html.DisplayFor(model => model.Seller, new { @class = "form-control", @readonly = "readonly" })
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Solicitud N°:</label>
+
+                                                    @Html.DisplayFor(model => model.Number, new { @class = "form-control", @readonly = "readonly" })
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Fecha de pedido:</label>
+
+                                                    @Html.DisplayFor(model => model.RegistrationDate, new { @class = "form-control form-control-inline date-picker", @placeholder = "dd/mm/aaaa", @readonly = "readonly" })
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p>WORLD CAR &Aacute; MOTORCYCLE: Solicito ser incorporado el presente contrato de condiciones generales cuyas caracteristicas declaro conocer y aceptar, las cuales forman parte de esta solicitud, por lo cual como prueba firmo de conformidad al pie de sus carillas, asi tambien expreso en caracter de declaración jurada que mis datos personales son verdaderos.</p>
+                                                <p>Declaro conocer mi derecho de solicitar adjudicación a partir de la cancelación de la cuota 4 o 6 obligado a continuar con los pagos hasta el momento del turno.</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-12">BONIFICACIONES:</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">6 a 12 Anticipo:</label>
+
+                                                    @Html.DisplayFor(model => model.FirstAdvanceDiscount, new { @class = "form-control", @readonly = "readonly" })
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">13 a 18 anticipo:</label>
+
+                                                    @Html.DisplayFor(model => model.SecondAdvanceDiscount, new { @class = "form-control", @readonly = "readonly" })
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">19 a 36 anticipo:</label>
+
+                                                    @Html.DisplayFor(model => model.ThirdAdvanceDiscount, new { @class = "form-control", @readonly = "readonly" })
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p>RECIBO AUTORIZADO DE SUSCRIPCIÓN.</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Recibí de</label>
+                                                    @Html.DisplayFor(model => model.Name, new { @class = "form-control", @readonly = "readonly", @style = "display: inline-block; max-width: 150px" })
+                                                    @Html.DisplayFor(model => model.Surname, new { @class = "form-control", @readonly = "readonly", @style = "display: inline-block; max-width: 150px" })
+                                                    <label class="control-label">la suma de</label>
+                                                    @Html.DisplayFor(model => model.SubscriptionAmount, new { @class = "form-control", @readonly = "readonly", @style = "display: inline-block; max-width: 150px" })
+                                                    <label class="control-label">en concepto de suscripción, cuyo importe no es reintegrable.</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-12">FORMA DE PAGO:</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Anticipo N° 1:</label>
+
+                                                    @Html.DisplayFor(model => model.FirstAdvanceAmount, new { @class = "form-control", @readonly = "readonly" })
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Anticipo N° 2 al 36:</label>
+
+                                                    @Html.DisplayFor(model => model.AdvancesAmount, new { @class = "form-control", @readonly = "readonly" })
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-12">Observaciones:</label>
+                                                    <div class="col-md-12">
+                                                        @Html.TextAreaFor(model => model.Observations, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group" style="text-align: center; font-weight:bold ">
+                                                    <p>Firma del productor:</p>
+                                                    <img src="http://adm.concesionariamg.com/Assets/img/productor.PNG" style="width: 200px" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group" style="text-align: center; font-weight:bold ">
+                                                    <p>Firma del solicitante:</p>
+                                                    <img id="imgSign" style="width: 200px" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="portlet portlet-sortable-empty">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="scrollToTop"></div>
+        </div>
+        <!-- END CONTAINER -->
+        <!-- BEGIN FOOTER -->
+        <div class="page-footer">
+            <div class="page-footer-inner">
+                2018 &copy; IngarX
+            </div>
+            <div class="scroll-to-top">
+                <i class="icon-arrow-up"></i>
+            </div>
+        </div>
+        <!-- END FOOTER -->
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //BOTON IR AL CIELO
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 100) {
+                    $('.scrollToTop').fadeIn();
+                } else {
+                    $('.scrollToTop').fadeOut();
+                }
+            });
+            $('.scrollToTop').click(function () {
+                $('html, body').animate({ scrollTop: 0 }, 800);
+                return false;
+            });
+        });
+    </script>
+    <script src="~/Scripts/Signature.js"></script>
+    <script src="~/Scripts/framework-qplus.js"></script>
+    <!-- INICIO VARIOS -->
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            Metronic.init();
+            Layout.init();
+            PortletDraggable.init();
+            $('#mostrartodos').iCheck({
+                checkboxClass: 'icheckbox_square-grey',
+                radioClass: 'iradio_square-grey',
+                increaseArea: '20%' // optional
+            });
+            $('#cambio').iCheck({
+                checkboxClass: 'icheckbox_square-grey',
+                radioClass: 'iradio_square-grey',
+                increaseArea: '20%' // optional
+            });
+            $('#signature').signature({
+                strokeColor: '#000000',
+                strokeWidth: 2,
+                backgroundColor: '#f5f5f5',
+            });
+        });
+        function SuccessMessageHome(result) {
+            $('#SucursalModal').modal('hide');
+            $('.modal-backdrop').remove();
+        }
+        $("#btnProcess").click(function () {
+            var dataurl = $('#signature').signature('png');
+            $('#imgSign').attr('src', dataurl);
+            var html = $('#contractHTML').html();
+            var contract = {};
+            var html = $("<div />").append($("#contractHTML").clone()).html();
+            contract.htmlContract = html;
+            contract.contractId = $('#ContractId').val();
+            CallSericeAjax(function (data) {
+
+            }, "/Contract/ChargeSign", contract, 'POST');
+
+        });
+        //ESCONDER MENU SIDEBAR
+        $("#toggleSidebar").click(function () {
+            if ($('#sidebarMenu').hasClass('page-sidebar-menu-closed') == false) {
+                $(this).css('transform', 'rotateY(180deg)');
+                $('.widget-body.welcome-box.tabular').hide();
+            } else {
+                $(this).css('transform', 'rotateY(360deg)');
+                $('.widget-body.welcome-box.tabular').show();
+            }
+        });
+        //CLICK ENTRADAS DE MENU
+        $(".sub-menu li").on("click", function () {
+            if (!$(this).hasClass('first-submenu')) {
+                $(".page-sidebar-menu li").removeClass("active open");
+                $(this).addClass("active");
+                $(this).parents().eq(1).addClass("active open");
+            }
+        });
+        var myDropzone = new Dropzone("form#uploadFiles", {
+            url: '/Contract/LoadFile', addRemoveLinks: true, maxFilesize: 5, init: function () {
+                this.on("removedfile", function (file) {
+                    var params = new Object;
+                    params.fileDelete = file.name;
+                    CallSericeAjax(function (data) {
+                        //SuccessMessage();
+                    }, "/Contract/RemoveFiles", params, 'POST');
+                });
+            }
+        });
+        var myDropzone = new Dropzone("form#uploadFiles1", {
+            url: '/Contract/LoadFile', addRemoveLinks: true, maxFilesize: 5, init: function () {
+                this.on("removedfile", function (file) {
+                    var params = new Object;
+                    params.fileDelete = file.name;
+                    CallSericeAjax(function (data) {
+                        //SuccessMessage();
+                    }, "/Contract/RemoveFiles", params, 'POST');
+                });
+            }
+        });
+
+        $('select').multiselect();
+        $(".date-picker").datepicker();
+
+
+        $('#btnCancel').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+
+            }, "/Contract/Index", null)
+        });
+        function SuccessMessage() {
+            Command: toastr["success"]("Los datos se guardaron correctamente")
+
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "10",
+                "hideDuration": "10",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        }
+    </script>
+</body>
+</html>

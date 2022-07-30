@@ -1,0 +1,1425 @@
+﻿@using Resources
+@model Multigroup.Portal.Models.Administration.SpendingVm
+<!-- Comienzo Modal Trabajos a Realizar -->
+<div id="articlesModal" class="modal fade" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Añadir Conceptos</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Rubro</label>
+                            <div class="col-md-9">
+                                @Html.DropDownListFor(m => m.ddlHeadings.SelectedItem, Model.ddlHeadings.ListItems, new { @id = "ddlHeadings", @size = 2 })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Concepto</label>
+                            <div class="col-md-9">
+                                <select id="Articles"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Cantidad</label>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(model => model.QuantityArticle, new { @class = "form-control", @id = "QuantityArticle", @type = "number", @Value = "1" })
+                                @Html.ValidationMessageFor(model => model.QuantityArticle, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Precio</label>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(model => model.PriceArticle, new { @class = "form-control", @id = "PriceArticle", @type = "number", @Value = "1" })
+                                @Html.ValidationMessageFor(model => model.PriceArticle, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-11">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Descripción</label>
+                            <div class="col-md-11">
+                                @Html.TextBoxFor(model => model.DescriptionArticle, new { @class = "form-control", @id = "DescriptionArticle", @type = "text", @Value = "" })
+                                @Html.ValidationMessageFor(model => model.DescriptionArticle, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnAddArticle" class="btn btn-primary" disabled="disabled">Añadir</button>
+                <button type="button" data-dismiss="modal" class="btn default">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="articlesUpdateModal" class="modal fade" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Editar Concepto</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6" style="display: none">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Id</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="ArticleIdUpdate" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="display: none">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">purchase</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="PurchaseIdUpdate" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="display: none">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">scheduled</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="ScheduledIdUpdate" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="display: none">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">expense</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="ExpenseIdUpdate" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Origen</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="OriginUpdate" disabled="disabled" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Articulo</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="ArticleUpdate" disabled="disabled" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Cantidad</label>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(model => model.QuantityArticle, new { @class = "form-control", @id = "QuantityUpdate", @type = "number", @Value = "1" })
+                                @Html.ValidationMessageFor(model => model.QuantityArticle, string.Empty, new { @class = "validate-error" })
+                                @Html.ValidationMessageFor(model => model.QuantityArticle)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Precio</label>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(model => model.PriceArticle, new { @class = "form-control", @id = "PriceUpdate", @type = "number", @Value = "1" })
+                                @Html.ValidationMessageFor(model => model.PriceArticle, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-11">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Descripción</label>
+                            <div class="col-md-11">
+                                @Html.TextBoxFor(model => model.DescriptionArticle, new { @class = "form-control", @id = "DescriptionUpdate", @type = "text", @Value = "" })
+                                @Html.ValidationMessageFor(model => model.DescriptionArticle, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnUpdateArticle" class="btn btn-primary">Aceptar</button>
+                <button type="button" data-dismiss="modal" class="btn default">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="PurchaseRequestModal" class="modal fade" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Añadir Conceptos</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 column">
+                        <div class="portlet light bordered">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-PurchaseRequest"></i>
+                                    <span class="caption-subject bold uppercase">Solicitudes de Compra</span>
+                                </div>
+                                <div class="actions">
+                                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                                        <a class="btn btn-default bootstro" id="btnViewPurchaseRequest" disabled="disabled">
+                                            Cargar
+                                        </a>
+                                    </div>
+                                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Fecha creado Desde:</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateFromCreate" placeholder="dd/mm/aaaa" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Fecha creado Hasta:</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateToCreate" placeholder="dd/mm/aaaa" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Usuario Creador:</label>
+                                            <div class="col-md-8">
+                                                @Html.DropDownListFor(m => m.SelectedUser, Model.ListUser, new { @size = "2" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Fecha necesidad Desde:</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateFromNeed" placeholder="dd/mm/aaaa" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Fecha necesidad Hasta:</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateToNeed" placeholder="dd/mm/aaaa" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <a id="btnBuscar" class="btn default">
+                                                    Buscar
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12" id="acciones">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="portlet portlet-sortable-empty">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ScheduledExpenseModal" class="modal fade" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Añadir Conceptos</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 column">
+                        <div class="portlet light bordered">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-ScheduledExpense"></i>
+                                    <span class="caption-subject bold uppercase">Gastos Programados</span>
+                                </div>
+                                <div class="actions">
+                                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                                        <a class="btn btn-default bootstro" id="btnViewScheduledExpense" disabled="disabled">
+                                            Cargar
+                                        </a>
+                                    </div>
+                                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Fecha creado Desde:</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateFromCreateSE" placeholder="dd/mm/aaaa" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Fecha creado Hasta:</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateToCreateSE" placeholder="dd/mm/aaaa" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Usuario Creador:</label>
+                                            <div class="col-md-8">
+                                                @Html.DropDownListFor(m => m.SelectedUserSE, Model.ListUserSE, new { @size = "2" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Fecha Compra Desde:</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateFromPurchaseSE" placeholder="dd/mm/aaaa" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Fecha Compra Hasta:</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateToPurchaseSE" placeholder="dd/mm/aaaa" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <a id="btnBuscarSE" class="btn default">
+                                                    Buscar
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12" id="accionesSE">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="portlet portlet-sortable-empty">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ExpenseAuthorizationModal" class="modal fade" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Añadir Conceptos</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 column">
+                        <div class="portlet light bordered">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-ScheduledExpense"></i>
+                                    <span class="caption-subject bold uppercase">Autorizaciones de Gastos</span>
+                                </div>
+                                <div class="actions">
+                                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                                        <a class="btn btn-default bootstro" id="btnViewExpenseAuthorization" disabled="disabled">
+                                            Cargar
+                                        </a>
+                                    </div>
+                                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Fecha creado Desde:</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateFromCreateEA" placeholder="dd/mm/aaaa" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Fecha creado Hasta:</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateToCreateEA" placeholder="dd/mm/aaaa" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Usuario Creador:</label>
+                                            <div class="col-md-8">
+                                                @Html.DropDownListFor(m => m.SelectedUserEA, Model.ListUserEA, new { @size = "2" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Fecha Compra Desde:</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateFromPurchaseEA" placeholder="dd/mm/aaaa" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Fecha Compra Hasta:</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateToPurchaseEA" placeholder="dd/mm/aaaa" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <a id="btnBuscarEA" class="btn default">
+                                                    Buscar
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12" id="accionesEA">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="portlet portlet-sortable-empty">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="paymentMethodModal" class="modal fade" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Ingresar Medios de Pago</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Total: </label>
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.AmountPayment, new { @class = "form-control", @type = "number", @readonly = "readonly " })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br /><br />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Cuenta Corriente</label>
+                            <div class="col-md-9">
+                                @Html.CheckBoxFor(model => model.chkCurrentAccount)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="display: none" id="CurrentAccountDiv">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Fecha de Pago</label>
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.ExpirationDate, new { @class = "form-control form-control-inline date-picker", @type = "text", @placeholder = "dd/mm/aaaa" })
+                                @Html.ValidationMessageFor(model => model.ExpirationDate, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="PaymentMethodDiv">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Forma de Pago:</label>
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(m => m.ddlPaymentMethodPM.SelectedItem, Model.ddlPaymentMethodPM.ListItems, new { @id = "ddlPaymentMethodPM", @size = 2 })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Monto</label>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(model => model.AmountByPaymentMethod, new { @class = "form-control", @id = "AmountByPaymentMethod", @type = "number", @Value = "1" })
+                                @Html.ValidationMessageFor(model => model.AmountByPaymentMethod, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <button type="button" id="btnAddPaymentMethod" class="btn btn-primary">Añadir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="PaymentMethodsDiv">
+                    <div class="col-md-12">
+                        <!-- BEGIN Portlet PORTLET-->
+                        <div class="portlet box blue-dark">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-calculator"></i>Metodos de Pago
+                                </div>
+                                <div class="actions">
+                                    <a id="btnRemovePaymentMethod" class="btn default" disabled="disabled">
+                                        <i class="fa fa-remove"></i> Eliminar
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div id="paymentMethodTableDiv" style="position: relative; overflow: hidden; width: auto; min-height: 200px;">
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END Portlet PORTLET-->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnAddPaymentMethods" class="btn btn-primary">Guardar</button>
+                <button type="button" id="btnCancelPM" class="btn btn-primary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin Modal -->
+<div id="invoiceModal" class="modal fade" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Facturación</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Datos de Facturación:</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Razón Social:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.IBusinessName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.IBusinessName, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">CUIT:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.ICUIT, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ICUIT, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Posición IVA:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.ddlIVAPosition.SelectedItem, Model.ddlIVAPosition.ListItems, new { @id = "ddlIVAPosition", @size = 2 })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Tipo Documento:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.ddlPurchaseDocument.SelectedItem, Model.ddlPurchaseDocument.ListItems, new { @id = "ddlPurchaseDocument", @size = 2 })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Letra:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.ILetter, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ILetter, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Prefijo:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.IPrefix, new { @class = "form-control", @type = "number", @maxlength = 4 })
+                                @Html.ValidationMessageFor(model => model.IPrefix, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Número:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.INumber, new { @class = "form-control", @type = "number", @maxlength = 8 })
+                                @Html.ValidationMessageFor(model => model.INumber, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br /><br />
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Montos de Facturación:</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">NETO:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.INet, new { @class = "form-control", @type = "number" })
+                                @Html.ValidationMessageFor(model => model.INet, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Exento:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.IExempt, new { @class = "form-control", @type = "number" })
+                                @Html.ValidationMessageFor(model => model.IExempt, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">IVA 21%:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.IIVA21, new { @class = "form-control", @type = "number" })
+                                @Html.ValidationMessageFor(model => model.IIVA21, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">IVA 10,5%:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.IIVA105, new { @class = "form-control", @type = "number" })
+                                @Html.ValidationMessageFor(model => model.IIVA105, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">IVA 27%:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.IIVA22, new { @class = "form-control", @type = "number" })
+                                @Html.ValidationMessageFor(model => model.IIVA22, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">IVA 5%:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.IIVA5, new { @class = "form-control", @type = "number" })
+                                @Html.ValidationMessageFor(model => model.IIVA5, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">IVA 2,5%:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.IIVA25, new { @class = "form-control", @type = "number" })
+                                @Html.ValidationMessageFor(model => model.IIVA25, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Percepciones:</label>
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(m => m.ddlPurchasePerception.SelectedItem, Model.ddlPurchasePerception.ListItems, new { @id = "ddlPurchasePerception", @size = 2 })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Monto Percepción:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.IPerceptionAmount, new { @class = "form-control", @type = "number" })
+                                @Html.ValidationMessageFor(model => model.IPerceptionAmount, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" style="display: none">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">idiva:</label>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(model => model.IvaPositionInt, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.IvaPositionInt, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Otros Impuestos:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.IOtherTaxes, new { @class = "form-control", @type = "number" })
+                                @Html.ValidationMessageFor(model => model.IOtherTaxes, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnAddInvoice" class="btn btn-primary">Guardar</button>
+                <button type="button" id="btnCancelInvoice" class="btn btn-primary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin Modal -->
+<table id="articlesTable" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+    <thead>
+        <tr>
+            <th style="display: none">Id</th>
+            <th>Origen</th>
+            <th>Concepto</th>
+            <th>Descripción</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Total</th>
+            <th style="display: none">Purchase</th>
+            <th style="display: none">Scheduled</th>
+            <th style="display: none">Expense</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Details)
+        {
+            <tr>
+                <td style="display: none">@item.ArticleId</td>
+                <td>@item.Origin</td>
+                <td>@item.Article</td>
+                <td>@item.Description</td>
+                <td class="cantidad">@item.Quantity</td>
+                <td>@item.Price</td>
+                <td>@item.Total</td>
+                <td style="display: none">@item.PurchaseRequestId</td>
+                <td style="display: none">@item.ScheduledExpenseId</td>
+                <td style="display: none">@item.ExpenseAuthorizationId</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $('#chkCurrentAccount').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
+
+
+        if ($('#chkCurrentAccount').is(':checked') == true) {
+            $('#PaymentMethodDiv').hide();
+            $('#PaymentMethodsDiv').hide();
+            $('#CurrentAccountDiv').show();
+        } else {
+            $('#CurrentAccountDiv').hide();
+            $('#PaymentMethodsDiv').show();
+            $('#PaymentMethodDiv').show();
+        }
+
+        $('#chkCurrentAccount').on('ifChecked', function (event) {
+            if ($('#chkCurrentAccount').is(':checked') == true) {
+                $('#PaymentMethodDiv').hide();
+                $('#PaymentMethodsDiv').hide();
+                $('#CurrentAccountDiv').show();
+            } else {
+                $('#CurrentAccountDiv').hide();
+                $('#PaymentMethodDiv').show();
+                $('#PaymentMethodsDiv').show();
+            }
+        });
+
+        $('#chkCurrentAccount').on('ifUnchecked', function (event) {
+            if ($('#chkCurrentAccount').is(':checked') == true) {
+                $('#PaymentMethodDiv').hide();
+                $('#PaymentMethodsDiv').hide();
+                $('#CurrentAccountDiv').show();
+            } else {
+                $('#CurrentAccountDiv').hide();
+                $('#PaymentMethodsDiv').show();
+                $('#PaymentMethodDiv').show();
+            }
+        });
+
+        CallBackGet(function (data) {
+            $("#paymentMethodTableDiv").html(data);
+        }, "/Spending/IndexPaymentMethod");
+
+        $('#btnAddPaymentMethods').click(function (event) {
+            var param = new Object;
+            if ($('#chkCurrentAccount').is(':checked') == true) {
+                param.CurrentAccount = '1';
+            } else {
+                param.CurrentAccount = '0';
+            }
+            param.ExpirationDate = $('#ExpirationDate').val();
+            if (param.CurrentAccount == '1' && param.ExpirationDate == '') {
+                Command: toastr["error"]("Debe ingresar una fecha")
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-center",
+                    "preventDuplicates": true,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            }
+            else {
+            CallBackGet(function (data) {
+                $('#paymentMethodModal').modal('hide');
+                $('#PMDiv').hide();
+                $('#PM2Div').show();
+                }, "/Spending/PaymentMethods", param)
+            }
+        });
+
+        $('#btnCancelPM').click(function (event) {
+            CallBackGet(function (data) {
+                $("#paymentMethodTableDiv").html(data);
+                $('#paymentMethodModal').modal('hide');
+            }, "/Spending/CancelPaymentMethods", null)
+        });
+
+        $('#btnAddPaymentMethod').click(function (event) {
+            var param = new Object;
+            param.Amount = $('#AmountByPaymentMethod').val();
+            param.PaymentMethod = $('#ddlPaymentMethodPM').val();
+            CallBackGet(function (data) {
+                $('#AmountByPaymentMethod').val('1');
+                $("#paymentMethodTableDiv").html(data);
+                }, "/Spending/PaymentMethod", param)
+        });
+
+        $('#btnRemovePaymentMethod').click(function (event) {
+            var param = new Object;
+            param.id = paymentId
+            CallBackGet(function (data) {
+                $("#paymentMethodTableDiv").html(data);
+            }, "/Spending/RemovePaymentMethod", param)
+        });
+
+        $('#btnCancelInvoice').click(function (event) {
+            $('#invoiceModal').modal('hide');
+        });
+
+        $('#btnAddInvoice').click(function (event) {
+            var param = new Object;
+            param.IVAPositionId = $('#ddlIVAPosition').val();
+            param.PurchaseDocumentId = $('#ddlPurchaseDocument').val();
+            param.PurchasePerceptionId = $('#ddlPurchasePerception').val();
+            param.BusinessName = $('#IBusinessName').val();
+            param.CUIT = $('#ICUIT').val();
+            param.Exempt = $('#IExempt').val();
+            param.IVA105 = $('#IIVA105').val();
+            param.IVA21 = $('#IIVA21').val();
+            param.IVA22 = $('#IIVA22').val();
+            param.IVA25 = $('#IIVA25').val();
+            param.IVA5 = $('#IIVA5').val();
+            param.Letter = $('#ILetter').val();
+            param.Net = $('#INet').val();
+            param.Number = $('#INumber').val();
+            param.OtherTaxes = $('#IOtherTaxes').val();
+            param.PerceptionAmount = $('#IPerceptionAmount').val();
+            param.Prefix = $('#IPrefix').val();
+            if (param.IVAPositionId == '' || param.PurchaseDocumentId == '' || param.PurchasePerceptionId == ''
+                || param.Number == '' || param.Prefix == '' || param.Letter == '') {
+                Command: toastr["error"]("Debe Completar los campos obligatorios")
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-center",
+                    "preventDuplicates": true,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            }
+            else {
+                CallBackGet(function (data) {
+                    $('#invoiceModal').modal('hide');
+                    $('#Receipt').attr('readonly', true);
+                    var rec = $('#ILetter').val() + '-' + $('#IPrefix').val() + '-' + $('#INumber').val();
+                    $('#Receipt').val(rec);
+
+
+                }, "/Spending/Invoice", param)
+            }
+        });
+
+        $("#ddlIVAPosition").on('change', function () {
+            if ($('#ddlIVAPosition').val() == "1") {
+                $('#INet').attr('disabled', true);
+                var neto = ($('#IIVA21').val() / 0.21) + ($('#IIVA105').val() / 0.105) + ($('#IIVA22').val() / 0.27) + ($('#IIVA5').val() / 0.05) + ($('#IIVA25').val() / 0.0025)
+                $('#INet').val(neto);
+                $('#IExempt').attr('disabled', false);
+                $('#IIVA21').attr('disabled', false);
+                $('#IIVA105').attr('disabled', false);
+                $('#IIVA22').attr('disabled', false);
+                $('#IIVA5').attr('disabled', false);
+                $('#IIVA25').attr('disabled', false);
+            }
+            else if ($('#ddlIVAPosition').val() == "2") {
+                $('#IExempt').attr('disabled', true);
+                $('#IExempt').val("");
+                $('#IIVA21').attr('disabled', true);
+                $('#IIVA21').val("");
+                $('#IIVA105').attr('disabled', true);
+                $('#IIVA105').val("");
+                $('#IIVA22').attr('disabled', true);
+                $('#IIVA22').val("");
+                $('#IIVA5').attr('disabled', true);
+                $('#IIVA5').val("");
+                $('#IIVA25').attr('disabled', true);
+                $('#IIVA25').val("");
+                $('#INet').attr('disabled',false);
+            }
+            else if ($('#ddlIVAPosition').val() == "3") {
+                $('#INet').attr('disabled', true);
+                $('#INet').val("");
+                $('#IIVA21').attr('disabled', true);
+                $('#IIVA21').val("");
+                $('#IIVA105').attr('disabled', true);
+                $('#IIVA105').val("");
+                $('#IIVA22').attr('disabled', true);
+                $('#IIVA22').val("");
+                $('#IIVA5').attr('disabled', true);
+                $('#IIVA5').val("");
+                $('#IIVA25').attr('disabled', true);
+                $('#IIVA25').val("");
+                $('#IExempt').attr('disabled', false);
+            }
+        });
+
+        $("#IIVA21").keyup(function (event) {
+            if ($('#ddlIVAPosition').val() == "1") {
+                var neto = ($('#IIVA21').val() / 0.21) + ($('#IIVA105').val() / 0.105) + ($('#IIVA22').val() / 0.27) + ($('#IIVA5').val() / 0.05) + ($('#IIVA25').val() / 0.0025)
+                $('#INet').val(neto);
+            }
+        });
+        $("#IIVA22").keyup(function (event) {
+            if ($('#ddlIVAPosition').val() == "1") {
+                var neto = ($('#IIVA21').val() / 0.21) + ($('#IIVA105').val() / 0.105) + ($('#IIVA22').val() / 0.27) + ($('#IIVA5').val() / 0.05) + ($('#IIVA25').val() / 0.0025)
+                $('#INet').val(neto);
+            }
+        });
+        $("#IIVA105").keyup(function (event) {
+            if ($('#ddlIVAPosition').val() == "1") {
+                var neto = ($('#IIVA21').val() / 0.21) + ($('#IIVA105').val() / 0.105) + ($('#IIVA22').val() / 0.27) + ($('#IIVA5').val() / 0.05) + ($('#IIVA25').val() / 0.0025)
+                $('#INet').val(neto);
+            }
+        });
+        $("#IIVA5").keyup(function (event) {
+            if ($('#ddlIVAPosition').val() == "1") {
+                var neto = ($('#IIVA21').val() / 0.21) + ($('#IIVA105').val() / 0.105) + ($('#IIVA22').val() / 0.27) + ($('#IIVA5').val() / 0.05) + ($('#IIVA25').val() / 0.0025)
+                $('#INet').val(neto);
+            }
+        });
+        $("#IIVA25").keyup(function (event) {
+            if ($('#ddlIVAPosition').val() == "1") {
+                var neto = ($('#IIVA21').val() / 0.21) + ($('#IIVA105').val() / 0.105) + ($('#IIVA22').val() / 0.27) + ($('#IIVA5').val() / 0.05) + ($('#IIVA25').val() / 0.0025)
+                $('#INet').val(neto);
+            }
+        });
+
+        $("#IIVA21").blur(function (event) {
+            if ($('#ddlIVAPosition').val() == "1") {
+                var neto = ($('#IIVA21').val() / 0.21) + ($('#IIVA105').val() / 0.105) + ($('#IIVA22').val() / 0.27) + ($('#IIVA5').val() / 0.05) + ($('#IIVA25').val() / 0.0025)
+                $('#INet').val(neto);
+            }
+        });
+        $("#IIVA22").blur(function (event) {
+            if ($('#ddlIVAPosition').val() == "1") {
+                var neto = ($('#IIVA21').val() / 0.21) + ($('#IIVA105').val() / 0.105) + ($('#IIVA22').val() / 0.27) + ($('#IIVA5').val() / 0.05) + ($('#IIVA25').val() / 0.0025)
+                $('#INet').val(neto);
+            }
+        });
+        $("#IIVA105").blur(function (event) {
+            if ($('#ddlIVAPosition').val() == "1") {
+                var neto = ($('#IIVA21').val() / 0.21) + ($('#IIVA105').val() / 0.105) + ($('#IIVA22').val() / 0.27) + ($('#IIVA5').val() / 0.05) + ($('#IIVA25').val() / 0.0025)
+                $('#INet').val(neto);
+            }
+        });
+        $("#IIVA5").blur(function (event) {
+            if ($('#ddlIVAPosition').val() == "1") {
+                var neto = ($('#IIVA21').val() / 0.21) + ($('#IIVA105').val() / 0.105) + ($('#IIVA22').val() / 0.27) + ($('#IIVA5').val() / 0.05) + ($('#IIVA25').val() / 0.0025)
+                $('#INet').val(neto);
+            }
+        });
+        $("#IIVA25").blur(function (event) {
+            if ($('#ddlIVAPosition').val() == "1") {
+                var neto = ($('#IIVA21').val() / 0.21) + ($('#IIVA105').val() / 0.105) + ($('#IIVA22').val() / 0.27) + ($('#IIVA5').val() / 0.05) + ($('#IIVA25').val() / 0.0025)
+                $('#INet').val(neto);
+            }
+        });
+
+        $('select').multiselect();
+
+        if ($('#QuantityArticle').val() != null && $('#QuantityArticle').val() != "" && $('#QuantityArticle').val() != "0") {
+            $('#btnAddArticle').removeAttr('disabled');
+        }
+        else
+            $('#btnAddArticle').attr('disabled', true)
+
+        var errorArticle = @ViewBag.ErrorMessageTrabajo
+
+            var errorInvoice = @ViewBag.ErrorMessageInvoice
+
+            $('#Articles').on('change', function () {
+                if ($('#QuantityArticle').val() != null && $('#QuantityArticle').val() != "" && $('#QuantityArticle').val() != "0") {
+                $('#btnAddArticle').removeAttr('disabled');
+                }
+                else
+                    $('#btnAddArticle').attr('disabled', true)
+            });
+
+        $("#ddlHeadings").on('change', function () {
+            CallSericeAjax(function (data) {
+                $('#Articles').empty();
+                for (var i = 0; i < data.length; i++) {
+                    $('#Articles').append('<option value="' + data[i].ArticleId + '">' + data[i].Name + '</option>')
+                }
+                $("#Articles").multiselect('destroy');
+                $("#Articles").multiselect();
+            }, "/Spending/GetArticlesByHeading?HeadingId=" + $('#ddlHeadings').val(), null, 'GET');
+        });
+
+        if (errorInvoice == true) {
+            Command: toastr["error"]("Ya se ha cargada esa factura en otro gasto.")
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        }
+
+
+        if (errorArticle == true) {
+            Command: toastr["error"]("El concepto ingresado ya existe.")
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        }
+        var tableArticles = $('#articlesTable').dataTable({
+            "destroy": true,
+            "aaSorting": [],
+            "bServerSide": false,
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false,
+            "searching": false,
+            "bLengthChange": false
+        });
+
+        $('#articlesTable tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            articleId = tableArticles.fnGetData(this)[0];
+            origin = tableArticles.fnGetData(this)[1];
+            article = tableArticles.fnGetData(this)[2];
+            description = tableArticles.fnGetData(this)[3];
+            quantity = tableArticles.fnGetData(this)[4];
+            price = tableArticles.fnGetData(this)[5];
+            purchase = tableArticles.fnGetData(this)[7];
+            scheduled = tableArticles.fnGetData(this)[8];
+            expense = tableArticles.fnGetData(this)[9];
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $("#btnRemoveArticle").attr("disabled", "disabled");
+                $("#btnUpdateArticles").attr("disabled", "disabled");
+            }
+            else {
+                $('#articlesTable tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $("#btnRemoveArticle").removeAttr("disabled", "disabled");
+                if (scheduled == "") {
+                    $("#btnUpdateArticles").removeAttr("disabled", "disabled");
+                }
+                else
+                    $("#btnUpdateArticles").attr("disabled", "disabled");
+
+            }
+        });
+        $('#btnAddArticle').click(function (event) {
+            var param = new Object;
+            param.QuantityArticle = $('#QuantityArticle').val();
+            param.ArticleId = $('#Articles').val();
+            param.PriceArticle = $('#PriceArticle').val();
+            param.DescriptionArticle = $('#DescriptionArticle').val();
+            if (param.PriceArticle == '' || param.QuantityArticle == '') {
+                Command: toastr["error"]("El Precio y la Cantidad son Obligatorios.")
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-center",
+                    "preventDuplicates": true,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            }
+            else
+            CallBackGet(function (data) {
+                $('#articlesModal').modal('hide');
+                $('.modal-backdrop').remove();
+                $("#articlesTableDiv").html(data);
+                $("#btnPurchase").attr("disabled", "disabled");
+                $("#btnScheduled").attr("disabled", "disabled");
+                $("#btnExpense").attr("disabled", "disabled");
+                $('#Amount').val(total);
+            }, "/Spending/Articles", param)
+        });
+
+        total = @ViewBag.Total
+
+        $('#btnRemoveArticle').click(function (event) {
+            var param = new Object;
+            param.id = articleId;
+            CallBackGet(function (data) {
+                $("#btnRemoveArticle").attr("disabled", "disabled");
+                $("#btnUpdateArticles").attr("disabled", "disabled");
+                $('#articlesModal').modal('hide');
+                $('.modal-backdrop').remove();
+                $("#articlesTableDiv").html(data);
+                $('#Amount').val(total);
+            }, "/Spending/RemoveArticles", param)
+            e.preventDefault();
+        });
+
+
+        $('#btnUpdateArticle').click(function (event) {
+            var param = new Object;
+            param.QuantityArticle = $('#QuantityUpdate').val();
+            param.ArticleId = $('#ArticleIdUpdate').val();
+            param.DescriptionArticle = $('#DescriptionUpdate').val();
+            param.PriceArticle = $('#PriceUpdate').val();
+            param.Origin = $('#OriginUpdate').val();
+            param.PurchaseId = $('#PurchaseIdUpdate').val();
+            param.ScheduledId = $('#ScheduledIdUpdate').val();
+            param.ExpenseId = $('#ExpenseIdUpdate').val();
+
+            if (expense != '' && (param.QuantityArticle > quantity || param.PriceArticle > price)) {
+                Command: toastr["error"]("Precio y Cantidad no pueden aumentarse.")
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-center",
+                    "preventDuplicates": true,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            }
+            else if (param.PriceArticle == '' || param.QuantityArticle == '') {
+                Command: toastr["error"]("El Precio y la Cantidad son Obligatorios.")
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-center",
+                    "preventDuplicates": true,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            }
+            else
+                CallBackGet(function (data) {
+                    $("#btnRemoveArticle").attr("disabled", "disabled");
+                    $("#btnUpdateArticles").attr("disabled", "disabled");
+                $('#articlesModal').modal('hide');
+                $('.modal-backdrop').remove();
+                $("#articlesTableDiv").html(data);
+                $('#Amount').val(total);
+            }, "/Spending/ArticlesUpdate", param)
+        });
+
+        $('#btnUpdateArticles').click(function (event) {
+            $('#ArticleUpdate').val(article);
+            $('#ArticleIdUpdate').val(articleId);
+            $('#PurchaseIdUpdate').val(purchase);
+            $('#ScheduledIdUpdate').val(scheduled);
+            $('#ExpenseIdUpdate').val(expense);
+            $('#QuantityUpdate').val(quantity);
+            $('#PriceUpdate').val(price);
+            $('#OriginUpdate').val(origin);
+            $('#DescriptionUpdate').val(description);
+            if (expense != '') {
+                $("#PriceUpdate").attr("max", price);
+                $("#QuantityUpdate").attr("max", quantity);
+            }
+            else
+            {
+                $("#PriceUpdate").attr("max", "10000000");
+                $("#QuantityUpdate").attr("max", "10000000");
+            }
+        });
+
+
+        $('.date-picker').datepicker();
+        $('select').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+        });
+        $('.tooltipAai').tooltip({
+            container: 'body',
+            title: "Seleccione un gasto"
+        });
+        $('.tooltipPurchaseRequest1').tooltip({
+            container: 'body',
+            title: 'Seleccione un gasto'
+        });
+
+        $('#btnBuscar').click(function (event) {
+            var params = new Object;
+            params.SelectedProvider = $('#ddlProvider').val();
+            params.SelectedUser = $('#SelectedUser').val();
+            params.AmountFrom = -10000000;
+            params.AmountTo = 10000000000;
+            params.DateFromCreate = $('#txtDateFromCreate').val();
+            params.DateToCreate = $('#txtDateToCreate').val();
+            params.DateFromNeed = $('#txtDateFromNeed').val();
+            params.DateToNeed = $('#txtDateToNeed').val();
+            params.Active = '1';
+            CallBackGet(function (data) {
+                $("#acciones").html(data);
+            }, "/Spending/GetTablePurchase", params)
+            e.preventDefault();
+        });
+
+        $('#btnViewPurchaseRequest').click(function (event) {
+            CallBackGet(function (data) {
+                $('#articlesModal').modal('hide');
+                $('.modal-backdrop').remove();
+                $("#dashboard").html(data);
+            }, "/Spending/AddFromPurchaseRequest?purchaseRequestId=" + id, null)
+        });
+
+        $('#btnBuscarSE').click(function (event) {
+            var params = {};
+            params.SelectedProvider = $('#ddlProvider').val();
+            params.SelectedUser = $('#SelectedUserSE').val();
+            params.AmountFrom = -10000000;
+            params.AmountTo = 10000000000;
+            params.DateFromCreate = $('#txtDateFromCreateSE').val();
+            params.DateToCreate = $('#txtDateToCreateSE').val();
+            params.DateFromPurchase = $('#txtDateFromPurchaseSE').val();
+            params.DateToPurchase = $('#txtDateToPurchaseSE').val();
+            params.PurchaseRequestId = 0;
+            params.isAuthorized = '1';
+            CallBackGet(function (data) {
+                $("#accionesSE").html(data);
+            }, "/Spending/GetTableScheduled", params)
+        });
+
+
+        $('#btnViewScheduledExpense').click(function (event) {
+            CallBackGet(function (data) {
+                $('#articlesModal').modal('hide');
+                $('.modal-backdrop').remove();
+                $("#dashboard").html(data);
+            }, "/Spending/AddFromScheduledExpense?scheduledExpenseId=" + id, null)
+        });
+
+        $('#btnBuscarEA').click(function (event) {
+            var params = {};
+            params.SelectedProvider = $('#ddlProvider').val();
+            params.SelectedUser = $('#SelectedUser').val();
+            params.AmountFrom = -10000000;
+            params.AmountTo = 10000000000;
+            params.DateFromCreate = $('#txtDateFromCreateEA').val();
+            params.DateToCreate = $('#txtDateToCreateEA').val();
+            params.DateFromPurchase = $('#txtDateFromPurchaseEA').val();
+            params.DateToPurchase = $('#txtDateToPurchaseEA').val();
+            params.PurchaseRequestId = '0';
+            CallBackGet(function (data) {
+                $("#accionesEA").html(data);
+            }, "/Spending/GetTableExpense", params)
+        });
+
+        $('#btnViewExpenseAuthorization').click(function (event) {
+            CallBackGet(function (data) {
+                $('#articlesModal').modal('hide');
+                $('.modal-backdrop').remove();
+                $("#dashboard").html(data);
+            }, "/Spending/AddFromExpenseAuthorization?expenseAuthorizationId=" + id, null)
+        });
+
+    });
+</script>

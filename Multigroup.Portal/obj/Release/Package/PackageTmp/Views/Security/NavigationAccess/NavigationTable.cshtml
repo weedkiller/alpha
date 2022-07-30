@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Multigroup.Portal.Models.Security.MenuItemVm>
+@using Resources
+
+<div class="form-group">
+    <table id="NavigationAccesTable" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th>Nombre</th>
+                <th>Acceso</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MenuId)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(modelItem => item.Enabled)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MenuName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        function formatTableToolsButton(node) {
+            $(node).removeClass('DTTT_button');
+            $(node).addClass('btn btn-default');
+        }
+        var table = $('#NavigationAccesTable').dataTable({
+            "aaSorting": [],
+            "destroy": true,
+            "bServerSide": false,
+			"sScrollYInner": "100%",
+			"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+            "dom": 'Blfrtip',
+			"buttons": [
+				{ extend: 'copy', text: 'Copiar' },
+				'csv',
+				'excel',
+				'pdf',
+				{ extend: 'print', text: 'Imprimir' },
+			],
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false
+        });
+    });
+</script>

@@ -1,0 +1,74 @@
+﻿@model Multigroup.Portal.Models.Collection.CollectionsTableVm
+<div class="form-group">
+    <table id="tablacollection" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <thead>
+            <tr>
+                <th>Numero de contrato</th>
+				<th>Cliente</th>
+				<th>DNI</th>
+                <th>Fecha de pago</th>
+                <th>Número de recibo</th>
+                <th>Método de pago</th>
+				<th>Tipo de pago</th>
+                <th>Monto ($)</th>
+                <th>Cobrado Por</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CollectionsList)
+            {
+                <tr>
+				<td>@Html.DisplayFor(modelItem => item.ContractNumber)</td>
+				<td>@Html.DisplayFor(modelItem => item.Customer)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DNI)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PaymentDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ReceipNumber)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PaymentMethod)</td>
+					<td>@Html.DisplayFor(modelItem => item.type)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                    <td>@Html.DisplayFor(modelItem => item.User)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-md-offset-7">
+            <div class="form-group">
+                <label class="control-label col-md-4">Total:</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="totalTxt" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var total = @ViewBag.Total
+        $("#totalTxt").val(total);
+    });
+
+	function formatTableToolsButton(node) {
+		$(node).removeClass('DTTT_button');
+		$(node).addClass('btn btn-default');
+	}
+	var table = $('#tablacollection').dataTable({
+		"destroy": true,
+		"buttons": [
+			{ extend: 'copy', text: 'Copiar' },
+			'csv',
+			'excel',
+			'pdf',
+			{ extend: 'print', text: 'Imprimir' },
+		],
+		"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+		"aaSorting": [],
+		"bServerSide": false,
+		"dom": 'Blfrtip',
+		"sScrollYInner": "100%",
+		"sScrollX": "100%",
+		"sScrollXInner": "100%",
+		"scrollCollapse": true,
+		"bProcessing": false
+	});
+</script>

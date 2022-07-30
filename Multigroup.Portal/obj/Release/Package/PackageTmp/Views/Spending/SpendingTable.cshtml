@@ -1,0 +1,106 @@
+﻿<!-- VISTA: User/UserList.cshtml -->
+@model Multigroup.Portal.Models.Administration.SpendingTableVm
+
+<div class="form-group">
+    <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <thead>
+            <tr>
+                <th style="display: none">Número</th>
+                <th>Fecha Ejecución</th>
+                <th>Proveedor</th>
+                <th>Descripción</th>
+                <th>Comprobante Número </th>
+                <th>Monto</th>
+                <th>Saldo</th>
+                <th>Fecha Vencimiento</th>
+                <th>Comentario</th>
+                <th>Usuario</th>
+                <th style="display: none">userId</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.SpendingList)
+            {
+                <tr>
+                    <td style="display: none">@Html.DisplayFor(modelItem => item.SpendingId)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ExecutionDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Proveedor)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Receipt)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Balance)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ExpirationDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Commentary)</td>
+                    <td>@Html.DisplayFor(modelItem => item.User)</td>
+                    <td style="display: none">@Html.DisplayFor(modelItem => item.UserId)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        function formatTableToolsButton(node) {
+            $(node).removeClass('DTTT_button');
+            $(node).addClass('btn btn-default');
+        }
+        var table = $('#tabla_id').dataTable({
+            "destroy": true,
+            "aaSorting": [],
+            "bServerSide": false,
+            "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+            "dom": 'Blfrtip',
+            "buttons": [
+                { extend: 'copy', text: 'Copiar' },
+                'csv',
+                'excel',
+                'pdf',
+                { extend: 'print', text: 'Imprimir' },
+            ],
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false
+        });
+
+        $('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $("#btnVer").attr("disabled", "disabled");
+                $("#idTooltipSpending1").removeClass('tooltipAai');
+                $('#idTooltipSpending1').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un empleado'
+                });
+                $("#btnViewSpending").attr("disabled", "disabled");
+                $("#btnEditSpending").attr("disabled", "disabled");
+                $("#btnRemoveSpending").attr("disabled", "disabled");
+                $("#idTooltipAai").removeClass('tooltipAai');
+                $('#idTooltipAai').tooltip({
+                    container: 'body',
+                    title: "Seleccione un empleado"
+                });
+            }
+            else {
+                usuario = table.fnGetData(this)[10];
+                $('#tabla_id tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $("#btnViewSpending").removeAttr("disabled", "disabled");
+                if (usuario == $("#UserId").val()) {
+                    $("#btnEditSpending").removeAttr("disabled", "disabled");
+                    $("#btnRemoveSpending").removeAttr("disabled", "disabled");
+                }
+                else {
+                    $("#btnEditSpending").attr("disabled", "disabled");
+                    $("#btnRemoveSpending").attr("disabled", "disabled");
+                }
+                $("#idTooltipAai").tooltip('destroy');
+                $("#btnVer").removeAttr("disabled", "disabled");
+                $("#idTooltipSpending1").tooltip('destroy');
+                id = table.fnGetData(this)[0];
+            }
+        });
+    });
+</script>

@@ -1,0 +1,207 @@
+﻿@model Multigroup.Portal.Models.Collection.VisitTableVm
+<div class="form-group">
+    <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <thead>
+            <tr>
+                <th style="display: none">ID</th>
+                <th>Cliente</th>
+                <th>Fecha Programada</th>
+                <th style="display: none">Fecha Concretada</th>
+                <th style="display: none">Cobrador</th>
+                <th>% Comision</th>
+                <th>Monton Adeudado ($)</th>
+                <th style="display: none">Monto Cobrado ($)</th>
+                <th style="display: none">Comision ($)</th>
+                <th style="display: none">Viaticos ($)</th>
+                <th style="display: none">Detalle Viaticos</th>
+                <th>Estado</th>
+                <th style="display: none">Observaciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.VisitList)
+            {
+                <tr>
+                    <td style="display:none">@Html.DisplayFor(modelItem => item.VisitId)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Customer)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ScheduledVisitDate)</td>
+                    <td style="display: none">@Html.DisplayFor(modelItem => item.ConcretedVisitDate)</td>
+                    <td style="display: none">@Html.DisplayFor(modelItem => item.Collector)</td>
+                    <td>@Html.DisplayFor(modelItem => item.CollectorComission)</td>
+                    <td>@Html.DisplayFor(modelItem => item.AmountOwed)</td>
+                    <td style="display: none">@Html.DisplayFor(modelItem => item.AmountCollected)</td>
+                    <td style="display: none">@Html.DisplayFor(modelItem => item.TotalComission)</td>
+                    <td style="display: none">@Html.DisplayFor(modelItem => item.CollectorExpensesAmount)</td>
+                    <td style="display: none">@Html.DisplayFor(modelItem => item.CollectorExpensesDesc)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                    <td style="display: none">@Html.DisplayFor(modelItem => item.Observations)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirmar Cobranza</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha de visita:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="ConcretedVisitDate" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Estado:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.SelectedStatus, Model.ListStatus, new { @size = "2" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Monto Cobrado:</label>
+                            <div class="col-md-8">
+                                <input type="number" class="form-control" id="AmountCollected" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Viaticos:</label>
+                            <div class="col-md-8">
+                                <input type="number" class="form-control" id="CollectorExpensesAmount" required value="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Descripción de Viaticos:</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" id="CollectorExpensesDesc" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">N de recibo:</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" id="ReceipNumber" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Observaciones de la visita:</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" id="Observations" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-pimary" data-dismiss="modal" id="GenerateVisit">Confirmar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+$(document).ready(function () {
+		function formatTableToolsButton(node) {
+			$(node).removeClass('DTTT_button');
+			$(node).addClass('btn btn-default');
+		}
+		var table = $('#tabla_id').dataTable({
+			"destroy": true,
+			"buttons": [
+				{ extend: 'copy', text: 'Copiar' },
+				'csv',
+				'excel',
+				'pdf',
+				{ extend: 'print', text: 'Imprimir' },
+			],
+			"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+			"aaSorting": [],
+			"bServerSide": false,
+			"dom": 'Blfrtip',
+			"sScrollYInner": "100%",
+			"sScrollX": "100%",
+			"sScrollXInner": "100%",
+			"scrollCollapse": true,
+			"bProcessing": false
+		});
+
+		$('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+			event.stopPropagation();
+			if ($(this).hasClass('selected')) {
+				$(this).removeClass('selected');
+				$("#btnVer").attr("disabled", "disabled");
+				$("#idTooltipCustomer1").removeClass('tooltipAai');
+				$('#idTooltipCustomer1').tooltip({
+					container: 'body',
+					title: 'Seleccione un usuario'
+				});
+				$("#btnEditCustomer").attr("disabled", "disabled");
+				$("#idTooltipAai").removeClass('tooltipAai');
+				$('#idTooltipAai').tooltip({
+					container: 'body',
+					title: "Seleccione un cliente"
+				});
+			}
+			else {
+				$('#tabla_id tr.selected').removeClass('selected');
+				$(this).addClass('selected');
+				$("#btnEditCustomer").removeAttr("disabled", "disabled");
+				$("#idTooltipAai").tooltip('destroy');
+				$("#btnVer").removeAttr("disabled", "disabled");
+				$("#idTooltipCustomer1").tooltip('destroy');
+				id = table.fnGetData(this)[0];
+			}
+		});
+		$('.tooltipAai').tooltip({
+			container: 'body',
+			title: "Seleccione un visita"
+		});
+		$('.tooltipCustomer1').tooltip({
+			container: 'body',
+			title: 'Seleccione una visita'
+		});
+	$('#GenerateVisit').click(function (event) {
+		event.preventDefault();
+		event.stopPropagation();
+		var params = {};
+		params.VisitId = id;
+		params.ConcretedVisitDate = $('#ConcretedVisitDate').val();
+		params.StatusId = $('#SelectedStatus').val();
+		params.AmountCollected = $('#AmountCollected').val();
+		params.CollectorExpensesDesc = $('#CollectorExpensesDesc').val();
+		params.CollectorExpensesAmount = $('#CollectorExpensesAmount').val();
+		params.Observations = $('#Observations').val();
+		params.ReceipNumber = $('#ReceipNumber').val();
+		CallBackGet(function (data) {
+			CallBackGet(function (data) {
+				$("#dashboard").html(data);
+			}, "/Visits/Collector", null)
+			$('.modal-backdrop').remove();
+		}, "/Visits/ConfirmCollectorVisit", params);
+	});
+
+});
+</script>
+

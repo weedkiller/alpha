@@ -1,0 +1,188 @@
+﻿<!-- VISTA: Maintenance/ScheduledExpense.cshtml -->
+@model Multigroup.Portal.Models.Administration.ScheduledExpenseTableVm
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-ScheduledExpense"></i>
+                    <span class="caption-subject bold uppercase">Gastos Programados</span>
+                </div>
+                <div class="actions">
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnViewScheduledExpenseManaged" disabled="disabled">
+                            Ver
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnEditScheduledExpenseManaged" disabled="disabled">
+                            Gestionar
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnEAMScheduledExpense" disabled="disabled">
+                            Generar Autorización Compra
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnSPMScheduledExpense" disabled="disabled">
+                            Generar Gasto
+                        </a>
+                    </div>
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">             
+
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+                        <div class="form-group">
+                            <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                <thead>
+                                    <tr>
+                                        <th>Número</th>
+                                        <th>Creador / Comprador</th>
+                                        <th>Monto</th>
+                                        <th>Fecha Creación</th>
+                                        <th>Fecha Compra</th>
+                                        <th>Autoriza</th>
+                                        <th>Proveedor</th>
+                                        <th>Solicitud De Compra</th>
+                                        <th>Autorizado?</th>
+                                        <th>Procesado?</th>
+                                        <th>Comentario</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.ScheduledExpenseList)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.ScheduledExpenseId)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.User)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.CreateDate)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.PurchaseDate)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.UserAuthorized)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Proveedor)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.PurchaseRequestId)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.IsAuthorized)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Processed)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Commentary)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" id="modalViewScheduledExpense">
+
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $('.date-picker').datepicker();
+        $('select').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+        });
+        $('.tooltipAai').tooltip({
+            container: 'body',
+            title: "Seleccione un gasto"
+        });
+        $('.tooltipScheduledExpense1').tooltip({
+            container: 'body',
+            title: 'Seleccione un gasto'
+        });
+        $('#btnViewScheduledExpenseManaged').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/ScheduledExpense/ViewManaged?id=" + id, null)
+        });
+        $('#btnEditScheduledExpenseManaged').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/ScheduledExpense/EditManaged?id=" + id, null)
+        });
+
+
+        $('#btnEAMScheduledExpense').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/ExpenseAuthorization/CreateFromScheduledExpense?scheduledExpenseId=" + id, null)
+        });
+
+        $('#btnSPMScheduledExpense').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/Spending/CreateFromScheduledExpense?scheduledExpenseId=" + id, null)
+        });
+
+        var table = $('#tabla_id').dataTable({
+            "destroy": true,
+            "aaSorting": [],
+            "bServerSide": false,
+            "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+            "dom": 'Blfrtip',
+            "buttons": [
+                { extend: 'copy', text: 'Copiar' },
+                'csv',
+                'excel',
+                'pdf',
+                { extend: 'print', text: 'Imprimir' },
+            ],
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false
+        });
+
+        $('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $("#btnVer").attr("disabled", "disabled");
+                $("#idTooltipScheduledExpense1").removeClass('tooltipAai');
+                $('#idTooltipScheduledExpense1').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un empleado'
+                });
+                $("#btnViewScheduledExpenseManaged").attr("disabled", "disabled");
+                $("#btnEditScheduledExpenseManaged").attr("disabled", "disabled");
+                $("#btnEAMScheduledExpense").attr("disabled", "disabled");
+                $("#btnSPMScheduledExpense").attr("disabled", "disabled");
+                $("#idTooltipAai").removeClass('tooltipAai');
+                $('#idTooltipAai').tooltip({
+                    container: 'body',
+                    title: "Seleccione un empleado"
+                });
+            }
+            else {
+                $('#tabla_id tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+
+                $("#btnViewScheduledExpenseManaged").removeAttr("disabled", "disabled");
+                $("#btnEditScheduledExpenseManaged").removeAttr("disabled", "disabled");
+                $("#btnEAMScheduledExpense").removeAttr("disabled", "disabled");
+                $("#btnSPMScheduledExpense").removeAttr("disabled", "disabled");
+                $("#idTooltipAai").tooltip('destroy');
+                $("#idTooltipScheduledExpense1").tooltip('destroy');
+                id = table.fnGetData(this)[0];
+            }
+        });
+
+    });
+</script>
+

@@ -1,0 +1,205 @@
+﻿<!-- VISTA: Maintenance/Promissory.cshtml -->
+@model Multigroup.Portal.Models.Administration.PromissoryFilterVm
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-Promissory"></i>
+                    <span class="caption-subject bold uppercase">Pagarés</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-default" id="btnAddPromissory">Añadir</a>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnViewPromissory" disabled="disabled">
+                            Ver
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnEditPromissory" disabled="disabled">
+                            Editar
+                        </a>
+                    </div>                   
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha Emisión Desde:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateFromBroadcast" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha Emisión Hasta:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateToBroadcast" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Número de Pagaré:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.Number, new { @class = "form-control", @type = "number", @Value = "" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Usuario Creador:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.SelectedUser, Model.ListUser, new { @size = "2" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha Pago Desde:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateFromCollection" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha Pago Hasta:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateToCollection" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Cliente:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.SelectedCustomer, Model.ListCustomer, new { @size = "2" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Monto Desde:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.AmountFrom, new { @class = "form-control", @type = "number", @Value = "" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Monto Hasta:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.AmountTo, new { @class = "form-control", @type = "number", @Value = "" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Pagado:</label>
+                            <div class="col-md-8" id="sandbox-container">
+                                @*<input type="checkbox" id="changePassword"/>*@
+                                @Html.CheckBoxFor(model => model.IsPaid, new { @id = "IsPaid", @checked = true })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button id="btnBuscar" class="btn btn-default">Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" id="modalViewPromissory">
+
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#IsPaid').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
+        $('.date-picker').datepicker();
+        $('select').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+        });
+        $('.tooltipAai').tooltip({
+            container: 'body',
+            title: "Seleccione un gasto"
+        });
+        $('.tooltipPromissory1').tooltip({
+            container: 'body',
+            title: 'Seleccione un gasto'
+        });
+        $('#btnViewPromissory').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/Promissory/View?id=" + id, null)
+        });
+
+        $('#btnEditPromissory').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/Promissory/Edit?id=" + id, null)
+        });
+
+
+        $('#btnAddPromissory').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/Promissory/Create", null)
+        });
+
+        $('#btnBuscar').click(function (event) {
+            var params = {};
+            params.SelectedClient= $('#SelectedCustomer').val();
+            params.SelectedUser = $('#SelectedUser').val();
+            params.AmountFrom = $('#AmountFrom').val();
+            params.AmountTo = $('#AmountTo').val();
+            params.Number = $('#Number').val();
+            params.DateFromBroadcast = $('#txtDateFromBroadcast').val();
+            params.DateToBroadcast = $('#txtDateToBroadcast').val();
+            params.DateFromCollection = $('#txtDateFromCollection').val();
+            params.DateToCollection = $('#txtDateToCollection').val();
+            if ($('#IsPaid').is(':checked') == true) {
+                params.isPaid = '1';
+            } else {
+                params.isPaid = '0';
+            }          
+            CallBackGet(function (data) {
+                $("#acciones").html(data);
+            }, "/Promissory/GetTable", params)
+        });
+
+    });
+</script>
+

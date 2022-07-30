@@ -1,0 +1,175 @@
+﻿@model Multigroup.Portal.Models.Collection.CollectorAdvancementVm
+<div class="modal-dialog">
+    @using (Ajax.BeginForm("EntryAdvancement", "Collector", new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnBegin = "OnStart",
+        OnComplete = "OnComplete",
+        OnFailure = "FailMessage",
+        OnSuccess = "SuccessMessage",
+        UpdateTargetId = "dashboard"
+    }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.CollectorId)
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Entrega Medios de Pago</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.Date, new { @class = "form-control form-control-inline date-picker", @placeholder = "dd/mm/aaaa" })
+                                @Html.ValidationMessageFor(model => model.Date, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Hora:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.Hour, new { @class = "form-control", @placeholder = "HH:MM" })
+                            </div>
+                        </div>
+                    </div>                   
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Monto:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", @type = "number" })
+                                @Html.ValidationMessageFor(model => model.Amount, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Forma de Pago:</label>
+                                <div class="col-md-4">
+                                    @Html.DropDownListFor(m => m.ddlPaymentMethods.SelectedItem, Model.ddlPaymentMethods.ListItems, new { @id = "ddlPaymentMethods", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+               </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-12">Comentario:</label>
+                            <div class="col-md-12">
+                                @Html.TextAreaFor(model => model.Commentary, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-12">Rendiciones:</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <table id="tabla_id2" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Monto</th>
+                                    <th>Saldo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.rendiciones)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.Date)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Balance)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="btnProcess" type="submit">Guardar</button>
+                <button type="button" class="btn default" id="btnCancel" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $(document).ready(function () {
+        function formatTableToolsButton(node) {
+            $(node).removeClass('DTTT_button');
+            $(node).addClass('btn btn-default');
+        }
+        $('#tabla_id2').dataTable({
+            "destroy": true,
+            "buttons": [
+                { extend: 'copy', text: 'Copiar' },
+                'csv',
+                'excel',
+                'pdf',
+                { extend: 'print', text: 'Imprimir' },
+            ],
+            "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+            "aaSorting": [],
+            "bServerSide": false,
+            "dom": 'Blfrtip',
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false
+        });
+
+        $('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $("#idTooltipCustomer1").removeClass('tooltipAai');
+                $('#idTooltipCustomer1').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un usuario'
+                });
+                $("#idTooltipAai").removeClass('tooltipAai');
+                $('#idTooltipAai').tooltip({
+                    container: 'body',
+                    title: "Seleccione un cliente"
+                });
+            }
+            else {
+                $('#tabla_id tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $("#idTooltipAai").tooltip('destroy');
+                $("#idTooltipCustomer1").tooltip('destroy');
+            }
+        });
+        $('.tooltipAai').tooltip({
+            container: 'body',
+            title: "Seleccione un visita"
+        });
+        $('.tooltipCustomer1').tooltip({
+            container: 'body',
+            title: 'Seleccione una visita'
+        });
+       
+    });
+    $('#btnProcess').click(function () {
+        $("#modalEntry").modal('hide');
+    });
+    $('.date-picker').datepicker();
+    $('select').multiselect();
+</script>

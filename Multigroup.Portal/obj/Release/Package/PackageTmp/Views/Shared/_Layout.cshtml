@@ -1,0 +1,205 @@
+﻿@model Multigroup.Portal.Models.HomeVm
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>MG</title>
+	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+	@Styles.Render("~/Content/css")
+	@Scripts.Render("~/bundles/modernizr")
+
+	
+
+	<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="~/Scripts/pivot.es.min.js"></script>
+	<script type="text/javascript" src="~/Scripts/gchart_renderers.js"></script>
+	<link rel="apple-touch-icon" sizes="57x57" href="~/Assets/icons/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="~/Assets/icons/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="~/Assets/icons/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="~/Assets/icons/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="~/Assets/icons/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="~/Assets/icons/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="~/Assets/icons/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="~/Assets/icons/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="~/Assets/icons/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="~/Assets/icons/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="~/Assets/icons/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="~/Assets/icons/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="~/Assets/icons/favicon-16x16.png">
+	<link rel="manifest" href="/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="~/Assets/icons/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+	<script src="~/Scripts/d3.min.js"></script>
+</head>
+<body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed-hide-logo page-container-bg-solid" id="">
+	<div id="spinner" class="spinner" style="display:none;">
+		<img id="img-spinner" src="~/Assets/img/spinner.gif" alt="Cargando" />
+	</div>
+	<div id="errorAjax" class="alert alert-danger spinner" style="display:none;">
+		<strong>Error!</strong> al cargar contenido
+	</div>
+	<!-- COMIENZO HEADER -->
+	<div class="page-header navbar navbar-fixed-top">
+		<!-- COMIENZO HEADER INNER -->
+		<div class="page-header-inner">
+			<!-- COMIENZO LOGO -->
+			<div class="page-logo">
+				<a href="#">
+					<img src="~/Assets/img/logo.png" alt="logo" class="logo-default" />
+				</a>
+				<div class="menu-toggler sidebar-toggler hide">
+				</div>
+			</div>
+			<!-- FIN LOGO -->
+			<!-- COMIENZO MENU TOGGLER -->
+			<a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+			</a>
+			<!-- FIN MENU TOGGLER -->
+			<!-- COMIENZO BUSCAR -->
+			<!-- <div class="search" id="main-search">
+				<input type="text" class="form-control underline-input" placeholder="Buscar...">
+			</div> -->
+			<!-- FIN BUSCAR -->
+			<!-- COMIENZO BARRA SUPERIOR -->
+			<div class="top-menu">
+				<ul class="nav navbar-nav pull-right">
+					<!-- COMIENZO PERFIL USUARIO -->
+					<li class="dropdown dropdown-user">
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+							<img alt="" class="img-circle" src="../assets/img/perfil.png" />
+							<span class="username username-hide-on-mobile">
+								@Model.UserProfile.UserName
+							</span>
+							<i class="fa fa-angle-down"></i>
+						</a>
+						<ul class="dropdown-menu dropdown-menu-default">
+							<li>
+								@using (Html.BeginForm("LogOff", "Account"))
+								{
+									<a id="btnLogOff" onclick="$(this).parents('form').submit();"><i class="fa fa-sign-out"></i>Salir</a>
+								}
+
+							</li>
+						</ul>
+					</li>
+					<!-- FIN PERFIL USUARIO -->
+				</ul>
+			</div>
+			<!-- FIN TOP BARRA SUPERIOR -->
+		</div>
+	</div>
+	<!-- FIN HEADER -->
+	<div class="clearfix">
+	</div>
+	<!-- COMIENZO CONTAINER -->
+	<div class="page-container">
+		<!-- COMIENZO SIDEBAR -->
+		@Html.Action("Index", "Menu")
+		<!-- FIN SIDEBAR -->
+		<!-- COMIENZO CONTENT -->
+		<div class="page-content-wrapper">
+			<div class="page-content" id="homeIndex">
+				@RenderBody()
+				<!-- END CONTENT -->
+			</div>
+			<div class="scrollToTop"></div>
+		</div>
+		<!-- END CONTAINER -->
+		<!-- BEGIN FOOTER -->
+		<div class="page-footer">
+			<div class="page-footer-inner">
+				2018 &copy; IngarX
+			</div>
+			<div class="scroll-to-top">
+				<i class="icon-arrow-up"></i>
+			</div>
+		</div>
+		<!-- END FOOTER -->
+		@RenderSection("scripts", required: false)
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			//BOTON IR AL CIELO
+			$(window).scroll(function () {
+				if ($(this).scrollTop() > 100) {
+					$('.scrollToTop').fadeIn();
+				} else {
+					$('.scrollToTop').fadeOut();
+				}
+			});
+			$('.scrollToTop').click(function () {
+				$('html, body').animate({ scrollTop: 0 }, 800);
+				return false;
+			});
+		});
+	</script>
+
+	<!-- INICIO VARIOS -->
+	<script type="text/javascript">
+		jQuery(document).ready(function () {
+			Metronic.init();
+			Layout.init();
+			PortletDraggable.init();
+			$('#mostrartodos').iCheck({
+				checkboxClass: 'icheckbox_square-grey',
+				radioClass: 'iradio_square-grey',
+				increaseArea: '20%' // optional
+			});
+			$('#cambio').iCheck({
+				checkboxClass: 'icheckbox_square-grey',
+				radioClass: 'iradio_square-grey',
+				increaseArea: '20%' // optional
+			});
+		});
+		function SuccessMessageHome(result) {
+			$('#SucursalModal').modal('hide');
+			$('.modal-backdrop').remove();
+		}
+
+		//ESCONDER MENU SIDEBAR
+		$("#toggleSidebar").click(function () {
+			if ($('#sidebarMenu').hasClass('page-sidebar-menu-closed') == false) {
+				$(this).css('transform', 'rotateY(180deg)');
+				$('.widget-body.welcome-box.tabular').hide();
+			} else {
+				$(this).css('transform', 'rotateY(360deg)');
+				$('.widget-body.welcome-box.tabular').show();
+			}
+		});
+		//CLICK ENTRADAS DE MENU
+		$(".sub-menu li").on("click", function () {
+			if (!$(this).hasClass('first-submenu')) {
+				$(".page-sidebar-menu li").removeClass("active open");
+				$(this).addClass("active");
+				$(this).parents().eq(1).addClass("active open");
+			}
+		});
+		function SuccessMessage() {
+			Command: toastr["success"]("Los datos se guardaron correctamente")
+
+			toastr.options = {
+				"closeButton": true,
+				"debug": false,
+				"newestOnTop": false,
+				"progressBar": false,
+				"positionClass": "toast-top-center",
+				"preventDuplicates": false,
+				"onclick": null,
+				"showDuration": "10",
+				"hideDuration": "10",
+				"timeOut": "5000",
+				"extendedTimeOut": "1000",
+				"showEasing": "swing",
+				"hideEasing": "linear",
+				"showMethod": "fadeIn",
+				"hideMethod": "fadeOut"
+			}
+		}
+	</script>
+</body>
+</html>

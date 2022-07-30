@@ -1,0 +1,120 @@
+﻿<!-- VISTA: User/UserList.cshtml -->
+@model Multigroup.Portal.Models.Administration.ExpenseAuthorizationTableVm
+
+<div class="form-group">
+    <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <thead>
+            <tr>
+                <th>Número</th>
+                <th>Fecha Creación</th>
+                <th>Fecha Compra</th>
+                <th>Proveedor</th>
+                <th>Solicitud De Compra</th>
+                <th>Gasto Programado</th>
+                <th>Usuario</th>
+                <th>Comprador</th>
+                <th>Monto</th>
+                <th>Procesado?</th>
+                <th>Comentario</th>
+                <th>Gestionado</th>
+                <th style="display: none">userBuyerId</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ExpenseAuthorizationList)
+            {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.ExpenseAuthorizationId)</td>
+                <td>@Html.DisplayFor(modelItem => item.CreateDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.PurchaseDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.Proveedor)</td>
+                <td>@Html.DisplayFor(modelItem => item.PurchaseRequestId)</td>
+                <td>@Html.DisplayFor(modelItem => item.ScheduledExpenseId)</td>
+                <td>@Html.DisplayFor(modelItem => item.User)</td>
+                <td>@Html.DisplayFor(modelItem => item.UserBuyer)</td>
+                <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                <td>@Html.DisplayFor(modelItem => item.Processed)</td>
+                <td>@Html.DisplayFor(modelItem => item.Commentary)</td>
+                <td>@Html.DisplayFor(modelItem => item.Managed)</td>
+                <td style="display: none">@Html.DisplayFor(modelItem => item.UserBuyerId)</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        function formatTableToolsButton(node) {
+            $(node).removeClass('DTTT_button');
+            $(node).addClass('btn btn-default');
+        }
+        var table = $('#tabla_id').dataTable({
+            "destroy": true,
+            "aaSorting": [],
+            "bServerSide": false,
+            "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+            "dom": 'Blfrtip',
+            "buttons": [
+                { extend: 'copy', text: 'Copiar' },
+                'csv',
+                'excel',
+                'pdf',
+                { extend: 'print', text: 'Imprimir' },
+            ],
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false
+        });
+
+        $('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $("#btnVer").attr("disabled", "disabled");
+                $("#idTooltipExpense1").removeClass('tooltipAai');
+                $('#idTooltipExpense1').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un empleado'
+                });
+                $("#btnViewExpenseAuthorization").attr("disabled", "disabled");
+                $("#btnEditExpenseAuthorization").attr("disabled", "disabled");
+                $("#btnDeleteExpenseAuthorization").attr("disabled", "disabled");
+                $("#btnSPExpenseAuthorization").attr("disabled", "disabled");
+                $("#idTooltipAai").removeClass('tooltipAai');
+                $('#idTooltipAai').tooltip({
+                    container: 'body',
+                    title: "Seleccione un gasto"
+                });
+            }
+            else {
+                procesado = table.fnGetData(this)[9];
+                gestionado = table.fnGetData(this)[11];
+                comprador = table.fnGetData(this)[12];
+                $('#tabla_id tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $("#btnViewExpenseAuthorization").removeAttr("disabled", "disabled");
+                if (procesado == 'No Procesado' &&  gestionado == '<input class="check-box" disabled="disabled" type="checkbox">') {
+                    $("#btnEditExpenseAuthorization").removeAttr("disabled", "disabled");
+                    $("#btnDeleteExpenseAuthorization").removeAttr("disabled", "disabled");
+                }
+                else {
+                    $("#btnEditExpenseAuthorization").attr("disabled", "disabled");
+                    $("#btnDeleteExpenseAuthorization").attr("disabled", "disabled");
+                }
+                if ($("#UserCreateId").val() == comprador && procesado == 'No Procesado') {                   
+                    $("#btnSPExpenseAuthorization").removeAttr("disabled", "disabled");
+
+                }
+                else {
+                    $("#btnSPExpenseAuthorization").attr("disabled", "disabled");
+                }
+                $("#idTooltipAai").tooltip('destroy');
+                $("#btnVer").removeAttr("disabled", "disabled");
+                $("#idTooltipExpense1").tooltip('destroy');
+                id = table.fnGetData(this)[0];
+            }
+        });
+    });
+</script>

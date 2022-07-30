@@ -1,0 +1,102 @@
+﻿<!-- VISTA: Security/NavigationAccess/MenuAdd.cshtml -->
+@model Multigroup.Portal.Models.Security.MenuStructureVm
+@using Resources
+
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-shield"></i>
+                    <span class="caption-subject bold uppercase">@Resource.Global_Edit @Resource.Global_Menu</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-icon-only btn-default btn-support" href="javascript:;" data-original-title="" title="">
+                        <i class="fa fa-info btn-support"></i>
+                    </a>
+                </div>
+            </div>
+            @using (Ajax.BeginForm("Edit", "MenuEstructure", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnBegin = "OnStart",
+                OnComplete = "OnComplete",
+                OnFailure = "FailMessage",
+                OnSuccess = "SuccessMessage",
+                UpdateTargetId = "dashboard"
+            }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(x => x.Id)
+                <div class="portlet-body form">
+                    <div class="row">
+                        <div class="col-md-4 bootstro" data-bootstro-title="@Resource.Global_Name" data-bootstro-content="@Resource.MenuAdd_Help_1" data-bootstro-placement="bottom">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">@Resource.Global_Name:</label>
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Name, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 bootstro" data-bootstro-title="@Resource.Global_Order" data-bootstro-content="@Resource.MenuAdd_Help_2" data-bootstro-placement="bottom">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">@Resource.Global_Order:</label>
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(model => model.Order, new { @class = "form-control", @type = "number", @min = "1", @step = "1" })
+                                    @Html.ValidationMessageFor(model => model.Order, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 bootstro" data-bootstro-title="@Resource.Global_Father" data-bootstro-content="@Resource.MenuAdd_Help_3" data-bootstro-placement="bottom">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">@Resource.Global_Father:</label>
+                                <div class="col-md-9">
+                                    @Html.DropDownListFor(m => m.ddlParents.SelectedItem, Model.ddlParents.ListItems, new { @id = "ddlParents", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 bootstro" data-bootstro-title="@Resource.Global_Style" data-bootstro-content="@Resource.MenuAdd_Help_4" data-bootstro-placement="bottom">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">@Resource.Global_Style:</label>
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(model => model.Icon, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Icon, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-5">
+                                <button class="btn btn-default" id="btnProcess">@Resource.Global_Save</button>
+                                <button type="button" class="btn btn-default" id="btnCancel">@Resource.Global_Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#ddlParents').multiselect();
+        $('#btnCancel').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+                 
+            }, "/MenuEstructure/Index", null)
+        });
+    });
+</script>

@@ -1,0 +1,142 @@
+<!-- VISTA: Maintenance/CustomerCreate.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.ContactCallModel.ContactCallVm
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-laptop"></i>
+                    <span class="caption-subject bold uppercase">Nuevo Contacto</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-default" id="adjuntar" data-toggle="modal" data-target="#adjuntarModal">
+                        <i class="fa fa-paperclip"></i> <span id="attachText"> Subir Planilla </span>
+                    </a>
+                </div>
+            </div>
+            @using (Ajax.BeginForm("Create", "ContactCall", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnBegin = "OnStart",
+                OnComplete = "OnComplete",
+                OnFailure = "FailMessage",
+                OnSuccess = "SuccessMessage",
+                UpdateTargetId = "dashboard"
+            }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="portlet-body form">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Nombre:</label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Name, string.Empty, new { @class = "validate-error" })
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Apellido:</label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.Surname, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Surname, string.Empty, new { @class = "validate-error" })
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Telefono:</label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.Phone, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Phone, string.Empty, new { @class = "validate-error" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Vehiculo:</label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.Vehicle, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Vehicle, string.Empty, new { @class = "validate-error" })
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Gerente:</label>
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(m => m.ddlManager.SelectedItem, Model.ddlManager.ListItems, new { @id = "ddlManager", @size = 2 })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-5">
+                                <button class="btn btn-primary" id="btnProcess">Guardar</button>
+                                <button type="button" class="btn default" id="btnCancel">Volver</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<div id="adjuntarModal" class="modal fade" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    @Html.Action("OpenAttach", "ContactCall")
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#adjuntar').click(function (event) {
+            var myDropzone = new Dropzone("form#uploadFiles", {
+                url: '/ContactCall/LoadFile', addRemoveLinks: true, maxFilesize: 50, acceptedFiles: ".xls,.xlsx", maxFiles: 1, init: function () {
+                    this.on("removedfile", function (file) {
+                        var params = new Object;
+                        params.fileDelete = file.name;
+                        CallSericeAjax(function (data) {
+                            //SuccessMessage();
+                        }, "/ContactCall/RemoveFiles", params, 'POST');
+                    });
+                }
+            });
+        });
+
+
+        $('#chkRecChange').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
+        $('#ddlManager').multiselect();
+      
+
+        $('#btnCancel').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);                
+            }, "/ContactCall/Index", null)
+        });
+    });
+</script>
+
+
+
+

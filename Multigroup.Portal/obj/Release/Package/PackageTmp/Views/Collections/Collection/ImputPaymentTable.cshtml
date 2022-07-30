@@ -1,0 +1,123 @@
+﻿@model Multigroup.Portal.Models.Collection.PaymentVoucherSummaryTableVm
+<div class="form-group">
+    <table id="tablaa" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <thead>
+            <tr>
+                <th style="display: none">ID</th>
+                <th>Contrato</th>
+                <th>Cliente</th>
+                <th>Cuotas</th>
+                <th>Monto</th>
+                <th>Medio Pago</th>
+                <th>Fecha Comprobante</th>
+                <th>Validado</th>
+                <th>Telemarketer</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.PaymentVoucherSummaryList)
+            {
+                <tr>
+                    <td style="display:none">@Html.DisplayFor(modelItem => item.PaymentVoucherId)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Contract)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Customer)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Cuotas)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PaymentMethod)</td>
+                    <td>@Html.DisplayFor(modelItem => item.VoucherDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Confirmado)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Telemarketer)</td>
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    var tableee;
+    function formatTableToolsButton(node) {
+        $(node).removeClass('DTTT_button');
+        $(node).addClass('btn btn-default');
+    }
+    var table = $('#tablaa').dataTable({
+        "destroy": true,
+        "aaSorting": [],
+        "bServerSide": false,
+        "buttons": [
+            { extend: 'copy', text: 'Copiar' },
+            'csv',
+            'excel',
+            'pdf',
+            { extend: 'print', text: 'Imprimir' },
+        ],
+        "dom": 'Blfrtip',
+        "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+        "sScrollYInner": "100%",
+        "sScrollX": "100%",
+        "sScrollXInner": "100%",
+        "scrollCollapse": true,
+        "bProcessing": false
+    });
+
+    $('#tablaa tbody').unbind("click").on('click', 'tr', function (event) {
+        event.stopPropagation();
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+            $("#asd").attr("disabled", "disabled");
+            $("#btnImput").attr("disabled", "disabled");
+            $("#btnView").attr("disabled", "disabled");
+            $("#idTooltipAai").removeClass('tooltipAai');
+            $('#idTooltipAai').tooltip({
+                container: 'body',
+                title: "Seleccione un rol"
+            });
+        }
+        else {
+            validado = table.fnGetData(this)[7];
+            $('#tablaa tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+            $("#asd").removeAttr("disabled", "disabled");
+            $("#btnView").removeAttr("disabled", "disabled");
+            if (validado == 'No') {
+                $("#btnImput").removeAttr("disabled", "disabled");
+            }
+            else {
+                $("#btnImput").attr("disabled", "disabled");
+            }
+            $("#idTooltipAai").tooltip('destroy');
+            PaymentVoucherId = table.fnGetData(this)[0];
+            contract = table.fnGetData(this)[1];
+        }
+    });
+
+
+    $('#imputPaymentBtn').click(function (event) {
+        var params = new Object;
+        params.paymentVoucherId = PaymentVoucherId;
+        params.Contract = contract;
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Collections/ImputPaymentVoucher", params)
+    });
+
+    $('#btnView').click(function (event) {
+        var params = new Object;
+        params.Id = PaymentVoucherId;
+        CallBackGet(function (data) {
+            $("#tableDetail").html(data);
+        }, "/Collections/PaymentVoucherDetail", params)
+        $('#paymentVoucherDetail').modal('show');
+    });
+
+    $('.tooltipAai').tooltip({
+        container: 'body',
+        title: "Seleccione un pago"
+    });
+    $('.tooltipCustomer1').tooltip({
+        container: 'body',
+        title: 'Seleccione un pago'
+    });
+</script>

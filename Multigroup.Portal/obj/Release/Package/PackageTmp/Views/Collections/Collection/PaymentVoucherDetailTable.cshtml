@@ -1,0 +1,68 @@
+﻿@model Multigroup.Portal.Models.Collection.PaymentVoucherDetailTableVm
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Detalle de Registro de Comprobante</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <table id="NavigationAccesTable" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                <thead>
+                    <tr>
+                        <th>Cuota</th>
+                        <th>Monto</th>
+                        <th>Medio de Pago</th>
+                        <th>Medio de Pago Original</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.PaymentVoucherDetailList)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Cuota)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Amount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PaymentMethod)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PaymentMethodOrigin)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+</div>
+<script type="text/javascript">
+    function formatTableToolsButton(node) {
+        $(node).removeClass('DTTT_button');
+        $(node).addClass('btn btn-default');
+    }
+    var table = $('#NavigationAccesTable').dataTable({
+        "destroy": true,
+        "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+        "aaSorting": [],
+        "bServerSide": false,
+        "buttons": [
+            { extend: 'copy', text: 'Copiar' },
+            'csv',
+            'excel',
+            'pdf',
+            { extend: 'print', text: 'Imprimir' },
+        ],
+        "dom": 'Blfrtip',
+        "sScrollYInner": "100%",
+        "sScrollX": "100%",
+        "sScrollXInner": "100%",
+        "scrollCollapse": true,
+        "bProcessing": false
+    });
+</script>

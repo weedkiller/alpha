@@ -1,0 +1,98 @@
+﻿<!-- VISTA: User/UserList.cshtml -->
+@model Multigroup.Portal.Models.Administration.PromissoryTableVm
+
+<div class="form-group">
+    <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <thead>
+            <tr>
+                <th style="display: none">Id</th>
+                <th>Descripción</th>
+                <th>Cliente</th>
+                <th>Fecha Cobro</th>
+                <th>Monto</th>
+                <th>Pagado</th>
+                <th>Comentario</th>
+                <th>Fecha Emisión</th>
+                <th>Número</th>
+                <th>Usuario</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.PromissoryList)
+            {
+            <tr>
+                <td style="display: none">@item.PromissoryId</td>
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                <td>@Html.DisplayFor(modelItem => item.Client)</td>
+                <td>@Html.DisplayFor(modelItem => item.CollectionDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                <td>@Html.DisplayFor(modelItem => item.isPaid)</td>
+                <td>@Html.DisplayFor(modelItem => item.Commentary)</td>
+                <td>@Html.DisplayFor(modelItem => item.BroadcastDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.Number)</td>
+                <td>@Html.DisplayFor(modelItem => item.User)</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        function formatTableToolsButton(node) {
+            $(node).removeClass('DTTT_button');
+            $(node).addClass('btn btn-default');
+        }
+        var table = $('#tabla_id').dataTable({
+            "destroy": true,
+            "aaSorting": [],
+            "bServerSide": false,
+            "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+            "dom": 'Blfrtip',
+            "buttons": [
+                { extend: 'copy', text: 'Copiar' },
+                'csv',
+                'excel',
+                'pdf',
+                { extend: 'print', text: 'Imprimir' },
+            ],
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false
+        });
+
+        $('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $("#btnVer").attr("disabled", "disabled");
+                $("#idTooltipPromissory1").removeClass('tooltipAai');
+                $('#idTooltipPromissory1').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un empleado'
+                });
+                $("#btnViewPromissory").attr("disabled", "disabled");
+                $("#btnEditPromissory").attr("disabled", "disabled");
+                $("#idTooltipAai").removeClass('tooltipAai');
+                $('#idTooltipAai').tooltip({
+                    container: 'body',
+                    title: "Seleccione un empleado"
+                });
+            }
+            else {
+                pagado = table.fnGetData(this)[5];
+                $('#tabla_id tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $("#btnViewPromissory").removeAttr("disabled", "disabled");
+                if (pagado != 'Cobrado') {
+                    $("#btnEditPromissory").removeAttr("disabled", "disabled");
+                }
+                $("#idTooltipAai").tooltip('destroy');
+                $("#btnVer").removeAttr("disabled", "disabled");
+                $("#idTooltipPromissory1").tooltip('destroy');
+                id = table.fnGetData(this)[0];
+            }
+        });
+    });
+</script>

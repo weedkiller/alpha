@@ -1,0 +1,367 @@
+﻿<!-- VISTA: Maintenance/Spending.cshtml -->
+@model Multigroup.Portal.Models.Administration.SpendingFilterVm
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-Spending"></i>
+                    <span class="caption-subject bold uppercase">Gastos</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-default" id="btnAddSpending">Añadir</a>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnViewSpendingDetail" disabled="disabled">
+                            Ver Conceptos
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnViewSpendingFilter" style="display: none">
+                            Ver Gastos
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnViewSpending" disabled="disabled">
+                            Ver
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnEditSpending" disabled="disabled">
+                            Editar
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnRemoveSpending" disabled="disabled">
+                            Eliminar
+                        </a>
+                    </div>
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-3" style="display: none">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Usuario:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.UserId, new { @class = "form-control", @readonly = true })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha Ejecución Desde:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateFromExecution" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha Ejecución Hasta:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateToExecution" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Usuario Creador:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.SelectedUser, Model.ListUser, new { @size = "2" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha Vencimiento Desde:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateFromExpiration" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha Vencimiento Hasta:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateToExpiration" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Proveedor:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.SelectedProvider, Model.ListProvider, new { @size = "2" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Monto Desde:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.AmountFrom, new { @class = "form-control", @type = "number", @Value = "" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Monto Hasta:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.AmountTo, new { @class = "form-control", @type = "number", @Value = "" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Número Comprobante:</label>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(model => model.Receipt, new { @class = "form-control", @type = "number", @Value = "" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Saldo Desde:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.BalanceFrom, new { @class = "form-control", @type = "number", @Value = "" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Saldo Hasta:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.BalanceTo, new { @class = "form-control", @type = "number", @Value = "" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="control-label col-md-4">Solo Saldo Positivo:</label>
+                        <div class="col-md-8" id="sandbox-container">
+                            @*<input type="checkbox" id="changePassword"/>*@
+                            <input type="checkbox" id="chkBalance">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="control-label col-md-4">Solo Saldo Positivo y Vencido:</label>
+                        <div class="col-md-8" id="sandbox-container">
+                            @*<input type="checkbox" id="changePassword"/>*@
+                            <input type="checkbox" id="chkAll">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="control-label col-md-4">Sin Proveedor:</label>
+                        <div class="col-md-8" id="sandbox-container">
+                            @*<input type="checkbox" id="changePassword"/>*@
+                            <input type="checkbox" id="chkProvider">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button id="btnBuscar" class="btn btn-default">Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="table">
+                    <div class="col-md-12" id="acciones">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" id="modalViewSpending">
+
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#chkAll').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '50%' // optional
+        });
+
+        $('#chkBalance').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '50%' // optional
+        });
+
+        $('#chkProvider').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '50%' // optional
+        });
+
+        $('.date-picker').datepicker();
+        $('select').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+        });
+        $('.tooltipAai').tooltip({
+            container: 'body',
+            title: "Seleccione un gasto"
+        });
+        $('.tooltipSpending1').tooltip({
+            container: 'body',
+            title: 'Seleccione un gasto'
+        });
+        $('#btnViewSpending').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/Spending/View?id=" + id, null)
+        });
+
+        $('#btnEditSpending').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/Spending/Edit?id=" + id, null)
+        });
+
+        $('#btnRemoveSpending').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/Spending/Delete?id=" + id, null)
+        });
+
+        $('#btnAddSpending').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/Spending/Create", null)
+        });
+
+        $('#btnBuscar').click(function (event) {
+            var params = {};
+            params.SelectedProvider = $('#SelectedProvider').val();
+            params.SelectedUser = $('#SelectedUser').val();
+            params.AmountFrom = $('#AmountFrom').val();
+            params.AmountTo = $('#AmountTo').val();
+            params.BalanceFrom = $('#BalanceFrom').val();
+            params.BalanceTo = $('#BalanceTo').val();
+            params.DateFromExecution = $('#txtDateFromExecution').val();
+            params.DateToExecution = $('#txtDateToExecution').val();
+            params.DateFromExpiration = $('#txtDateFromExpiration').val();
+            params.DateToExpiration = $('#txtDateToExpiration').val();
+            if ($('#chkBalance').is(':checked') == true) {
+                params.PositiveBalance = '1';
+            } else {
+                params.PositiveBalance = '0';
+            }
+            if ($('#chkAll').is(':checked') == true) {
+                params.PositiveAll = '1';
+            } else {
+                params.PositiveAll = '0';
+            }
+            if ($('#chkProvider').is(':checked') == true) {
+                params.Provider = '1';
+            } else {
+                params.Provider = '0';
+            }
+            params.Receipt = $('#Receipt').val();
+            CallBackGet(function (data) {
+                $('#btnViewSpendingDetail').show();
+                $('#btnViewSpendingFilter').hide();
+                $("#btnViewSpendingDetail").removeAttr("disabled", "disabled");
+                $("#acciones").html(data);
+            }, "/Spending/GetTable", params)
+        });
+
+        $('#btnViewSpendingFilter').click(function (event) {
+            var params = {};
+            params.SelectedProvider = $('#SelectedProvider').val();
+            params.SelectedUser = $('#SelectedUser').val();
+            params.AmountFrom = $('#AmountFrom').val();
+            params.AmountTo = $('#AmountTo').val();
+            params.BalanceFrom = $('#BalanceFrom').val();
+            params.BalanceTo = $('#BalanceTo').val();
+            params.DateFromExecution = $('#txtDateFromExecution').val();
+            params.DateToExecution = $('#txtDateToExecution').val();
+            params.DateFromExpiration = $('#txtDateFromExpiration').val();
+            params.DateToExpiration = $('#txtDateToExpiration').val();
+            if ($('#chkBalance').is(':checked') == true) {
+                params.PositiveBalance = '1';
+            } else {
+                params.PositiveBalance = '0';
+            }
+            if ($('#chkAll').is(':checked') == true) {
+                params.PositiveAll = '1';
+            } else {
+                params.PositiveAll = '0';
+            }
+            if ($('#chkProvider').is(':checked') == true) {
+                params.Provider = '1';
+            } else {
+                params.Provider = '0';
+            }
+            params.Receipt = $('#Receipt').val();
+            CallBackGet(function (data) {
+                $('#btnViewSpendingDetail').show();
+                $('#btnViewSpendingFilter').hide();
+                $('#tableDetail').hide();
+                $("#acciones").html(data);
+            }, "/Spending/GetTable", params)
+        });
+
+        $('#btnViewSpendingDetail').click(function (event) {
+            var params = {};
+            params.SelectedProvider = $('#SelectedProvider').val();
+            params.SelectedUser = $('#SelectedUser').val();
+            params.AmountFrom = $('#AmountFrom').val();
+            params.AmountTo = $('#AmountTo').val();
+            params.BalanceFrom = $('#BalanceFrom').val();
+            params.BalanceTo = $('#BalanceTo').val();
+            params.DateFromExecution = $('#txtDateFromExecution').val();
+            params.DateToExecution = $('#txtDateToExecution').val();
+            params.DateFromExpiration = $('#txtDateFromExpiration').val();
+            params.DateToExpiration = $('#txtDateToExpiration').val();
+            if ($('#chkBalance').is(':checked') == true) {
+                params.PositiveBalance = '1';
+            } else {
+                params.PositiveBalance = '0';
+            }
+            if ($('#chkAll').is(':checked') == true) {
+                params.PositiveAll = '1';
+            } else {
+                params.PositiveAll = '0';
+            }
+            if ($('#chkProvider').is(':checked') == true) {
+                params.Provider = '1';
+            } else {
+                params.Provider = '0';
+            }
+            params.Receipt = $('#Receipt').val();
+            CallBackGet(function (data) {
+                btnViewSpendingDetail
+                $('#btnViewSpendingDetail').hide();
+                $('#btnViewSpendingFilter').show();
+                $("#btnViewSpending").attr("disabled", "disabled");
+                $("#btnEditSpending").attr("disabled", "disabled");
+                $("#acciones").html(data);
+            }, "/Spending/GetTableDetail", params)
+        });
+
+    });
+</script>
+

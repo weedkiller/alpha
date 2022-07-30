@@ -1,0 +1,77 @@
+﻿<!-- VISTA: User/UserList.cshtml -->
+@model Multigroup.Portal.Models.Administration.MovementTableVm
+
+<div class="form-group">
+    <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <thead>
+            <tr>
+                <th>Caja</th>
+                <th>N° Ciclo</th>
+                <th>Monto</th>
+                <th>Fecha Movimiento</th>
+                <th>Tipo Movimiento</th>
+                <th>Medio de Pago</th>
+                <th>Usuario</th>
+                <th>Fecha Carga</th>
+                <th>Verificado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.MovementList)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Cashier)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Cycle)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Date)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Movement)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PaymentMethod)</td>
+                    <td>@Html.DisplayFor(modelItem => item.User)</td>
+                    <td>@Html.DisplayFor(modelItem => item.SystemDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Verified)</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-md-offset-7">
+            <div class="form-group">
+                <label class="control-label col-md-4">Total:</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="amountTxt" />
+                </div>
+            </div>
+        </div>       
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+    var Amount = @ViewBag.Total
+            $("#amountTxt").val(Amount);
+
+		function formatTableToolsButton(node) {
+			$(node).removeClass('DTTT_button');
+			$(node).addClass('btn btn-default');
+		}
+		var table = $('#tabla_id').dataTable({
+			"destroy": true,
+			"aaSorting": [],
+			"bServerSide": false,
+			"buttons": [
+				{ extend: 'copy', text: 'Copiar' },
+				'csv',
+				'excel',
+				'pdf',
+				{ extend: 'print', text: 'Imprimir' },
+			],
+			"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+			"dom": 'Blfrtip',
+			"sScrollYInner": "100%",
+			"sScrollX": "100%",
+			"sScrollXInner": "100%",
+			"scrollCollapse": true,
+			"bProcessing": false
+		});
+	});
+</script>

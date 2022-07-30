@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B05FB276-AFE1-49FF-B0B7-F0B3FF771C2E}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Multigroup.DomainModel</RootNamespace>
+    <AssemblyName>Multigroup.DomainModel</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\packages\Microsoft.Owin.2.0.2\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.2.0.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=3.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Multigroup\Multigroup.Portal\bin\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=3.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Multigroup\Multigroup.Portal\bin\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ObjectBuilder, Version=1.0.51206.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Practices.ObjectBuilder.dll.3.1.0\lib\2.0\Microsoft.Practices.ObjectBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.WebHelpers.3.2.4\lib\net45\Microsoft.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.5\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.5\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.5\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.5\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.5\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.5\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WebMatrix.Data, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.3.2.4\lib\net45\WebMatrix.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.WebData.3.2.4\lib\net45\WebMatrix.WebData.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CustomException\BusinessException.cs" />
+    <Compile Include="CustomException\ConflictException.cs" />
+    <Compile Include="CustomException\EntityException .cs" />
+    <Compile Include="Menu\Menu.cs" />
+    <Compile Include="Menu\MenuComponent.cs" />
+    <Compile Include="Menu\MenuComponentPage.cs" />
+    <Compile Include="Menu\MenuComponentRole.cs" />
+    <Compile Include="Menu\MenuItem.cs" />
+    <Compile Include="Menu\MenuType.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shared\ContactCall.cs" />
+    <Compile Include="Shared\Collector.cs" />
+    <Compile Include="Shared\PurchasePerception.cs" />
+    <Compile Include="Shared\CashCycle.cs" />
+    <Compile Include="Shared\Cashier.cs" />
+    <Compile Include="Shared\Movement.cs" />
+    <Compile Include="Shared\Partner.cs" />
+    <Compile Include="Shared\Article.cs" />
+    <Compile Include="Shared\IncomePartner.cs" />
+    <Compile Include="Shared\RetirementPartner.cs" />
+    <Compile Include="Shared\PurchaseRequest.cs" />
+    <Compile Include="Shared\SalaryAllocation.cs" />
+    <Compile Include="Shared\EarningsAllocation.cs" />
+    <Compile Include="Shared\ContributionAllocation.cs" />
+    <Compile Include="Shared\SpendingPayment.cs" />
+    <Compile Include="Shared\Spending.cs" />
+    <Compile Include="Shared\Promissory.cs" />
+    <Compile Include="Shared\ExpenseAuthorization.cs" />
+    <Compile Include="Shared\ScheduledExpense.cs" />
+    <Compile Include="Shared\Provider.cs" />
+    <Compile Include="Shared\Receip.cs" />
+    <Compile Include="Shared\PaymentHistory.cs" />
+    <Compile Include="Shared\State.cs" />
+    <Compile Include="Shared\Contract.cs" />
+    <Compile Include="Shared\Installment.cs" />
+    <Compile Include="Shared\BaseEntity.cs" />
+    <Compile Include="Shared\City.cs" />
+    <Compile Include="Shared\Agency.cs" />
+    <Compile Include="Shared\Constants\AnalysisStatusCon.cs" />
+    <Compile Include="Shared\Constants\MenuTypeCon.cs" />
+    <Compile Include="Shared\ContractPaper.cs" />
+    <Compile Include="Shared\AssignVisit.cs" />
+    <Compile Include="Shared\Customer.cs" />
+    <Compile Include="Shared\DayOfWeek.cs" />
+    <Compile Include="Shared\ContractFile.cs" />
+    <Compile Include="Shared\Enums\ActionPlanStatusEnum.cs" />
+    <Compile Include="Shared\Enums\IdentificationTypeEnum..cs" />
+    <Compile Include="Shared\Enums\MaritalStatusEnum.cs" />
+    <Compile Include="Shared\Enums\AnalysisStatusEnum.cs" />
+    <Compile Include="Shared\Enums\CriticalLevelEvent.cs" />
+    <Compile Include="Shared\Enums\MappingSourceEnum.cs" />
+    <Compile Include="Shared\Enums\NotificationTypeEnum.cs" />
+    <Compile Include="Shared\Enums\PageStaticEnum.cs" />
+    <Compile Include="Shared\Enums\StateEnum.cs" />
+    <Compile Include="Shared\MapperType.cs" />
+    <Compile Include="Shared\Mapping.cs" />
+    <Compile Include="Shared\NavigationLog.cs" />
+    <Compile Include="Shared\MPSellerAccount.cs" />
+    <Compile Include="Shared\PaymentMethod.cs" />
+    <Compile Include="Shared\PaymentType.cs" />
+    <Compile Include="Shared\PostedFileWrapper.cs" />
+    <Compile Include="Shared\Rol.cs" />
+    <Compile Include="Shared\Role.cs" />
+    <Compile Include="Shared\Payment.cs" />
+    <Compile Include="Shared\PaymentAllocation.cs" />
+    <Compile Include="Shared\Sucursal.cs" />
+    <Compile Include="Shared\User.cs" />
+    <Compile Include="Shared\Visit.cs" />
+    <Compile Include="Shared\Zone.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

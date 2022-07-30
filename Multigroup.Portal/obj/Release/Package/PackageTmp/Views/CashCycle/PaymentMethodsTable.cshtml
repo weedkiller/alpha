@@ -1,0 +1,79 @@
+﻿@model Multigroup.Portal.Models.Administration.CashCyclePaymentMethodSummaryTableVm
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Historial de cambios de estado</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <table id="NavigationAccesTable" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                <thead>
+                    <tr>
+                        <th>Medio de Pago</th>
+                        <th>Monto Inicial</th>
+                        <th>Ingreso</th>
+                        <th>Egreso</th>
+                        <th>Saldo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.CashCyclePaymentList)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PaymentMethod)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OLD)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Entry)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Egress)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Balance)
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+</div>
+<script type="text/javascript">
+    function deleteInterest(idint) {
+        var params = new Object;
+        params.Id = idint;
+        CallSericeAjax(function (data) {
+            ConfirmMessage('success', 'Intereses eliminados correctamente.');
+        }, "/Contract/Delete", params, 'POST')
+    }
+    function formatTableToolsButton(node) {
+        $(node).removeClass('DTTT_button');
+        $(node).addClass('btn btn-default');
+    }
+    var table = $('#NavigationAccesTable').dataTable({
+        "destroy": true,
+        "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+        "aaSorting": [],
+        "bServerSide": false,
+        "buttons": [
+            { extend: 'copy', text: 'Copiar' },
+            'csv',
+            'excel',
+            'pdf',
+            { extend: 'print', text: 'Imprimir' },
+        ],
+        "dom": 'Blfrtip',
+        "sScrollYInner": "100%",
+        "sScrollX": "100%",
+        "sScrollXInner": "100%",
+        "scrollCollapse": true,
+        "bProcessing": false
+    });
+</script>

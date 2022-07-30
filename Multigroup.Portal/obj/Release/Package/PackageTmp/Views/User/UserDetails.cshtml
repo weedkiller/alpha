@@ -1,0 +1,147 @@
+﻿@model Multigroup.Portal.Models.Shered.RegisterVm
+<div class="portlet-body form">
+    <!-- BEGIN FORM-->
+    <div class="form-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Nombre:</label>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Names, new { id = "12", @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.Names)
+                    </div>
+                </div>
+            </div>
+            <!--/span-->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Apellido:</label>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Surname, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Surname)
+                    </div>
+                </div>
+            </div>
+            <!--/span-->
+        </div>
+        <!--/row-->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Pais:</label>
+                    <div class="col-md-9">
+                        @Html.ListBoxFor(m => m.SelectedCountry, Model.ListCountries)
+                    </div>
+                </div>
+            </div>
+            <!--/span-->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Externo:</label>
+                    <div class="col-md-9" id="sandbox-container">
+                        @Html.EditorFor(model => model.IsExternal)
+                        @Html.ValidationMessageFor(model => model.IsExternal)
+                    </div>
+                </div>
+            </div>
+            <!--/span-->
+        </div>
+        <!--/row-->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">E-mail:</label>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </div>
+                </div>
+            </div>
+            <!--/span-->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Centro de costo:</label>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.CostCenter)
+                        @Html.ValidationMessageFor(model => model.CostCenter)
+                    </div>
+                </div>
+            </div>
+            <!--/span-->
+        </div>
+        <!--/row-->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Faena</label>
+                    <div class="col-md-9">
+                        @Html.ListBoxFor(m => m.SelectedSites, Model.ListSites, new { multiple = "multiple" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Rol</label>
+                    <div class="col-md-9">
+                        @Html.ListBoxFor(m => m.SelectedRoles, Model.ListRoles, new { multiple = "multiple" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Contraseña</label>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Password)
+                    </div>
+                </div>
+            </div>
+            <!--/span-->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Repita Contraseña</label>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.ConfirmPassword, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                    </div>
+                </div>
+            </div>
+            <!--/span-->
+        </div>
+        <!--/row-->
+    </div>
+    <div class="form-actions">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-offset-5">
+                        <button type="button" data-dismiss="modal" class="btn default">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+            </div>
+        </div>
+    </div>
+    <!-- END FORM-->
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#SelectedRoles').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: true
+        });
+        $('#SelectedSites').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: true
+        });
+        $('#SelectedCountry').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: true
+        });
+    });
+</script>
+

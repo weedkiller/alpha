@@ -1,0 +1,95 @@
+﻿<!-- VISTA: User/UserList.cshtml -->
+@model Multigroup.Portal.Models.Administration.RetirementPartnerTableVm
+
+<div class="form-group">
+    <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <thead>
+            <tr>
+                <th style="display: none">Número</th>
+                <th>Socio</th>
+                <th>Fecha</th>
+                <th>Monto</th>
+                <th>Usuario</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.RetirementPartnerList)
+            {
+            <tr>
+                <td style="display: none">@Html.DisplayFor(modelItem => item.RetirementPartnerId)</td>
+                <td>@Html.DisplayFor(modelItem => item.Partner)</td>
+                <td>@Html.DisplayFor(modelItem => item.Date)</td>
+                <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                <td>@Html.DisplayFor(modelItem => item.User)</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        function formatTableToolsButton(node) {
+            $(node).removeClass('DTTT_button');
+            $(node).addClass('btn btn-default');
+        }
+        var table = $('#tabla_id').dataTable({
+            "destroy": true,
+            "aaSorting": [],
+            "bServerSide": false,
+            "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+            "dom": 'Blfrtip',
+            "buttons": [
+                { extend: 'copy', text: 'Copiar' },
+                'csv',
+                'excel',
+                'pdf',
+                { extend: 'print', text: 'Imprimir' },
+            ],
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false
+        });
+
+        $('#deleteRetirementPartnerModalBtn').click(function (event) {
+            var params = new Object;
+            params.Id = id;
+            CallBackPost(function (data) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+                }, "/RetirementPartner/Index", null)
+            }, "/RetirementPartner/Delete", params);
+        });
+
+        $('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $("#btnVer").attr("disabled", "disabled");
+                $("#idTooltipRetirementPartner1").removeClass('tooltipAai');
+                $('#idTooltipRetirementPartner1').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un empleado'
+                });
+                $("#btnViewRetirementPartner").attr("disabled", "disabled");
+                $("#btnDeleteRetirementPartner").attr("disabled", "disabled");
+                $("#idTooltipAai").removeClass('tooltipAai');
+                $('#idTooltipAai').tooltip({
+                    container: 'body',
+                    title: "Seleccione un empleado"
+                });
+            }
+            else {
+                $('#tabla_id tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $("#btnViewRetirementPartner").removeAttr("disabled", "disabled");
+                $("#btnDeleteRetirementPartner").removeAttr("disabled", "disabled");
+                $("#idTooltipAai").tooltip('destroy');
+                $("#btnVer").removeAttr("disabled", "disabled");
+                $("#idTooltipRetirementPartner1").tooltip('destroy');
+                id = table.fnGetData(this)[0];
+            }
+        });
+    });
+</script>

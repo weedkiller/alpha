@@ -1,0 +1,222 @@
+﻿<!-- VISTA: Maintenance/Customer.cshtml -->
+@model Multigroup.Portal.Models.Collection.AssignVisitFilterVm
+<div class="filter-container">
+</div>
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+	<div class="col-md-12 column">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-Customer"></i>
+					<span class="caption-subject bold uppercase">Asignación Cobro</span>
+				</div>
+                <div class="actions">
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="asd" disabled="disabled">
+                            Asignar Visita
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default" id="btnObservations" disabled="disabled">
+                            Observaciones
+                        </a>
+                    </div>
+                    @*<div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnDetailCustomer" disabled="disabled">
+                            Detalle Cliente
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnAssign" disabled="disabled" onclick="loadModal()">
+                            Asignar Forma de Pago
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnFollow" disabled="disabled" onclick="loadModalFollow()">
+                            Seguimiento
+                        </a>
+                    </div>*@
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""></a>
+                </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <div class="form-actions top">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">Fecha de Pago:</label>
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.ddlPaymentDate.SelectedItem, Model.ddlPaymentDate.ListItems, new { @id = "ddlPaymentDate", @size = 2 })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">Zona:</label>
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.SelectedZones, Model.ListZones, new { @size = "2" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <button id="btnBuscar" class="btn btn-default">Buscar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" id="acciones">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="portlet portlet-sortable-empty">
+                </div>
+            </div>
+        </div>
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Asignar Cobro por COBRADOR</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Fecha de cobro asignada:</label>
+                                    <div class="col-md-8">
+                                        <select id="assignedDate" size="2" style="display: none"></select>
+                                        <input class="form-control date-picker" style="display: none" type="text" id="assignedDateFree" placeholder="dd/mm/aaaa">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-12">Observaciones</label>
+                                    <div class="col-md-8">
+                                        <textarea class="form-control" type="text" id="observationsCollector"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-pimary" data-dismiss="modal" id="GenerateVisit">Asignar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="myModal2" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Asignar cobro por AGENCIA</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Fecha de cobro asignada:</label>
+                                    <div class="col-md-8">
+                                        <input class="form-control date-picker" type="text" id="dateAgency" placeholder="dd/mm/aaaa">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-12">Observaciones</label>
+                                    <div class="col-md-8">
+                                        <textarea class="form-control" type="text" id="observationsAgency"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-pimary" data-dismiss="modal" id="GenerateAgency">Asignar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="myModal3" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Cambio estado de contrato</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Nuevo estado:</label>
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(m => m.ddlStatus.SelectedItem, Model.ddlStatus.ListItems, new { @size = 2 })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-12">Observaciones</label>
+                                    <div class="col-md-8">
+                                        <textarea class="form-control" type="text" id="observationsChangeStatus"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-pimary" data-dismiss="modal" id="GenerateChangeStatus">Aceptar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" role="dialog" id="modalPaymentPreference">
+
+        </div>
+
+        <div class="modal fade" role="dialog" id="modalFollow">
+
+        </div>
+
+        <script type="text/javascript">
+        $(document).ready(function () {
+            $(".date-picker").datepicker();
+            $('select').multiselect({
+                includeSelectAllOption: false,
+                enableFiltering: true
+            });
+
+            $('#btnBuscar').click(function (event) {
+                var params = new Object;
+                params.PaymentDateId = $('#ddlPaymentDate').val();
+                params.ZoneId = $('#SelectedZones').val();
+                CallBackGet(function (data) {
+                    $("#acciones").html(data);
+                }, "/Visits/GetAssignVisitTable", params)
+            });
+        });
+        </script>
+

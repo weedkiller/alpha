@@ -1,0 +1,2 @@
+C:\Proyectos\multi2\Multigroup.Services\Fakes\mercadopago.fakes : warning : No se puede generar shim para mercadopago.MP+RestClient: El tipo no es visible para exported or assembly(mercadopago.Fakes).
+C:\Proyectos\multi2\Multigroup.Services\Fakes\mercadopago.fakes : warning : No se puede generar shim para mercadopago.MP+Util: El tipo no es visible para exported or assembly(mercadopago.Fakes).

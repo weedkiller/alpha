@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multigroup.Portal", "Multigroup.Portal\Multigroup.Portal.csproj", "{F30AE5CB-4C60-43E2-BFB0-ECE14036DF22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multigroup.Repositories", "Multigroup.Repositories\Multigroup.Repositories.csproj", "{AFA4FDF6-1028-4AC8-8274-E1D7CA1399DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multigroup.Services", "Multigroup.Services\Multigroup.Services.csproj", "{6F1FEFA5-6E2C-4B50-8E38-8B46E4358A4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multigroup.DomainModel", "Multigroup.DomainModel\Multigroup.DomainModel.csproj", "{B05FB276-AFE1-49FF-B0B7-F0B3FF771C2E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{63046A36-C161-470E-B9C5-A1F9C177D9C0}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multigroup.Common", "Multigroup.Common\Multigroup.Common.csproj", "{8AE5A33F-7D75-449C-90F9-F619919EADDF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F30AE5CB-4C60-43E2-BFB0-ECE14036DF22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F30AE5CB-4C60-43E2-BFB0-ECE14036DF22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F30AE5CB-4C60-43E2-BFB0-ECE14036DF22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F30AE5CB-4C60-43E2-BFB0-ECE14036DF22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFA4FDF6-1028-4AC8-8274-E1D7CA1399DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFA4FDF6-1028-4AC8-8274-E1D7CA1399DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFA4FDF6-1028-4AC8-8274-E1D7CA1399DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFA4FDF6-1028-4AC8-8274-E1D7CA1399DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F1FEFA5-6E2C-4B50-8E38-8B46E4358A4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F1FEFA5-6E2C-4B50-8E38-8B46E4358A4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F1FEFA5-6E2C-4B50-8E38-8B46E4358A4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F1FEFA5-6E2C-4B50-8E38-8B46E4358A4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B05FB276-AFE1-49FF-B0B7-F0B3FF771C2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B05FB276-AFE1-49FF-B0B7-F0B3FF771C2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B05FB276-AFE1-49FF-B0B7-F0B3FF771C2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B05FB276-AFE1-49FF-B0B7-F0B3FF771C2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AE5A33F-7D75-449C-90F9-F619919EADDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AE5A33F-7D75-449C-90F9-F619919EADDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AE5A33F-7D75-449C-90F9-F619919EADDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AE5A33F-7D75-449C-90F9-F619919EADDF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

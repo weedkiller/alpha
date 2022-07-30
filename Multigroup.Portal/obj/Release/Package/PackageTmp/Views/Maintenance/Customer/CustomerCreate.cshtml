@@ -1,0 +1,289 @@
+<!-- VISTA: Maintenance/CustomerCreate.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.Maintenance.CustomerVm
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column"
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-user"></i>
+                    <span class="caption-subject bold uppercase">Cargar Cliente</span>
+                </div>
+                <div class="actions">
+                </div>
+            </div>
+            @using (Ajax.BeginForm("Create", "Customer", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnBegin = "OnStart",
+                OnComplete = "OnComplete",
+                OnFailure = "FailMessage",
+                OnSuccess = "SuccessMessage",
+                UpdateTargetId = "dashboard"
+            }))
+            {
+            @Html.AntiForgeryToken()
+            <div class="portlet-body form">
+				<div class="form-body">
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Nombre:</label>
+								<div class="col-md-8">
+									@Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+									@Html.ValidationMessageFor(model => model.Name, string.Empty, new { @class = "validate-error" })
+								</div>
+							</div>
+						</div>
+						<!--/span-->
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Apellido:</label>
+								<div class="col-md-8">
+									@Html.TextBoxFor(model => model.Surname, new { @class = "form-control" })
+									@Html.ValidationMessageFor(model => model.Surname, string.Empty, new { @class = "validate-error" })
+								</div>
+							</div>
+						</div>
+						<!--/span-->
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Fecha de Nacimiento:</label>
+								<div class="col-md-8">
+									@Html.TextBoxFor(model => model.Birthdate, new { @class = "form-control form-control-inline date-picker" })
+									@Html.ValidationMessageFor(model => model.Surname, string.Empty, new { @class = "validate-error" })
+								</div>
+							</div>
+						</div>
+						<!--/span-->
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Tipo Documento:</label>
+								<div class="col-md-8">
+									@Html.DropDownListFor(m => m.ddlIdentificationType.SelectedItem, Model.ddlIdentificationType.ListItems, new { @id = "ddlIdentificationType", @size = 2 })
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+
+						<!--/span-->
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">N Documento:</label>
+								<div class="col-md-8">
+									@Html.TextBoxFor(model => model.IdentificationNumber, new { @class = "form-control" })
+									@Html.ValidationMessageFor(model => model.IdentificationNumber, string.Empty, new { @class = "validate-error" })
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Cuit:</label>
+								<div class="col-md-8">
+									@Html.TextBoxFor(model => model.CUIT, new { @class = "form-control" })
+									@Html.ValidationMessageFor(model => model.CUIT, string.Empty, new { @class = "validate-error" })
+								</div>
+							</div>
+						</div>
+						<!--/span-->
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Estado Civil:</label>
+								<div class="col-md-8">
+									@Html.DropDownListFor(m => m.ddlMaritalStatus.SelectedItem, Model.ddlMaritalStatus.ListItems, new { @id = "ddlMaritalStatus", @size = 2 })
+								</div>
+							</div>
+						</div>
+						<!--/span-->
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Direccion:</label>
+								<div class="col-md-8">
+									@Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+									@Html.ValidationMessageFor(model => model.Address, string.Empty, new { @class = "validate-error" })
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Ciudad:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.ddlCity.SelectedItem, Model.ddlCity.ListItems, new { @id = "ddlCity", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Provincia:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.ddlState.SelectedItem, Model.ddlState.ListItems, new { @id = "ddlState", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+						<!--/span-->
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Codigo Postal:</label>
+								<div class="col-md-8">
+									@Html.TextBoxFor(model => model.ZipCode, new { @class = "form-control" })
+									@Html.ValidationMessageFor(model => model.ZipCode, string.Empty, new { @class = "validate-error" })
+								</div>
+							</div>
+						</div>
+						<!--/span-->
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Telefono:</label>
+								<div class="col-md-8">
+									@Html.TextBoxFor(model => model.Phone, new { @class = "form-control" })
+									@Html.ValidationMessageFor(model => model.Phone, string.Empty, new { @class = "validate-error" })
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<!--/span-->
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Celular:</label>
+								<div class="col-md-8">
+									@Html.TextBoxFor(model => model.CellPhone, new { @class = "form-control" })
+									@Html.ValidationMessageFor(model => model.CellPhone, string.Empty, new { @class = "validate-error" })
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">E-mail:</label>
+								<div class="col-md-8">
+									@Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+									@Html.ValidationMessageFor(model => model.Email, string.Empty, new { @class = "validate-error" })
+								</div>
+							</div>
+						</div>
+						<!--/span-->
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Ocupacion:</label>
+								<div class="col-md-8">
+									@Html.TextBoxFor(model => model.Occupation, new { @class = "form-control" })
+									@Html.ValidationMessageFor(model => model.Occupation, string.Empty, new { @class = "validate-error" })
+								</div>
+							</div>
+						</div>
+						<!--/span-->
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Horario de Contacto:</label>
+								<div class="col-md-8">
+									@Html.TextBoxFor(model => model.ContactHours, new { @class = "form-control" })
+									@Html.ValidationMessageFor(model => model.ContactHours, string.Empty, new { @class = "validate-error" })
+								</div>
+							</div>
+						</div>
+						<!--/span-->
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Nombre Conyuge:</label>
+								<div class="col-md-8">
+									@Html.TextBoxFor(model => model.SpouseName, new { @class = "form-control" })
+									@Html.ValidationMessageFor(model => model.SpouseName, string.Empty, new { @class = "validate-error" })
+								</div>
+							</div>
+						</div>
+						<!--/span-->
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Apellido Conyuge:</label>
+								<div class="col-md-8">
+									@Html.TextBoxFor(model => model.SpouseSurname, new { @class = "form-control" })
+									@Html.ValidationMessageFor(model => model.SpouseSurname, string.Empty, new { @class = "validate-error" })
+								</div>
+							</div>
+						</div>
+						<!--/span-->
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Tipo Documento Conyuge:</label>
+								<div class="col-md-8">
+									@Html.DropDownListFor(m => m.ddlSpouseIdentificationType.SelectedItem, Model.ddlSpouseIdentificationType.ListItems, new { @id = "ddlSpouseIdentificationType", @size = 2 })
+								</div>
+							</div>
+						</div>
+						<!--/span-->
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Documento Conyuge:</label>
+								<div class="col-md-8">
+									@Html.TextBoxFor(model => model.SpouseIdentificationNumber, new { @class = "form-control" })
+									@Html.ValidationMessageFor(model => model.SpouseIdentificationNumber, string.Empty, new { @class = "validate-error" })
+								</div>
+							</div>
+						</div>
+					</div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-12">Detalle Dirección:</label>
+                                <div class="col-md-12">
+                                    @Html.TextAreaFor(model => model.AddressDetail, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.AddressDetail, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				</div>
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-md-offset-5">
+                            <button class="btn btn-primary" id="btnProcess">Guardar</button>
+                            <button type="button" class="btn default" id="btnCancel">Volver</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#chkRecChange').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
+        $('#ddlSpouseIdentificationType').multiselect();
+        $('#ddlMaritalStatus').multiselect();
+        $('#ddlIdentificationType').multiselect();
+        $('#ddlCity').multiselect();
+        $('#ddlState').multiselect();
+        $('#SelectedStatus').multiselect();
+        $("#Birthdate").datepicker();
+
+
+        $('#btnCancel').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+                 
+            }, "/Customer/Index", null)
+        });
+    });
+</script>
+
+
+
+

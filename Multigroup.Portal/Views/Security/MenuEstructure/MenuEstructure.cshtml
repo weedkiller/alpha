@@ -1,0 +1,162 @@
+﻿<!-- VISTA: Security/NavigationAccess/NavigationAccess.cshtml -->
+@using Resources
+@model IEnumerable<Multigroup.Portal.Models.Security.MenuStructureTableVm>
+<div id="modalConfirm" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <p>¿Desea eliminar el Componente?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Resource.Global_Cancel</button>
+                <button type="button" class="btn btn-primary" id="btnDeleteComponent">@Resource.Global_Delete</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="filter-container">
+</div>
+
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-shield"></i>
+                    <span class="caption-subject bold uppercase">@Resource.Global_NavigationAccess</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-default bootstro" id="btnAddMenu" data-bootstro-title="@Resource.Global_Add @Resource.Global_Page" data-bootstro-content="@Resource.MenuEstructure_Help_1" data-bootstro-placement="left">@Resource.Global_Add</a>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnEditMenu" disabled="disabled" data-bootstro-title="Editar Pagina" data-bootstro-content="@Resource.MenuEstructure_Help_2" data-bootstro-placement="left">
+                            @Resource.Global_Edit
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAaiDelete">
+                        <a class="btn btn-default bootstro" id="btnDeleteMenu" disabled="disabled" data-bootstro-title="@Resource.Global_Delete @Resource.Global_Page" data-bootstro-content="@Resource.MenuEstructure_Help_3" data-bootstro-placement="left" data-toggle="modal" data-target="#modalConfirm">
+                            @Resource.Global_Delete
+                        </a>
+                    </div>
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                    <a class="btn btn-icon-only btn-default btn-support" href="javascript:;" data-original-title="" title="">
+                        <i class="fa fa-info btn-support"></i>
+                    </a> 
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    <table id="NavigationAccesTable" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                        <thead>
+                            <tr>
+                                <th style="display:none">Id</th>
+                                <th>@Resource.Global_Name</th>
+                                <th>@Resource.Global_Order</th>
+                                <th>@Resource.Global_Father</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td style="display:none">@Html.DisplayFor(modelItem => item.Id)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Order)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Parent)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#btnAddMenu').click(function (event) {
+            CallBackGet(function (data) {
+
+                $("#dashboard").html(data);
+                 
+            }, "/MenuEstructure/Create", null)
+        });
+        $('#btnEditMenu').click(function (event) {
+            var param = new Object;
+            param.Id = id;
+            CallBackGet(function (data) {
+   
+                $("#dashboard").html(data);
+                 
+            }, "/MenuEstructure/Edit", param)
+        });
+        function formatTableToolsButton(node) {
+            $(node).removeClass('DTTT_button');
+            $(node).addClass('btn btn-default');
+        }
+        var table = $('#NavigationAccesTable').dataTable({
+            "aaSorting": [],
+            "destroy": true,
+            "bServerSide": false,
+			"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+            "sScrollYInner": "100%",
+            "dom": 'Blfrtip',
+			"buttons": [
+				{ extend: 'copy', text: 'Copiar' },
+				'csv',
+				'excel',
+				'pdf',
+				{ extend: 'print', text: 'Imprimir' },
+			],
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false
+        });
+        $('#NavigationAccesTable tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $("#btnEditMenu").attr("disabled", "disabled");
+                $("#btnDeleteMenu").attr("disabled", "disabled");
+                $("#idTooltipAai").removeClass('tooltipAai');
+                $('#idTooltipAai').tooltip({
+                    container: 'body',
+                    title: argosLang.Global_SelectCountry
+                });
+            }
+            else {
+                $('#NavigationAccesTable tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $("#btnEditMenu").removeAttr("disabled", "disabled");
+                $("#btnDeleteMenu").removeAttr("disabled", "disabled");
+                $("#idTooltipAai").tooltip('destroy');
+                id = table.fnGetData(this)[0];
+            }
+        });
+
+        $('#btnDeleteComponent').click(function (event) {
+            var param = new Object;
+            param.id = id;
+            CallSericeAjax(function (data) {
+                SuccessMessageDelete();
+                CallBackGet(function (data) {
+                    $('#modalConfirm').modal('hide');
+                    $('.modal-backdrop').remove();
+                    $("#dashboard").html(data);
+                }, "/MenuEstructure/Index")
+            }, "/MenuEstructure/Delete/", param, HttpActions.POST);
+        });
+    });
+</script>
+

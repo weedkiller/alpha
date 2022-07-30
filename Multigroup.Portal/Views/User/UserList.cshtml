@@ -1,0 +1,206 @@
+@model IEnumerable<Multigroup.Portal.Models.Shered.UserListVm>
+
+@{
+    ViewBag.Title = "UserList";
+}
+
+<div class="filter-container">
+</div>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.html">
+                <i class="fa fa-home"></i>Home
+            </a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">Administración</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">Usuarios</a>
+        </li>
+    </ul>
+</div>
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-user"></i>
+                    <span class="caption-subject bold uppercase"> Usuarios</span>
+                </div>
+                <div class="actions">
+                  
+                    <!-- CREAR USUARIO -->
+                    <a class="btn btn-default" id="btnCreate" data-original-title="" title="" data-toggle="modal" data-target="#NewUser">
+                        Añadir <i class="fa fa-plus"></i>
+                    </a>
+                    <!-- Modal -->
+                    <div class="modal fade" id="NewUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Añadir Usuario</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="createData"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- FIN CREAR USUARIO -->
+
+                    <!-- EDITAR USUARIO -->
+                    <a class="btn btn-default" id="btnEdit" data-original-title="" title="" data-toggle="modal" data-target="#editUser">
+                        Editar <i class="fa fa-pencil"></i>
+                    </a>
+                    <!-- Modal -->
+                    <div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Editar Usuario</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="editData"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- FIN EDITAR USUARIO -->
+
+                    <!-- VER USUARIO -->
+                    <a class="btn btn-default" id="btnVer" data-original-title="" title="" data-toggle="modal" data-target="#verUser">
+                        Ver <i class="fa fa-eye"></i>
+                    </a>
+                    <!-- Modal -->
+                    <div class="modal fade" id="verUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Detalle Usuario</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="verData"></div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- FIN VER USUARIO -->
+
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <table id="tableUserList" class="display table table-bordered table-striped table-condensed flip-content">
+                <thead class="flip-content">
+                    <tr>
+                        <th>Id Usuario</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Names)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Surname)
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                    </tr>
+                }
+            </table>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnCreate').click(function (event) {
+            $("#createData").load('@(Url.Action("Create", "User", null, Request.Url.Scheme))');
+        });
+
+    });
+</script>
+<script type="text/javascript">
+        $(document).ready(function () {
+        var table = $('#tableUserList');
+        var idUser = 0;
+        $.extend(true, $.fn.DataTable.TableTools.classes, {
+            "container": "btn-group tabletools-btn-group pull-right",
+            "buttons": {
+                "normal": "btn btn-sm default",
+                "disabled": "btn btn-sm default disabled"
+            }
+        });
+
+        $('#tableUserList tbody').unbind("click").on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+
+        $('#button').click(function () {
+            table.row('.selected').remove().draw(false);
+        });
+
+			var oTable = table.dataTable({
+				"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+            "tableTools": {
+                "sSwfPath": "../../Assets/copy_csv_xls_pdf.swf",
+                "aButtons": [{
+                    "sExtends": "pdf",
+                    "sButtonText": "PDF"
+                }, {
+                    "sExtends": "csv",
+                    "sButtonText": "CSV"
+                }, {
+                    "sExtends": "xls",
+                    "sButtonText": "Excel"
+                }, {
+                    "sExtends": "print",
+                    "sButtonText": "Imprimir",
+                    "sInfo": 'Presione Ctrl+P para imprimir o ESC para salir',
+                    "sMessage": ""
+                }, {
+                    "sExtends": "copy",
+                    "sButtonText": "Copiar"
+                }]
+            }
+        });
+        $("#tableUserList tbody tr").live("click", function (event) {
+            idUser = table.fnGetData(this)[0];
+        });
+        $('#btnVer').click(function () {
+            $("#button").hide();
+            $("#verData").load('@(Url.Action("Details", "User", null, Request.Url.Scheme))?Id=' + idUser);
+        });
+
+        $('#btnEdit').click(function () {
+            $("#editData").load('@(Url.Action("Edit", "User", null, Request.Url.Scheme))?Id=' + idUser);
+        });
+    });
+</script>

@@ -1,0 +1,299 @@
+﻿<!-- VISTA: User/UserEdit.cshtml -->
+@model Multigroup.Portal.Models.Shared.UserVm
+@using Resources
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-shield"></i>
+                    <span class="caption-subject bold uppercase">Editar Usuario</span>
+                </div>
+                <div class="actions">
+                </div>
+            </div>
+            @using (Ajax.BeginForm("Edit", "User", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnSuccess = "SuccessEdit",
+                OnBegin = "OnStart",
+                OnComplete = "OnComplete",
+                OnFailure = "FailMessage",
+                UpdateTargetId = "dashboard"
+            }, new { @id = "form12" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="portlet-body form">
+                    <!-- BEGIN FORM-->
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.UserId)
+					<div class="form-body">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="control-label col-md-3">Nombre:</label>
+									<div class="col-md-9">
+										@Html.TextBoxFor(model => model.Names, new { id = "12", @class = "form-control" })
+										@Html.ValidationMessageFor(model => model.Names)
+									</div>
+								</div>
+							</div>
+							<!--/span-->
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="control-label col-md-3">Apellido:</label>
+									<div class="col-md-9">
+										@Html.TextBoxFor(model => model.Surname, new { @class = "form-control" })
+										@Html.ValidationMessageFor(model => model.Surname)
+									</div>
+								</div>
+							</div>
+							<!--/span-->
+						</div>
+						<!--/row-->
+						<!--/row-->
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="control-label col-md-3">N de Documento:</label>
+									<div class="col-md-9">
+										@Html.TextBoxFor(model => model.IdentificationNumber, new { @class = "form-control" })
+										@Html.ValidationMessageFor(model => model.IdentificationNumber)
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="control-label col-md-3">E-mail:</label>
+									<div class="col-md-9">
+										@Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+										@Html.ValidationMessageFor(model => model.Email)
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/row-->
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="control-label col-md-3">Rol:</label>
+									<div class="col-md-9">
+										@Html.DropDownListFor(m => m.SelectedRole, Model.ListRoles, new { size = "2" })
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="control-label col-md-3">Usuario:</label>
+									<div class="col-md-9">
+										@Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
+										@Html.ValidationMessageFor(model => model.UserName)
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="row">
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="control-label col-md-3">Tipo:</label>
+									<div class="col-md-9">
+										@Html.DropDownListFor(m => m.ddlUserType.SelectedItem, Model.ddlUserType.ListItems, new { @id = "ddlUserType", @size = 2 })
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6" style="display: none" id="comissionDiv">
+								<div class="form-group">
+									<label class="control-label col-md-3">Zona:</label>
+									<div class="col-md-9">
+										@Html.ListBoxFor(m => m.SelectedZone, Model.ListZones, new { multiple = "multiple" })
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6" style="display: none" id="supervisorDiv">
+								<div class="form-group">
+									<label class="control-label col-md-3">Supervisor:</label>
+									<div class="col-md-9">
+                                        @Html.DropDownListFor(m => m.ddlSupervisor.SelectedItem, Model.ddlSupervisor.ListItems, new { @id = "ddlSupervisor", @size = 2 })
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6" style="display: none" id="gerenteDiv">
+								<div class="form-group">
+									<label class="control-label col-md-3">Gerente:</label>
+									<div class="col-md-9">
+                                        @Html.DropDownListFor(m => m.ddlGerente.SelectedItem, Model.ddlGerente.ListItems, new { @id = "ddlGerente", @size = 2 })
+									</div>
+								</div>
+							</div>
+						</div>
+                        <div class="row">
+                            <div class="col-md-12" style="display: none" id="Observations">
+                                <div class="form-group">
+                                    <label class="control-label col-md-12">Motivo cambio de cargo:</label>
+                                    <div class="col-md-12">
+                                        @Html.TextAreaFor(model => model.Observations, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Observations, string.Empty, new { @class = "validate-error" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Caja:</label>
+                                    <div class="col-md-9">
+                                        @Html.DropDownListFor(m => m.ddlCashier.SelectedItem, Model.ddlCashier.ListItems, new { @id = "ddlCashier", @size = 2 })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Activo:</label>
+                                    <div class="col-md-8" id="sandbox-container">
+                                        @Html.CheckBoxFor(model => model.Active)
+                                        @Html.ValidationMessageFor(model => model.Active)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">Cambiar Contraseña:</label>
+                                        <div class="col-md-9" id="sandbox-container">
+                                            @*<input type="checkbox" id="changePassword"/>*@
+                                            @Html.CheckBoxFor(model => model.ChangePassword, new { @id = "changePassword" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">Contraseña:</label>
+                                        <div class="col-md-9">
+                                            @Html.TextBoxFor(model => model.Password, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.Password)
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/span-->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">Repita Contraseña:</label>
+                                        <div class="col-md-9">
+                                            @Html.TextBoxFor(model => model.ConfirmPassword, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/span-->
+                            </div>
+						<!--/row-->
+					</div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-offset-5">
+                                        <button class="btn btn-primary" id="btnSend">Guardar</button>
+                                        <button type="button" class="btn default" id="btnCancel">Volver</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END FORM-->
+                </div>
+            }
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#Active').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+		$('#ddlUserType').change(function () {
+			if ($('#ddlUserType').val() == '2') {
+				$('#comissionDiv').show();
+				$('#gerenteDiv').hide();
+				$('#supervisorDiv').hide();
+			} else if ($('#ddlUserType').val() == '1') {
+				$('#supervisorDiv').show();
+				$('#gerenteDiv').hide();
+				$('#comissionDiv').hide();
+			} else if ($('#ddlUserType').val() == '4') {
+				$('#gerenteDiv').show();
+				$('#supervisorDiv').hide();
+				$('#comissionDiv').hide();
+			} else {
+				$('#gerenteDiv').hide();
+				$('#supervisorDiv').hide();
+				$('#comissionDiv').hide();
+			}
+			$('#Observations').show();
+			$('select').multiselect();
+		});
+		if ($('#ddlUserType').val() == '2') {
+			$('#comissionDiv').show();
+			$('#gerenteDiv').hide();
+			$('#supervisorDiv').hide();
+		} else if ($('#ddlUserType').val() == '1') {
+			$('#supervisorDiv').show();
+			$('#gerenteDiv').hide();
+			$('#comissionDiv').hide();
+		} else if ($('#ddlUserType').val() == '4') {
+			$('#gerenteDiv').show();
+			$('#supervisorDiv').hide();
+			$('#comissionDiv').hide();
+		} else {
+			$('#gerenteDiv').hide();
+			$('#supervisorDiv').hide();
+			$('#comissionDiv').hide();
+		}
+        $('select').multiselect();
+    });
+
+
+    $("#changePassword").change(function () {
+        if (this.checked) {
+            $("#Password").removeAttr("disabled", "disabled");
+            $("#ConfirmPassword").removeAttr("disabled", "disabled");
+        } else {
+            $("#Password").attr("disabled", "disabled");
+            $("#ConfirmPassword").attr("disabled", "disabled");
+        }
+    });
+
+    $('#btnCancel').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/User/Index", null)
+    });
+    function SuccessEdit() {
+        SuccessMessage();
+        $('#editUser').modal('hide');
+        $('.modal-backdrop').remove();
+    }
+</script>
+
+
+
+

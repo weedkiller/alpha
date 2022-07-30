@@ -1,0 +1,372 @@
+﻿@model Multigroup.Portal.Models.ContractModel.ContractFilterVm
+<div class="filter-container">
+</div>
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-Customer"></i>
+                    <span class="caption-subject bold uppercase">Contratos</span>
+                </div>
+               <div class="actions"> 
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnDeleteCustomer" disabled="disabled" data-toggle="modal" data-target="#deleteModal">
+                            Eliminar
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnEditCustomer" disabled="disabled">
+                            Editar
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnVer" disabled="disabled" onclick="loadModal()">
+                            Actualizar Estado de Contrato
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnReacomodar" disabled="disabled" data-toggle="modal" data-target="#modalReacomodar">
+                            Reacomodar Cuotas
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnVerStatus" disabled="disabled" onclick="loadModalGeneralStatus()">
+                            Ver estado de cuenta
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnDeleteInterest" disabled="disabled">
+                            Eliminar intereses
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnVerStatusChange" disabled="disabled">
+                            Ver cambios de estado
+                        </a>
+                    </div>
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="form-actions top">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Estado:</label>
+                                <div class="col-md-8">
+                                    @Html.ListBoxFor(m => m.SelectedStatus, Model.ListStatus, new { multiple = "multiple" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Cliente:</label>
+                                <div class="col-md-8">
+                                    @Html.ListBoxFor(m => m.SelectedClient, Model.ListClient, new { multiple = "multiple" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Fecha Desde:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control form-control-inline date-picker" id="txtDateFrom" placeholder="dd/mm/aaaa" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Fecha Hasta:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control form-control-inline date-picker" id="txtDateTo" placeholder="dd/mm/aaaa" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Estado Crediticio:</label>
+                                <div class="col-md-8">
+                                    @Html.ListBoxFor(m => m.SelectedStatusDetail, Model.ListStatusDetail, new { multiple = "multiple" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Agencia:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.SelectedAgency, Model.ListAgency, new { @size = "2" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Tipo de Contrato:</label>
+                                <div class="col-md-8">
+                                    @Html.ListBoxFor(m => m.SelectedContractType, Model.ListContractType, new { multiple = "multiple" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <button id="btnBuscar" class="btn btn-default">Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" id="modalEditContract">
+
+</div>
+<div class="modal fade" role="dialog" id="modalReacomodar">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Reacomodar Cuotas</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">N de cuota:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="InstallmentNumber" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn default" id="btnReacomodarCuotas">Aceptar</button>
+                <button type="button" class="btn default" id="btnCancel" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" id="modalGeneralStatus">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Resumen del Contrato</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Cliente:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="Customer" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">N Contrato:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="ContractNumber" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Agencia:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="Agency" disabled />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Auto:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="GoodRequested" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Cuotas:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="ContractTerm" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha de inicio:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="StartDate" disabled />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha de fin:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="EndDate" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Cuotas Totales:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="TotalInstallments" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Cuotas Pagadas</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="PaidInstallments" disabled />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Cuotas Parciales:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="PartialInstallments" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Cuotas a Pagar:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="InstallmentsToExpire" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Cuotas Adeudadas</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="OwedInstallments" disabled />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Total Ahorrado:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="TotalSaved" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Adelanto de Capital:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="AdvanceOfCapital" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Bonificacion:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="Bonification" disabled />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="TablaCuotas">
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn default" id="btnCancel" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalInterest" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" id="tableInterest">
+            
+        </div>
+    </div>
+</div>
+<div id="modalStatusChange" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" id="tableStatusChange">
+
+        </div>
+    </div>
+</div>
+<div id="deleteModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Borrar ultimo pago</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>¿Confirma que desea borrar el contrato?</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="deleteContractModalBtn">Confirmar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('select').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: true
+        });
+        $('.date-picker').datepicker();
+        $('#btnBuscar').click(function (event) {
+            var params = {};
+            params.SelectedStatus = $('#SelectedStatus').val();
+            params.SelectedStatusDetail = $('#SelectedStatusDetail').val();
+            params.SelectedClient = $('#SelectedClient').val();
+            params.DateFrom = $('#txtDateFrom').val();
+            params.DateTo = $('#txtDateTo').val();
+            params.SelectedAgency = $('#SelectedAgency').val();
+            params.ContractType = $('#SelectedContractType').val();
+            CallBackPost(function (data) {
+                $("#acciones").html(data);
+            }, "/Contract/GetTable", params)
+        });
+    });
+</script>
+

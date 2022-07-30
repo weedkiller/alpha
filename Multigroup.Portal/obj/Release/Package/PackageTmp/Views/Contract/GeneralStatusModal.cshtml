@@ -1,0 +1,67 @@
+﻿@model Multigroup.Portal.Models.ContractModel.ContractVm
+<div class="modal-dialog">
+	@using (Ajax.BeginForm("ChangeStatus", "Contract", new AjaxOptions
+	{
+		HttpMethod = "POST",
+		OnBegin = "OnStart",
+		OnComplete = "OnComplete",
+		OnFailure = "FailMessage",
+		OnSuccess = "SuccessMessage",
+		UpdateTargetId = "dashboard"
+	}))
+	{
+		@Html.AntiForgeryToken()
+		@Html.HiddenFor(model => model.ContractId)
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Cambiar estado</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label col-md-4">Estado:</label>
+							<div class="col-md-8">
+								@Html.DropDownListFor(m => m.ddlStatus.SelectedItem, Model.ddlStatus.ListItems, new { @size = 2 })
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4" style="display: none" id="monthDiv">
+						<div class="form-group">
+							<label class="control-label col-md-4">Mes inicio:</label>
+							<div class="col-md-8">
+								@Html.TextBoxFor(model => model.StartMonth, new { @class = "form-control form-control-inline date-picker", @placeholder = "dd/mm/aaaa" })
+								@Html.ValidationMessageFor(model => model.StartMonth, string.Empty, new { @class = "validate-error" })
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label col-md-4">Estado Detalle:</label>
+							<div class="col-md-8">
+								@Html.DropDownListFor(m => m.ddlStatusDetail.SelectedItem, Model.ddlStatusDetail.ListItems, new { @size = 2 })
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" id="btnProcess" type="submit">Guardar</button>
+				<button type="button" class="btn default" id="btnCancel" data-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	}
+</div>
+<script>
+	$('#btnProcess').click(function () {
+		$("#modalEditContract").modal('hide');
+	});
+	$('.date-picker').datepicker();
+	$('select').multiselect();
+	$('#ddlStatus_SelectedItem').change(function () {
+		if ($('#ddlStatus_SelectedItem').val() == '18') {
+			$('#monthDiv').show();
+		}
+	});
+</script>

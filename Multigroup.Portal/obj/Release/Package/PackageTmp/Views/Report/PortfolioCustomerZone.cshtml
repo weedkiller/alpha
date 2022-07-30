@@ -1,0 +1,131 @@
+﻿<!-- VISTA: Maintenance/Customer.cshtml -->
+@model Multigroup.Portal.Models.Maintenance.PortfolioCustomerFilterVm
+<div class="filter-container">
+</div>
+
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+	<div class="col-md-12 column">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-Customer"></i>
+					<span class="caption-subject bold uppercase">Reporte Por Localidad</span>
+				</div>
+                <div class="actions">
+                </div>
+			</div>
+			<div class="portlet-body form">				
+                <div class="form-actions top">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Mes:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.SelectedMonth, Model.ListMonths, new { size = "2" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Año:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.Year, new { @class = "form-control", @type = "number" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Provincia:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.SelectedProvince, Model.ListProvince, new { size = "2" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Ciudad:</label>
+                                <div class="col-md-8">
+                                    @Html.ListBoxFor(m => m.SelectedCities, Model.ListCities, new { multiple = "multiple" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Telemarketer:</label>
+                                <div class="col-md-8">
+                                    @Html.ListBoxFor(m => m.SelectedUser, Model.ListUsers, new { multiple = "multiple" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <button id="btnBuscar" class="btn btn-default">Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				<div class="row">
+					<div class="col-md-12" id="acciones">
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="portlet portlet-sortable-empty">
+		</div>
+	</div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+                $('select').multiselect({
+                    includeSelectAllOption: true,
+                    enableFiltering: false,
+                });
+
+                $('#SelectedCities').multiselect({
+                    includeSelectAllOption: true,
+                    enableFiltering: false,
+                });
+
+                $('#SelectedUser').multiselect({
+                    includeSelectAllOption: true,
+                    enableFiltering: false,
+                });
+                             
+
+                $('.tooltipAai').tooltip({
+                    container: 'body',
+                    title: "Seleccione un cliente"
+                });
+                $('.tooltipCustomer1').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un cliente'
+                });
+               
+
+                $('#btnBuscar').click(function (event) {
+                    var params = {};
+                    params.UserId = $('#SelectedUser').val();
+                    params.SelectedProvince = $('#SelectedProvince').val();
+                    params.SelectedCities = $('#SelectedCities').val();
+                    params.Month = $('#SelectedMonth').val(); 
+                    params.Year = $('#Year').val();
+                    CallBackGet(function (data) {
+                        $("#acciones").html(data);
+                    }, "/Report/GetTableZone", params)
+                });               
+
+            });
+    </script>
+</div>
+

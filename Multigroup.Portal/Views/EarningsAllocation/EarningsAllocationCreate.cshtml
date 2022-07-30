@@ -1,0 +1,148 @@
+@model Multigroup.Portal.Models.Administration.EarningsAllocationVm
+<div class="filter-container">
+</div>
+
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-laptop"></i>
+                    <span class="caption-subject bold uppercase">Ingresar Asignación de Ganancias</span>
+                </div>              
+                <div class="actions">
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            
+            @using (Ajax.BeginForm("Create", "EarningsAllocation", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnBegin = "OnStart",
+                OnComplete = "OnComplete",
+                OnFailure = "FailMessage",
+                OnSuccess = "SuccessReturn"
+            }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="portlet-body form">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Fecha:</label>
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(model => model.Date, new { @class = "form-control form-control-inline date-picker", @type = "text", @placeholder = "dd/mm/aaaa" })
+                                    @Html.ValidationMessageFor(model => model.Date, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Monto:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", @type = "number" })
+                                    @Html.ValidationMessageFor(model => model.Amount, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Concepto:</label>
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(model => model.Concept, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Concept, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>                  
+                    <!--/span-->
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!-- BEGIN Portlet PORTLET-->
+                            <div class="portlet box blue-dark">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-calculator"></i>Socios
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div id="partnersTableDiv" style="position: relative; overflow: hidden; width: auto; min-height: 200px;">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END Portlet PORTLET-->
+                        </div>
+
+                    </div>
+                    <br />
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-5">
+                                <button class="btn btn-primary" id="btnProcess">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="confirmModal" class="modal fade" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">Guardar Asignación</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <h3>¿Desea guardar la asignación?</h3>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" id="btnProcess" class="btn btn-primary">Aceptar</button>
+                                <button type="button" data-dismiss="modal" class="btn default">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var PromoAplicada;
+    $(document).ready(function () {        
+
+        $('select').multiselect();
+
+        $("#Date").datepicker();
+
+        $("#Amount").keyup(function (event) {
+            var param = new Object;
+            param.amount = $('#Amount').val();
+            CallBackGet(function (data) {
+                $("#partnersTableDiv").html(data);
+            }, "/EarningsAllocation/Partners", param);
+        });
+
+        var param = new Object;
+        param.amount = 0;
+        CallBackGet(function (data) {
+            $("#partnersTableDiv").html(data);
+        }, "/EarningsAllocation/Partners", param);
+
+    });
+
+    function SuccessReturn() {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/EarningsAllocation/Index", null)
+        SuccessMessage();
+    }
+
+</script>

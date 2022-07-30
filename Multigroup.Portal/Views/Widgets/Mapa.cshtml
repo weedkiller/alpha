@@ -1,0 +1,63 @@
+
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-user"></i>
+                    <span class="caption-subject bold uppercase">Mapa de clientes</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+                        <div id="map" style="height: 500px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<script>
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 6,
+          center: {lat: -32.425146, lng: -65.2008785}
+        });
+        var geocoder = new google.maps.Geocoder();
+        CallSericeAjax(function (data) {
+			for(var i = 0; i < data.length; i++){
+                geocodeAddress(geocoder, data[i], map);
+            }
+		}, "/Customer/MapList", null, 'GET')
+      }
+
+      function geocodeAddress(geocoder, x, resultsMap) {
+        geocoder.geocode({'address': x.Address + ' ' + x.City+ ', Argentina '}, function(results, status) {
+          if (status === 'OK') {
+            resultsMap.setCenter(results[0].geometry.location);
+            var image = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2248%22%20height%3D%2248%22%20viewBox%3D%220%200%2038%2038%22%3E%3Cpath%20fill%3D%22%23'+ x.Color +'%22%20stroke%3D%22%23ccc%22%20stroke-width%3D%22.5%22%20d%3D%22M34.305%2016.234c0%208.83-15.148%2019.158-15.148%2019.158S3.507%2025.065%203.507%2016.1c0-8.505%206.894-14.304%2015.4-14.304%208.504%200%2015.398%205.933%2015.398%2014.438z%22%2F%3E%3Ctext%20transform%3D%22translate%2819%2018.5%29%22%20fill%3D%22%23fff%22%20style%3D%22font-family%3A%20Arial%2C%20sans-serif%3Bfont-weight%3Abold%3B%3Abold%3Btext-align%3Acenter%3B%22%20font-size%3D%227%22%20text-anchor%3D%22middle%22%3E' + x.Zone + '%3C%2Ftext%3E%3C%2Fsvg%3E';
+            var marker = new google.maps.Marker({
+              map: resultsMap,
+              position: results[0].geometry.location,
+              icon: image,
+              title: x.UserName
+            });
+          } else {
+            // alert('Error al intentar ubicar al cliente '+x.UserName+ ' en  ' + x.Address + ', ' + x.City);
+          }
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDkH62kytXxfY_CuddDJhDY32BfPCgzPuM&callback=initMap">
+    </script>
+

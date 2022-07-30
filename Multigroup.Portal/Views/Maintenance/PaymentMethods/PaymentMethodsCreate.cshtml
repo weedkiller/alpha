@@ -1,0 +1,183 @@
+﻿<!-- VISTA: Maintenance/PaymentMethodsCreate.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.Maintenance.PaymentMethodsVm
+
+<div class="filter-container">
+</div>
+
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-folder"></i>
+                    <span class="caption-subject bold uppercase">Añadir Metodo de pago</span>
+                </div>
+                <div class="actions">
+                </div>
+            </div>
+            @using (Ajax.BeginForm("Create", "PaymentMethods", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnBegin = "OnStart",
+                OnComplete = "OnComplete",
+                OnFailure = "FailMessage",
+                OnSuccess = "SuccessMessage",
+                UpdateTargetId = "dashboard"
+            }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="portlet-body form">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Nombre:</label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Name, string.Empty, new { @class = "validate-error" })
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Porcentaje:</label>
+                                    <div class="col-md-6">
+                                        @Html.TextBoxFor(model => model.Percentage, new { @class = "form-control", @type = "number", @Value = "0" })
+                                        @Html.ValidationMessageFor(model => model.Percentage, string.Empty, new { @class = "validate-error" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Canal:</label>
+                                    <div class="col-md-12">
+                                        @Html.TextBoxFor(model => model.Channel, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Channel, string.Empty, new { @class = "validate-error" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Activo:</label>
+                                    <div class="col-md-8">
+                                        @Html.CheckBoxFor(model => model.Active)
+                                        @Html.ValidationMessageFor(model => model.Active)
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Consolidado:</label>
+                                    <div class="col-md-8">
+                                        @Html.CheckBoxFor(model => model.Consolidated)
+                                        @Html.ValidationMessageFor(model => model.Consolidated)
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Verificable:</label>
+                                    <div class="col-md-8">
+                                        @Html.CheckBoxFor(model => model.Verifiable)
+                                        @Html.ValidationMessageFor(model => model.Verifiable)
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Automático:</label>
+                                    <div class="col-md-8">
+                                        @Html.CheckBoxFor(model => model.Automatic)
+                                        @Html.ValidationMessageFor(model => model.Automatic)
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Asignación:</label>
+                                    <div class="col-md-8">
+                                        @Html.CheckBoxFor(model => model.Aisgnation)
+                                        @Html.ValidationMessageFor(model => model.Aisgnation)
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-5">
+                                <button class="btn btn-primary" id="btnProcess">Guardar</button>
+                                <button type="button" class="btn default" id="btnCancel">Volver</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#Active').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
+        $('#ddlPaymentPreference').multiselect();
+
+        $('#Consolidated').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
+        $('#Verifiable').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
+        $('#Automatic').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
+        $('#Asignation').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
+        $('#btnCancel').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+
+            }, "/PaymentMethods/Index", null)
+        });
+    });
+</script>
+
+
+
+

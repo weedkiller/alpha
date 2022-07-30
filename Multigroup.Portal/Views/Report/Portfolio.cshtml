@@ -1,0 +1,110 @@
+﻿@model Multigroup.Portal.Models.Shared.PaymentHistoryFilterVm
+<div class="filter-container">
+</div>
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-Customer"></i>
+                    <span class="caption-subject bold uppercase">Reporte de cobros por telemarketer</span>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="form-actions top">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Telemarketer:</label>
+                                <div class="col-md-8">
+                                    @Html.ListBoxFor(m => m.SelectedUser, Model.ListUsers, new { multiple = "multiple" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Periodo:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control form-control-inline date-picker" placeholder="dd/mm/aaaa" id="datePortfolio" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <button id="btnBuscar" class="btn btn-default">Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+                        <div class="form-group">
+								<div class="svg-container center" id="chart"></div>
+							</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function () {
+	    $('select').multiselect({
+	        includeSelectAllOption: true,
+	        enableFiltering: false,
+	    });
+	    $('.date-picker').datepicker();
+		$('#btnBuscar').click(function (event) {
+			var params = {};
+			params.DatePortfolio = $('#datePortfolio').val();
+            params.telemarketer = $('#SelectedUser').val();
+			CallSericeAjax(function (data) {
+			$('#chart').empty();
+                new pvc.BarChart({
+                canvas: 'chart',
+                crosstabMode: false,
+                    stacked: true,
+                    barStackedMargin: 3,
+                    valuesVisible: true,
+                    valuesOptimizeLegibility: true,
+                    valuesFont: 'lighter 11px "Open Sans"',
+                    plotFrameVisible: false,
+
+                    // Cartesian axes
+                    axisGrid: true,
+                    axisOffset: 0,
+                    axisGrid_strokeStyle: '#F7F8F9',
+                    axisLabel_font: 'normal 10px "Open Sans"',
+                    baseAxisTicks: true,
+                    baseAxisTooltipAutoContent: 'summary',
+                    axisRule_strokeStyle: '#DDDDDD',
+
+                    // Panels
+                    legend: true,
+                    legendFont: 'normal 11px "Open Sans"',
+
+                    // Rubber-band
+                    rubberBand_strokeStyle: 'rgb(0,0,240)',
+                    rubberBand_fillStyle: 'rgba(0,0,255, 0.5)',
+                    rubberBand_lineWidth: 2.5,
+
+                    // Chart/Interaction
+                    animate: false,
+                    selectable: true,
+                    hoverable: true,
+                height: 500,
+                width: $('#acciones').width(),
+            })
+            .setData(data)
+            .render();
+            }, '/Report/PortfolioChart', params, 'POST');
+		});
+	});
+</script>
+

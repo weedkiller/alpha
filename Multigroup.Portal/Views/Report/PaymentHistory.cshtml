@@ -1,0 +1,169 @@
+﻿<!-- VISTA: Maintenance/Customer.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.Shared.PaymentHistoryFilterVm
+
+
+<div class="filter-container">
+</div>
+
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-Customer"></i>
+                    <span class="caption-subject bold uppercase">Historial de cobros</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Cliente:</label>
+                            <div class="col-md-8">
+                                @Html.ListBoxFor(m => m.SelectedCustomer, Model.ListCustomers, new { multiple = "multiple" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Tipo de pago:</label>
+                            <div class="col-md-8">
+                                @Html.ListBoxFor(m => m.SelectedPaymentMethod, Model.ListPaymentMethods, new { multiple = "multiple" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Telemarketer:</label>
+                            <div class="col-md-8">
+                                @Html.ListBoxFor(m => m.SelectedUser, Model.ListUsers, new { multiple = "multiple" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">N° de cuota:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.InstallmentNumber, new { @class = "form-control", type = "number" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha Cobro Desde:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateFrom" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha Cobro Hasta:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateTo" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Supervisor:</label>
+                            <div class="col-md-8">
+                                @Html.ListBoxFor(m => m.SelectedSupervisor, Model.ListSupervisor, new { multiple = "multiple" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha Ingreso Desde:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateIFrom" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha Ingreso Hasta:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateITo" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Provincia:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.SelectedProvince, Model.ListProvince, new { size = "2" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Ciudad:</label>
+                            <div class="col-md-8">
+                                @Html.ListBoxFor(m => m.SelectedCities, Model.ListCities, new { multiple = "multiple" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button id="btnBuscar" class="btn btn-default">Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.date-picker').datepicker();
+        $('select').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+        });
+        $('#btnBuscar').click(function (event) {
+            var params = {};
+            params.SelectedCustomer = $('#SelectedCustomer').val();
+            params.SelectedPaymentMethod = $('#SelectedPaymentMethod').val();
+            params.SelectedUser = $('#SelectedUser').val();
+            params.InstallmentNumber = $('#InstallmentNumber').val();
+            params.DateFrom = $('#txtDateFrom').val();
+            params.DateTo = $('#txtDateTo').val();
+            params.DateIFrom = $('#txtDateIFrom').val();
+            params.DateITo = $('#txtDateITo').val();
+            params.SelectedProvince = $('#SelectedProvince').val();
+            params.SelectedCities = $('#SelectedCities').val();
+            params.SelectedSupervisor = $('#SelectedSupervisor').val();
+            CallBackGet(function (data) {
+                $("#acciones").html(data);
+            }, "/Report/PaymentHistoryTable", params)
+        });
+
+    });
+</script>
+

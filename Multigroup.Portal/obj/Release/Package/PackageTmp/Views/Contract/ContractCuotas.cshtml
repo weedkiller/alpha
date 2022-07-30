@@ -1,0 +1,89 @@
+﻿@model Multigroup.Portal.Models.ContractModel.ContractTableCuotasVm
+<div class="form-group">
+    <table id="cuotas_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <thead>
+            <tr>
+                <th>Cuota</th>
+                <th>Año</th>
+                <th>Mes</th>
+                <th>Fecha Pago</th>
+                <th>Monto</th>
+                <th>Registrado Por</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ContractTableCuotasList)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Number)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Anio)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Mes)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PaymentDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                    <td>@Html.DisplayFor(modelItem => item.User)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+        function formatTableToolsButton(node) {
+            $(node).removeClass('DTTT_button');
+            $(node).addClass('btn btn-default');
+        }
+        var table = $('#cuotas_id').dataTable({
+            "destroy": true,
+            "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+            "aaSorting": [],
+            "bServerSide": false,
+            "buttons": [
+                { extend: 'copy', text: 'Copiar' },
+                'csv',
+                'excel',
+                'pdf',
+                { extend: 'print', text: 'Imprimir' },
+            ],
+            "dom": 'Blfrtip',
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false
+        });
+
+        $('#cuotas_id tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $("#idTooltipCustomer1").removeClass('tooltipAai');
+                $('#idTooltipCustomer1').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un usuario'
+                });
+                $("#idTooltipAai").removeClass('tooltipAai');
+                $('#idTooltipAai').tooltip({
+                    container: 'body',
+                    title: "Seleccione un cliente"
+                });
+            }
+            else {
+                $('#cuotas_id tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $("#idTooltipAai").tooltip('destroy');
+                $("#idTooltipCustomer1").tooltip('destroy');
+                id = table.fnGetData(this)[0];
+                tipo = table.fnGetData(this)[2];
+            }
+        });
+        $('.tooltipAai').tooltip({
+            container: 'body',
+            title: "Seleccione un contrato"
+        });
+        $('.tooltipCustomer1').tooltip({
+            container: 'body',
+            title: 'Seleccione un contrato'
+        });
+
+    });
+</script>

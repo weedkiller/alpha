@@ -1,0 +1,127 @@
+﻿<!-- VISTA: Maintenance/UserTypeCreate.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.Maintenance.UserTypeVm
+
+<div class="filter-container">
+</div>
+
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-folder"></i>
+                    <span class="caption-subject bold uppercase">Añadir TIpo de Empleado</span>
+                </div>
+                <div class="actions">
+                </div>
+            </div>
+            @using (Ajax.BeginForm("Create", "UserType", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnBegin = "OnStart",
+                OnComplete = "OnComplete",
+                OnFailure = "FailMessage",
+                OnSuccess = "SuccessMessage",
+                UpdateTargetId = "dashboard"
+            }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="portlet-body form">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Descripción:</label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Description, string.Empty, new { @class = "validate-error" })
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Aplica Comisión:</label>
+                                    <div class="col-md-8">
+                                        @Html.CheckBoxFor(model => model.IsCommission)
+                                        @Html.ValidationMessageFor(model => model.IsCommission)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Comisión:</label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.Commission, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Commission, string.Empty, new { @class = "validate-error" })
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-5">
+                                <button class="btn btn-primary" id="btnProcess">Guardar</button>
+                                <button type="button" class="btn default" id="btnCancel">Volver</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#IsCommission').on('ifChecked', function (event) {
+            if ($('#IsCommission').is(':checked') == true) {
+                $('#Commission').prop('disabled', false);
+            } else {
+                $('#Commission').prop('disabled', true);
+                $('#Commission').val("0");
+            }
+        });
+
+
+        $('#IsCommission').on('ifUnchecked', function (event) {
+            if ($('#IsCommission').is(':checked') == true) {
+                $('#Commission').prop('disabled', false);
+            } else {
+                $('#Commission').prop('disabled', true);
+                $('#Commission').val("0");
+            }
+        });
+
+        if ($('#IsCommission').is(':checked') == true) {
+            $('#Commission').prop('disabled', false);
+        } else {
+            $('#Commission').prop('disabled', true);
+        }
+
+        $('#IsCommission').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
+        $('#btnCancel').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+
+            }, "/UserType/Index", null)
+        });
+    });
+</script>
+
+
+
+

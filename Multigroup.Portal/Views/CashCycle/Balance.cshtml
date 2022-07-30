@@ -1,0 +1,130 @@
+﻿
+<!-- VISTA: Maintenance/Agency.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.Administration.MovementBalanceTableVm
+<div class="filter-container">
+</div>
+
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-Agency"></i>
+                    <span class="caption-subject bold uppercase">Saldos</span>
+                </div>
+                <div class="actions">                 
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+                        <div class="form-group">
+                            <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                <thead>
+                                    <tr>
+                                        <th>Medio de Pego</th>
+                                        <th>Saldo</th>
+                                        <th>Fecha Conciliación</th>
+                                        <th>Usuario Conciliación</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.MovementBalanceList)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.PaymentMethod)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.ConciliationDate)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.User)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).ready(function () {
+            $('#chkIncludedAll').iCheck({
+                checkboxClass: 'icheckbox_square-grey',
+                radioClass: 'iradio_square-grey',
+                increaseArea: '20%' // optional
+            });
+
+            function formatTableToolsButton(node) {
+                $(node).removeClass('DTTT_button');
+                $(node).addClass('btn btn-default');
+            }
+            var table = $('#tabla_id').dataTable({
+                "destroy": true,
+                "aaSorting": [],
+				"bServerSide": false,
+				"buttons": [
+					{ extend: 'copy', text: 'Copiar' },
+					'csv',
+					'excel',
+					'pdf',
+					{ extend: 'print', text: 'Imprimir' },
+				],
+				"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+                "dom": 'Blfrtip',
+                "sScrollYInner": "100%",
+                "sScrollX": "100%",
+                "sScrollXInner": "100%",
+                "scrollCollapse": true,
+                "bProcessing": false
+            });
+
+            $('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+                event.stopPropagation();
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                    $("#idTooltipAgency1").removeClass('tooltipAai');
+                    $('#idTooltipAgency1').tooltip({
+                        container: 'body',
+                        title: 'Seleccione un usuario'
+                    });
+                    $("#idTooltipAai").removeClass('tooltipAai');
+                    $('#idTooltipAai').tooltip({
+                        container: 'body',
+                        title: "Seleccione un cliente"
+                    });
+                }
+                else {
+                    $('#tabla_id tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                    $("#idTooltipAai").tooltip('destroy');
+                    $("#btnVer").removeAttr("disabled", "disabled");
+                    $("#idTooltipAgency1").tooltip('destroy');
+                    id = table.fnGetData(this)[0];
+                }
+            });
+            $('.tooltipAai').tooltip({
+                container: 'body',
+                title: "Seleccione un cliente"
+            });
+            $('.tooltipAgency1').tooltip({
+                container: 'body',
+                title: 'Seleccione un cliente'
+            });
+          
+
+       });
+    });
+</script>
+

@@ -1,0 +1,139 @@
+﻿@model Multigroup.Portal.Models.ContractModel.ContractTableVm
+<div class="form-group">
+    <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <thead>
+            <tr>
+                <th style="display:none">Contrato Id</th>
+                <th>N° Contrato</th>
+                <th>Cuota Inicial</th>
+                <th>Valor Cuota</th>
+                <th>Agencia</th>
+                <th>Cliente</th>
+                <th>DNI</th>
+                <th>Zona</th>
+                <th>Estado Contrato</th>
+                <th>Registrado Por</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ContractList)
+            {
+                <tr style="color: @item.Color; font-weight: bold">
+                    <td style="display:none">@Html.DisplayFor(modelItem => item.ContractId)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Number)</td>
+                    <td>@Html.DisplayFor(modelItem => item.FirstInstallmentAmount)</td>
+                    <td>@Html.DisplayFor(modelItem => item.InstallmentAmount)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Agency)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Customer)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DNI)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Zone)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                    <td>@Html.DisplayFor(modelItem => item.User)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-md-offset-7">
+            <div class="form-group">
+                <label class="control-label col-md-4">Cuota 1:</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="amount1Txt" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-offset-7">
+            <div class="form-group">
+                <label class="control-label col-md-4">Otras Cuotas:</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="amount2Txt" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+            var Amount1 = @ViewBag.Cuota1
+            $("#amount1Txt").val(Amount1);
+            var Amount2 = @ViewBag.Cuota2
+            $("#amount2Txt").val(Amount2);
+
+        function formatTableToolsButton(node) {
+            $(node).removeClass('DTTT_button');
+            $(node).addClass('btn btn-default');
+        }
+        var table = $('#tabla_id').dataTable({
+            "destroy": true,
+            "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+            "aaSorting": [],
+            "bServerSide": false,
+            "buttons": [
+				{ extend: 'copy', text: 'Copiar' },
+				'csv',
+				'excel',
+				'pdf',
+				{ extend: 'print', text: 'Imprimir' },
+            ],
+            "dom": 'Blfrtip',
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false
+        });
+
+        $('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $("#idTooltipCustomer1").removeClass('tooltipAai');
+                $('#idTooltipCustomer1').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un usuario'
+                });
+                $("#btnConfirmContract").attr("disabled", "disabled");
+                $("#idTooltipAai").removeClass('tooltipAai');
+                $('#idTooltipAai').tooltip({
+                    container: 'body',
+                    title: "Seleccione un cliente"
+                });
+            }
+            else {
+                $('#tabla_id tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $("#idTooltipAai").tooltip('destroy');
+                estado = table.fnGetData(this)[8];
+                if (@ViewBag.Rol != 1016) {
+                    if (estado == "Firmado") {
+                        $("#btnConfirmContract").removeAttr("disabled", "disabled");
+                    }
+                    else {
+                        $("#btnConfirmContract").attr("disabled", "disabled");
+                    }
+
+                }
+                $("#idTooltipCustomer1").tooltip('destroy');
+                id = table.fnGetData(this)[0];
+                tipo = table.fnGetData(this)[2];
+            }
+        });
+        $('.tooltipAai').tooltip({
+            container: 'body',
+            title: "Seleccione un contrato"
+        });
+        $('.tooltipCustomer1').tooltip({
+            container: 'body',
+            title: 'Seleccione un contrato'
+        });
+
+
+        $('#confirmContractModalBtn').click(function (event) {
+            var params = {};
+            params.ContractId = id;
+            CallBackPost(function (data) {
+                $("#dashboard").html(data);
+            }, "/Contract/ConfirmContract", params)
+        });
+    });
+</script>

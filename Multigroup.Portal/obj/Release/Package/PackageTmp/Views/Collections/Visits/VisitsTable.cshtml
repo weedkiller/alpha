@@ -1,0 +1,131 @@
+﻿@model Multigroup.Portal.Models.Collection.VisitTableVm
+<div class="form-group">
+	<table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+		<thead>
+			<tr>
+				<th style="display: none">ID</th>
+				<th>Cliente</th>
+				<th>Fecha Programada</th>
+				<th>Fecha Concretada</th>
+				<th>Cobrador</th>
+				<th>% Comision</th>
+				<th>Monton Adeudado ($)</th>
+				<th>Monto Cobrado ($)</th>
+				<th>Comision ($)</th>
+				<th>Viaticos ($)</th>
+				<th>Detalle Viaticos</th>
+				<th>Estado</th>
+				<th>Observaciones</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model.VisitList)
+			{
+			<tr>
+				<td style="display:none">@Html.DisplayFor(modelItem => item.VisitId)</td>
+				<td>@Html.DisplayFor(modelItem => item.Customer)</td>
+				<td>@Html.DisplayFor(modelItem => item.ScheduledVisitDate)</td>
+				<td>@Html.DisplayFor(modelItem => item.ConcretedVisitDate)</td>
+				<td>@Html.DisplayFor(modelItem => item.Collector)</td>
+				<td>@Html.DisplayFor(modelItem => item.CollectorComission)</td>
+				<td>@Html.DisplayFor(modelItem => item.AmountOwed)</td>
+				<td>@Html.DisplayFor(modelItem => item.AmountCollected)</td>
+				<td>@Html.DisplayFor(modelItem => item.TotalComission)</td>
+				<td>@Html.DisplayFor(modelItem => item.CollectorExpensesAmount)</td>
+				<td>@Html.DisplayFor(modelItem => item.CollectorExpensesDesc)</td>
+				<td>@Html.DisplayFor(modelItem => item.Status)</td>
+				<td>@Html.DisplayFor(modelItem => item.Observations)</td>
+			</tr>
+			}
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript">
+	function formatTableToolsButton(node) {
+		$(node).removeClass('DTTT_button');
+		$(node).addClass('btn btn-default');
+	}
+	var table = $('#tabla_id').dataTable({
+		"destroy": true,
+		"aaSorting": [],
+		"bServerSide": false,
+		"dom": 'Blfrtip',
+		"buttons": [
+			{ extend: 'copy', text: 'Copiar' },
+			'csv',
+			'excel',
+			'pdf',
+			{ extend: 'print', text: 'Imprimir' },
+		],
+		"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+		"sScrollYInner": "100%",
+		"sScrollX": "100%",
+		"sScrollXInner": "100%",
+		"scrollCollapse": true,
+		"bProcessing": false
+	});
+
+	$('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+		event.stopPropagation();
+		if ($(this).hasClass('selected')) {
+			$(this).removeClass('selected');
+			$("#btnConfirmVisits").attr("disabled", "disabled");
+			$("#btnCancelVisits").attr("disabled", "disabled");
+			$("#idTooltipAai").removeClass('tooltipAai');
+			$('#idTooltipAai').tooltip({
+				container: 'body',
+				title: "Seleccione un rol"
+			});
+		}
+		else {
+			$('#tabla_id tr.selected').removeClass('selected');
+			$(this).addClass('selected');
+			if (table.fnGetData(this)[11] == 'PAGADA') {
+				$("#btnConfirmVisits").removeAttr("disabled", "disabled");
+			}
+			else {
+			    $("#btnConfirmVisits").attr("disabled", "disabled");
+			}
+			if (table.fnGetData(this)[11] == 'PENDIENTE') {
+			    $("#btnCancelVisits").removeAttr("disabled", "disabled");
+			}
+			else {
+			    $("#btnCancelVisits").attr("disabled", "disabled");
+			}
+			$("#idTooltipAai").tooltip('destroy');
+			VisitId = table.fnGetData(this)[0];
+			ZoneId = table.fnGetData(this)[1];
+			CommissionRate = table.fnGetData(this)[2];
+			AmountOwed = table.fnGetData(this)[12];
+		}
+	});
+	$('#GenerateVisit').click(function (event) {
+		event.preventDefault();
+		event.stopPropagation();
+		CallBackGet(function (data) {
+			CallBackGet(function (data) {
+				$("#dashboard").html(data);
+			}, "/Visits/Index", null)
+			$('.modal-backdrop').remove();
+		}, "/Visits/ConfirmStatus?VisitId=" + VisitId, null)
+	});
+	$('#CancelVisit').click(function (event) {
+	    event.preventDefault();
+	    event.stopPropagation();
+	    CallBackGet(function (data) {
+	        CallBackGet(function (data) {
+	            $("#dashboard").html(data);
+	        }, "/Visits/Index", null)
+	        $('.modal-backdrop').remove();
+	    }, "/Visits/CancelStatus?VisitId=" + VisitId, null)
+	});
+	$('.tooltipAai').tooltip({
+		container: 'body',
+		title: "Seleccione una visita"
+	});
+	$('.tooltipCustomer1').tooltip({
+		container: 'body',
+		title: 'Seleccione una visita'
+	});
+</script>
+

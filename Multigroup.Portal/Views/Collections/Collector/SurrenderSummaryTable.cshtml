@@ -1,0 +1,389 @@
+﻿@using Resources
+@model Multigroup.Portal.Models.Collection.CollectorSurrenderVm
+<!-- Comienzo Modal Trabajos a Realizar -->
+<div id="installmentsUpdateModal" class="modal fade" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Editar Monto</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6" style="display: none">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Id</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="InstallmentIdUpdate" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Monto</label>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(model => model.AmountByInstallment, new { @class = "form-control", @id = "AmountByInstallment", @type = "number" })
+                                @Html.ValidationMessageFor(model => model.AmountByInstallment, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                </div>           
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnUpdateInstallment" class="btn btn-primary">Aceptar</button>
+                <button type="button" data-dismiss="modal" class="btn default">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="paymentMethodModal" class="modal fade" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Ingresar Medios de Pago</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Total: </label>
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.AmountPayment, new { @class = "form-control", @type = "number", @readonly = "readonly " })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br /><br />
+                <div class="row" id="PaymentMethodDiv">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Forma de Pago:</label>
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(m => m.ddlPaymentMethodsPM.SelectedItem, Model.ddlPaymentMethodsPM.ListItems, new { @id = "ddlPaymentMethodsPM", @size = 2 })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Monto</label>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(model => model.AmountByPaymentMethod, new { @class = "form-control", @id = "AmountByPaymentMethod", @type = "number", @Value = "1" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <button type="button" id="btnAddPaymentMethod" class="btn btn-primary">Añadir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="PaymentMethodsDiv">
+                    <div class="col-md-12">
+                        <!-- BEGIN Portlet PORTLET-->
+                        <div class="portlet box blue-dark">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-calculator"></i>Metodos de Pago
+                                </div>
+                                <div class="actions">
+                                    <a id="btnRemovePaymentMethod" class="btn default" disabled="disabled">
+                                        <i class="fa fa-remove"></i> Eliminar
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div id="paymentMethodTableDiv" style="position: relative; overflow: hidden; width: auto; min-height: 200px;">
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END Portlet PORTLET-->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnAddPaymentMethods" class="btn btn-primary">Guardar</button>
+                <button type="button" id="btnCancelPM" class="btn btn-primary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin Modal -->
+<div id="receipModal" class="modal fade" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Ingresar Recibo</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Numero</label>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(model => model.ReceipNumber, new { @class = "form-control", @id = "ReceipNumber" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Monto</label>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(model => model.ReceipAmount, new { @class = "form-control", @id = "ReceipAmount", @type = "number" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSaveReceip" class="btn btn-primary">Aceptar</button>
+                <button type="button" data-dismiss="modal" class="btn default">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<table id="installmentsTable" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+    <thead>
+        <tr>
+            <th style="display: none">Id</th>
+            <th>Cliente</th>
+            <th>Contrato</th>
+            <th>Cuota</th>
+            <th>Monto</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Asignaciones)
+        {
+            <tr>
+                <td style="display: none">@item.AssignPaymentPreferenceId</td>
+                <td>@item.Customer</td>
+                <td>@item.Number</td>
+                <td>@item.Cuota</td>
+                <td>@item.Amount</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        CallBackGet(function (data) {
+            $("#paymentMethodTableDiv").html(data);
+        }, "/Collector/IndexPaymentMethod");
+
+        $('#btnAddPaymentMethods').click(function (event) {
+            var param = new Object;
+            param.PaymentDate = $('#PaymentDate').val();
+            CallBackGet(function (data) {
+                $('#paymentMethodModal').modal('hide');
+                $('#PMDiv').hide();
+                $('#PM2Div').show();
+            }, "/Collector/PaymentMethods", param)
+        });
+
+        $('#btnCancelPM').click(function (event) {
+            ;
+            CallBackGet(function (data) {
+                $("#paymentMethodTableDiv").html(data);
+                $('#paymentMethodModal').modal('hide');
+            }, "/Collector/CancelPaymentMethods", null)
+        });
+
+        $('#btnAddPaymentMethod').click(function (event) {
+            var param = new Object;
+            param.Amount = $('#AmountByPaymentMethod').val();
+            param.PaymentMethod = $('#ddlPaymentMethodsPM').val();
+            CallBackGet(function (data) {
+                $('#AmountByPaymentMethod').val('1');
+                $("#paymentMethodTableDiv").html(data);
+            }, "/Collector/PaymentMethod", param)
+        });
+
+        $('#btnRemovePaymentMethod').click(function (event) {
+            var param = new Object;
+            param.id = paymentId
+            CallBackGet(function (data) {
+                $("#paymentMethodTableDiv").html(data);
+            }, "/Collector/RemovePaymentMethod", param)
+        });
+
+
+        $('select').multiselect();
+
+        var tableInstallments = $('#installmentsTable').dataTable({
+            "destroy": true,
+            "aaSorting": [],
+            "bServerSide": false,
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false,
+            "searching": false,
+            "bLengthChange": false
+        });
+
+        $('#installmentsTable tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            AssignPaymentPreferenceId = tableInstallments.fnGetData(this)[0];
+            Amount = tableInstallments.fnGetData(this)[4];
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $("#btnRemoveInstallment").attr("disabled", "disabled");
+                $("#btnUpdateInstallments").attr("disabled", "disabled");
+            }
+            else {
+                $('#installmentsTable tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $("#btnRemoveInstallment").removeAttr("disabled", "disabled");
+                $("#btnUpdateInstallments").removeAttr("disabled", "disabled");
+            }
+        });
+
+        total = @ViewBag.Total
+        
+
+        $('#btnRemoveInstallment').click(function (event) {
+            var param = new Object;
+            param.id = AssignPaymentPreferenceId;
+            CallBackGet(function (data) {
+                $("#btnRemoveInstallment").attr("disabled", "disabled");
+                $("#btnUpdateInstallments").attr("disabled", "disabled");
+                $('#installmentsUpdateModal').modal('hide');
+                $('.modal-backdrop').remove();
+                $("#installmentsTableDiv").html(data);
+                $('#Amount').val(total);
+            }, "/Collector/RemoveInstallments", param)
+            e.preventDefault();
+        });
+
+        $('#btnUpdateInstallment').click(function (event) {
+            var param = new Object;
+            param.Monto = $('#AmountByInstallment').val();
+            param.InstallmentId = $('#InstallmentIdUpdate').val();
+
+            if (param.Monto > Amount) {
+                Command: toastr["error"]("El monto no puede ser mayor al original")
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-center",
+                    "preventDuplicates": true,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            }
+            else if (param.Monto == '') {
+                Command: toastr["error"]("El Monto es obligatorio.")
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-center",
+                    "preventDuplicates": true,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            }
+            else
+                CallBackGet(function (data) {
+                    $("#btnRemoveInstallment").attr("disabled", "disabled");
+                    $("#btnUpdateInstallments").attr("disabled", "disabled");
+                    $('#installmentsUpdateModal').modal('hide');
+                $('.modal-backdrop').remove();
+                $("#installmentsTableDiv").html(data);
+                $('#Amount').val(total);
+            }, "/Collector/InstallmentUpdate", param)
+        });
+
+        $('#btnRemoveReceip').click(function (event) {
+            var param = new Object;
+            param.number = receiptNumber;
+            CallBackGet(function (data) {
+                $("#btnRemoveReceip").attr("disabled", "disabled");
+                $('#receipModal').modal('hide');
+                $('.modal-backdrop').remove();
+                $("#receipsTableDiv").html(data);
+                $('#AmountReceipt').val(totalReceip);
+            }, "/Collector/RemoveReceips", param)
+            e.preventDefault();
+        });
+
+        $('#btnSaveReceip').click(function (event) {
+            var param = new Object;
+            param.Number = $('#ReceipNumber').val();
+            param.Amount = $('#ReceipAmount').val();
+            if (param.Number == '' || param.Amount == '' || param.Amount == 0) {
+                Command: toastr["error"]("El Monto y Número son obligatorios.")
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-center",
+                    "preventDuplicates": true,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            }
+            else
+                CallBackGet(function (data) {
+                    $('#receipModal').modal('hide');
+                    $('.modal-backdrop').remove();
+                    $("#receipsTableDiv").html(data);
+                    $('#AmountReceipt').val(totalReceip);
+                    $('#ReceipNumber').val("");
+                    $('#ReceipAmount').val("");
+                }, "/Collector/AddReceipt", param)
+        });
+
+        $('.date-picker').datepicker();
+        $('select').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+        });
+        $('.tooltipAai').tooltip({
+            container: 'body',
+            title: "Seleccione una cuota"
+        });
+        $('.tooltipPurchaseRequest1').tooltip({
+            container: 'body',
+            title: 'Seleccione una cuota'
+        });
+    });
+</script>

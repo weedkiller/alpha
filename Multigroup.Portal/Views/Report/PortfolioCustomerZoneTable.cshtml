@@ -1,0 +1,101 @@
+﻿<!-- VISTA: User/UserList.cshtml -->
+@model Multigroup.Portal.Models.Maintenance.PortfolioCustomerTableVm
+
+<div class="form-group">
+	<table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+		<thead>
+            <tr>
+                <th>Provincia</th>
+                <th>Ciudad</th>
+                <th>Cliente</th>
+                <th>N Documento</th>
+                <th>Telefono</th>
+                <th>Celular</th>
+                <th>E-mail</th>
+                <th>Horario de Contacto</th>
+                <th>Valor Cuota 1</th>
+                <th>Valor Cuotas</th>
+                <th>Telemarketer</th>
+            </tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model.CustomerList)
+			{
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.State)</td>
+                <td>@Html.DisplayFor(modelItem => item.City)</td>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.IdentificationNumber)</td>
+                <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+                <td>@Html.DisplayFor(modelItem => item.CellPhone)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                <td>@Html.DisplayFor(modelItem => item.ContactHours)</td>
+                <td>@Html.DisplayFor(modelItem => item.FirstAdvanceAmount)</td>
+                <td>@Html.DisplayFor(modelItem => item.AdvancesAmount)</td>
+                <td>@Html.DisplayFor(modelItem => item.User)</td>
+
+            </tr>
+			}
+		</tbody>
+	</table>
+    <div class="row">
+        <div class="col-md-offset-7">
+            <div class="form-group">
+                <label class="control-label col-md-4">Total Cuota 1:</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="amount1Txt" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-offset-7">
+            <div class="form-group">
+                <label class="control-label col-md-4">Total Otras Cuotas:</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="amount2Txt" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-offset-7">
+            <div class="form-group">
+                <label class="control-label col-md-4">Total A Cobrar:</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="amount3Txt" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+            var Amount1 = @ViewBag.Cuota1
+            $("#amount1Txt").val(Amount1);
+            var Amount2 = @ViewBag.Cuota2
+			$("#amount2Txt").val(Amount2);
+			var Amount3 = @ViewBag.Cuota3
+            $("#amount3Txt").val(Amount3);
+
+		function formatTableToolsButton(node) {
+			$(node).removeClass('DTTT_button');
+			$(node).addClass('btn btn-default');
+		}
+		var table = $('#tabla_id').dataTable({
+			"destroy": true,
+			"aaSorting": [],
+			"bServerSide": false,
+			"buttons": [
+				{ extend: 'copy', text: 'Copiar' },
+				'csv',
+				'excel',
+				'pdf',
+				{ extend: 'print', text: 'Imprimir' },
+			],
+			"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+			"dom": 'Blfrtip',
+			"sScrollYInner": "100%",
+			"sScrollX": "100%",
+			"sScrollXInner": "100%",
+			"scrollCollapse": true,
+			"bProcessing": false
+		});
+	});
+</script>

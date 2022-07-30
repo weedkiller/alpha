@@ -1,0 +1,126 @@
+﻿<!-- VISTA: Maintenance/Customer.cshtml -->
+@model Multigroup.Portal.Models.Collection.CollectionsFiltersVm
+<div class="filter-container">
+</div>
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+	<div class="col-md-12 column">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-Customer"></i>
+					<span class="caption-subject bold uppercase">Historial de cobros</span>
+				</div>
+				<div class="actions">
+					<a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""></a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<div class="form-actions top">
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Desde:</label>
+								<div class="col-md-8">
+									<input class="form-control date-picker" type="text" id="dateFrom" placeholder="dd/mm/aaaa">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Hasta:</label>
+                                <div class="col-md-8">
+                                    <input class="form-control date-picker" type="text" id="dateTo" placeholder="dd/mm/aaaa">
+                                </div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Medio de Cobro:</label>
+								<div class="col-md-8">
+									@Html.ListBoxFor(m => m.SelectedPaymentMethod, Model.ListPaymentMethod, new { @mutilple = "multiple" })
+								</div>
+							</div>
+						</div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Tipo de Cobro:</label>
+                                <div class="col-md-8">
+                                    @Html.ListBoxFor(m => m.SelectedType, Model.ListType, new { @mutilple = "multiple" })
+                                </div>
+                            </div>
+                        </div>
+					</div>
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Preferencia de pago:</label>
+                                <div class="col-md-8">
+                                    @Html.ListBoxFor(m => m.ddlPaymentPreference.SelectedItem, Model.ddlPaymentPreference.ListItems, new { @id = "ddlPaymentPreference", @mutilple = "multiple" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Telemarketer:</label>
+                                <div class="col-md-8">
+                                    @Html.ListBoxFor(m => m.SelectedUser, Model.ListUsers, new { @size = 2, @mutilple = "multiple" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Cliente:</label>
+                                <div class="col-md-8">
+                                    @Html.ListBoxFor(m => m.SelectedCustomer, Model.ListCustomers, new { multiple = "multiple" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <button id="btnBuscar" class="btn btn-default">Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				</div>
+				<div class="row">
+					<div class="col-md-12" id="acciones">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="portlet portlet-sortable-empty">
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function () {
+	$(".date-picker").datepicker();
+	$('select').multiselect({
+		includeSelectAllOption: false,
+		enableFiltering: true
+	});
+	
+	$('#btnBuscar').click(function (event) {
+		var params = new Object;
+        params.SelectedCustomer = $('#SelectedCustomer').val();
+		params.SelectedPaymentMethod = $('#SelectedPaymentMethod').val();
+		params.SelectedType = $('#SelectedType').val();
+		params.SelectedPaymentPreference = $('#ddlPaymentPreference').val();
+		params.DateFrom = $('#dateFrom').val();
+		params.DateTo = $('#dateTo').val();
+		params.UserId = $('#SelectedUser').val();
+		CallBackGet(function (data) {
+			$("#acciones").html(data);
+		}, "/Collections/GetCollectionsHistory", params)
+	});
+});
+</script>
+

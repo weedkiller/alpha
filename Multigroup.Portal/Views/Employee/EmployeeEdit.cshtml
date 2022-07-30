@@ -1,0 +1,172 @@
+﻿<!-- VISTA: Maintenance/ProviderCreate.cshtml -->
+@model Multigroup.Portal.Models.Administration.EmployeeVm
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+	<div class="col-md-12 column">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-user"></i>
+					<span class="caption-subject bold uppercase">Editar Empleado</span>
+				</div>
+				<div class="actions">
+				</div>
+			</div>
+			@using (Ajax.BeginForm("Edit", "Employee", new AjaxOptions
+			{
+				HttpMethod = "POST",
+				OnBegin = "OnStart",
+				OnComplete = "OnComplete",
+				OnFailure = "FailMessage",
+				OnSuccess = "SuccessMessage",
+				UpdateTargetId = "dashboard"
+			}))
+			{
+				@Html.AntiForgeryToken()
+				@Html.HiddenFor(model => model.ProviderId)
+        <div class="portlet-body form">
+            <div class="form-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Nombre:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Name, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">DNI:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.Document, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Document, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Telefono:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.Telephone, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Telephone, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Mail:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Email, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Tipo Empleado:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.ddlProviderType.SelectedItem, Model.ddlProviderType.ListItems, new { @id = "ddlProviderType", @size = 2 })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Activo:</label>
+                            <div class="col-md-9" id="sandbox-container">
+                                @Html.CheckBoxFor(model => model.Active)
+                                @Html.ValidationMessageFor(model => model.Active)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha de Alta:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.Date, new { @class = "form-control form-control-inline date-picker", @readonly = true })
+                                @Html.ValidationMessageFor(model => model.Date, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Saldo:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.Balance, new { @class = "form-control", @readonly = true })
+                                @Html.ValidationMessageFor(model => model.Balance, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="myClass">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">UserId:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.UserId, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-12">Comentarios:</label>
+                            <div class="col-md-12">
+                                @Html.TextAreaFor(model => model.Commentary, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Commentary, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-5">
+                        <button class="btn btn-primary" id="btnProcess">Guardar</button>
+                        <button type="button" class="btn default" id="btnCancel">Volver</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+			}
+		</div>
+		<div class="portlet portlet-sortable-empty">
+		</div>
+	</div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(document).ready(function () {
+            $(".myClass").css("display", "none");
+        });
+
+        $('#Active').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
+        $("#Date").datepicker();
+
+        $('select').multiselect();
+
+        $('#btnCancel').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+
+            }, "/Employee/Index", null)
+        });
+    });
+</script>
+
+
+
+

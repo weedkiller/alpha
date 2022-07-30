@@ -1,0 +1,128 @@
+﻿<!-- VISTA: Settings/Settings.cshtml -->
+<script src="~/Scripts/jquery.sortable.js"></script>
+@model Multigroup.Portal.Models.Maintenance.ZoneVm
+<div class="clearfix">
+</div>
+<div class="row">
+	<div class="col-md-12 column">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-folder"></i>
+					<span class="caption-subject bold uppercase"> Zonas</span>
+				</div>
+				<div class="actions">
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<!-- BEGIN FORM-->
+				@using (Html.BeginForm())
+				{
+					@Html.AntiForgeryToken()
+					@Html.ValidationSummary(true)
+				<div class="form-body">
+					<!--row-->
+					<div class="row">
+						<!--span-->
+						<div class="col-md-12">
+							<div class="form-group">
+								<h4>Ciudades por Zona:</h4>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="sortable-list-avaiable">
+											<label class="sortable-list-title">Ciudades disponibles</label>
+											<ul id="widgetsDisponible" class="connected sortable-item list list-horizontal">
+												@foreach (var item in Model.CityList)
+												{
+													<li id=@item.CityId>@item.Name</li>
+												}
+											</ul>
+										</div>
+									</div>
+								</div>
+								@{
+                                    var index = 0;
+                                    foreach (var zone in Model.ZoneList)
+                                    {
+                                        if (index == 0 || index == 4 || index == 8 || index == 12 || index == 16)
+                                        {
+										@:</div><div class="row">
+
+
+										}
+										index++;
+										<div id="design_@zone.ZoneId" class="col-md-3 designs">
+											<div class="sortable-list-use">
+												<a onclick="loadModal(@zone.ZoneId)" style="cursor: pointer">
+													<label class="sortable-list-title" style="cursor: pointer">@zone.Name</label>
+												</a>
+												<ul id="section_@zone.ZoneId" class="connected sortable-item list column list-horizontal section_@zone.ZoneId">
+													@if (zone.CityList != null)
+													{
+														foreach (var city in zone.CityList)
+														{
+															<li id=@city.CityId>@city.Name</li>
+														}
+													}
+												</ul>
+											</div>
+										</div>
+									}
+								}
+							</div>
+						</div>
+						<!--/span-->
+					</div>
+					<!--/row-->
+				</div>
+				}
+				<!-- END FORM-->
+				<br />
+				<div class="row center">
+					<button id="btnSaveSettings" class="btn btn-default">Guardar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" role="dialog" id="modalEditZone">
+	
+</div>
+<script type="text/javascript">
+	$(document).ready(function () {
+
+        $('#widgetsDisponible, #section_1, #section_2, #section_3, #section_4, #section_5, #section_6, #section_7, #section_8, #section_9, #section_10, #section_11, #section_12, #section_13').sortable({
+			connectWith: '.connected'
+		});
+		$('#btnSaveSettings').click(function (event) {
+			saveSettings();
+		});
+	});
+	function loadModal(id) {
+		CallBackGet(function (data) {
+			$("#modalEditZone").html(data);
+			$("#modalEditZone").modal('show');
+		}, "/Zone/Edit?id="+id, null)
+	}
+	function saveSettings() {
+		var zones = [];
+        for (var n = 0; n < $('.designs').length; n++) {
+			var zoneNumber = n + 1;
+			var zoneDesign = '#design_' + zoneNumber + ' ul.section_' + zoneNumber + ' li';
+			var zone = new Object;
+			var cities = [];
+			$(zoneDesign).each(function (index, element) {
+				var city = new Object;
+				city.cityId = $(this).attr("id");
+				cities.push(city);
+			});
+			zone.ZoneId = n + 1;
+			zone.CityList = cities;
+			zones.push(zone);
+		};
+		var final = { ZoneList: zones };
+		CallSericeAjax(function (data) {
+			SuccessMessage();
+		}, "/Zone/Save", final, HttpActions.POST);
+	}
+</script>

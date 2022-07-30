@@ -1,0 +1,105 @@
+﻿<!-- VISTA: User/UserList.cshtml -->
+@model Multigroup.Portal.Models.Maintenance.ContractPaperTableVm
+
+<div class="form-group">
+	<table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+		<thead>
+            <tr>
+                <th><input type="checkbox" id="checkAll"></th>
+                <th style="display:none">Id</th>
+                <th>Número</th>
+                <th>Empleado</th>
+                <th>Estado</th>
+                <th>Tipo</th>
+            </tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model.ContractPaperList)
+			{
+            <tr>
+                <th><input type="checkbox" class="checkboxes"></th>
+                <td style="display:none">@Html.DisplayFor(modelItem => item.PaperContractId)</td>
+                <td>@Html.DisplayFor(modelItem => item.Number)</td>
+                <td>@Html.DisplayFor(modelItem => item.User)</td>
+                <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                <td>@Html.DisplayFor(modelItem => item.ContractType)</td>
+            </tr>
+			}
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript">
+	$(document).ready(function () {
+		function formatTableToolsButton(node) {
+			$(node).removeClass('DTTT_button');
+			$(node).addClass('btn btn-default');
+		}
+		var table = $('#tabla_id').dataTable({
+			"destroy": true,
+			"aaSorting": [],
+			"bServerSide": false,
+			"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+			"dom": 'Blfrtip',
+			"buttons": [
+				{ extend: 'copy', text: 'Copiar' },
+				'csv',
+				'excel',
+				'pdf',
+				{ extend: 'print', text: 'Imprimir' },
+			],
+			"sScrollYInner": "100%",
+			"sScrollX": "100%",
+			"sScrollXInner": "100%",
+			"scrollCollapse": true,
+			"bProcessing": false
+		});
+
+		$('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+			event.stopPropagation();
+			if ($(this).hasClass('selected')) {
+				$(this).removeClass('selected');
+				$("#btnVer").attr("disabled", "disabled");
+				$("#idTooltipContractPaper1").removeClass('tooltipAai');
+				$('#idTooltipContractPaper1').tooltip({
+					container: 'body',
+					title: 'Seleccione un usuario'
+				});
+				$("#btnEditContractPaper").attr("disabled", "disabled");
+				$("#idTooltipAai").removeClass('tooltipAai');
+				$('#idTooltipAai').tooltip({
+					container: 'body',
+					title: "Seleccione un cliente"
+				});
+			}
+			else {
+				$('#tabla_id tr.selected').removeClass('selected');
+				$(this).addClass('selected');
+				$("#btnEditContractPaper").removeAttr("disabled", "disabled");
+				$("#idTooltipAai").tooltip('destroy');
+				$("#btnVer").removeAttr("disabled", "disabled");
+				$("#idTooltipContractPaper1").tooltip('destroy');
+				id = table.fnGetData(this)[1];
+			}
+		});
+    });
+    $('#checkAll').click(function () {
+        if ($(this).is(":checked")) {
+            $('input.checkboxes').each(function () {
+                $(this).prop('checked', true);
+                $(this).attr('checked', true);
+            });
+        } else {
+            $('input.checkboxes').each(function () {
+                $(this).prop('checked', false);
+                $(this).attr('checked', false);
+            });
+        }
+
+    });
+	function loadModal() {
+		CallBackGet(function (data) {
+			$("#modalEditContractPaper").html(data);
+			$("#modalEditContractPaper").modal('show');
+		}, "/ContractPaper/ChangeStatus", null)
+	}
+</script>

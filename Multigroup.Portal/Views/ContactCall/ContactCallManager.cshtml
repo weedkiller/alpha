@@ -1,0 +1,168 @@
+﻿<!-- VISTA: Maintenance/Customer.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.ContactCallModel.ContactCallFilterVm
+
+
+<div class="filter-container">
+</div>
+
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-Customer"></i>
+                    <span class="caption-subject bold uppercase">Contactos</span>
+                </div>
+                <div class="actions">
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnSupervisor" data-toggle="modal" data-target="#modalSupervisor">
+                            Asignar Supervisor
+                        </a>
+                    </div>  
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Supervisor:</label>
+                            <div class="col-md-8">
+                                @Html.ListBoxFor(m => m.SelectedSupervisor, Model.ListSupervisor, new { multiple = "multiple" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Vendedor:</label>
+                            <div class="col-md-8">
+                                @Html.ListBoxFor(m => m.SelectedSeller, Model.ListSeller, new { multiple = "multiple" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Estado:</label>
+                            <div class="col-md-8">
+                                @Html.ListBoxFor(m => m.SelectedStatus, Model.ListStatus, new { multiple = "multiple" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">                   
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha Desde:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateFrom" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha Hasta:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateTo" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button id="btnBuscarManager" class="btn btn-default">Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" role="dialog" id="modalSupervisor">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Asignar Supervisor</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Supervisor:</label>
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(m => m.ddlSupervisor.SelectedItem, Model.ddlSupervisor.ListItems, new { @id = "ddlSupervisor", @size = 2 })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn default" id="btnSupervisorOk">Aceptar</button>
+                <button type="button" class="btn default" id="btnCancel" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+            $('select').multiselect({
+                includeSelectAllOption: true,
+                enableFiltering: true
+            });
+
+            $('#SelectedSupervisor').multiselect({
+                includeSelectAllOption: true,
+                enableFiltering: false,
+            });
+
+            $('#SelectedSeller').multiselect({
+                includeSelectAllOption: true,
+                enableFiltering: false,
+            });
+
+            $('#SelectedStatus').multiselect({
+                includeSelectAllOption: true,
+                enableFiltering: false,
+            });
+           
+            $('.tooltipAai').tooltip({
+                container: 'body',
+                title: "Seleccione un cliente"
+            });
+
+            $('.date-picker').datepicker();
+
+			$('#btnBuscarManager').click(function (event) {
+			    var params = {};
+                params.SelectedManager = '0';
+                params.SelectedSupervisor = $('#SelectedSupervisor').val();
+                params.SelectedSeller = $('#SelectedSeller').val();
+                params.ContactCallStatus = $('#SelectedStatus').val();
+                params.DateFrom = $('#txtDateFrom').val();
+                params.DateTo = $('#txtDateTo').val();
+				CallBackGet(function (data) {
+					$("#acciones").html(data);
+				}, "/ContactCall/GetTable", params)
+			});
+			
+       });
+</script>
+

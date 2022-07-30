@@ -1,0 +1,70 @@
+﻿@using Resources
+@model Multigroup.Portal.Models.Collection.CollectorSurrenderVm
+<!-- Comienzo Modal Trabajos a Realizar -->
+<!-- Fin Modal -->
+<table id="receipsTable" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+    <thead>
+        <tr>
+            <th>Número</th>
+            <th>Monto</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Recibos)
+        {
+            <tr>
+                <td>@item.Number</td>
+                <td>@item.Amount</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    totalReceip = @ViewBag.TotalReceip
+        var tableReceips = $('#receipsTable').dataTable({
+            "destroy": true,
+            "aaSorting": [],
+            "bServerSide": false,
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false,
+            "searching": false,
+            "bLengthChange": false
+        });
+
+        $('#receipsTable tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            receiptNumber = tableReceips.fnGetData(this)[0];
+            receipAmount = tableReceips.fnGetData(this)[1];
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $("#btnRemoveReceip").attr("disabled", "disabled");
+            }
+            else {
+                $('#receipsTable tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $("#btnRemoveReceip").removeAttr("disabled", "disabled");
+            }
+        });
+
+
+
+        $('.date-picker').datepicker();
+        $('select').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+        });
+        $('.tooltipAai').tooltip({
+            container: 'body',
+            title: "Seleccione una cuota"
+        });
+        $('.tooltipPurchaseRequest1').tooltip({
+            container: 'body',
+            title: 'Seleccione una cuota'
+        });
+    });
+</script>

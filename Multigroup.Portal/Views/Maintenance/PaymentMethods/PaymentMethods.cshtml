@@ -1,0 +1,153 @@
+﻿<!-- VISTA: Maintenance/PaymentMethods.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.Maintenance.PaymentMethodsTableVm
+<div class="filter-container">
+</div>
+
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-folder"></i>
+                    <span class="caption-subject bold uppercase">Metodos de pago</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-default" id="btnAddPaymentMethods">Añadir</a>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnEditPaymentMethods" disabled="disabled">
+                            Editar
+                        </a>
+                    </div>
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+                        <div class="form-group">
+                            <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Nombre</th>
+                                        <th>Activo</th>
+                                        <th>Porcentaje</th>
+                                        <th>Consolidado</th>
+                                        <th>Verificable</th>
+                                        <th>Automático</th>
+                                        <th>Asignación</th>
+                                        <th>Canal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.PaymentMethodsList)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.PaymentMethodId)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Active)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Percentage)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Consolidated)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Verifiable)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Automatic)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Asignation)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Channel)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        function formatTableToolsButton(node) {
+            $(node).removeClass('DTTT_button');
+            $(node).addClass('btn btn-default');
+        }
+        var table = $('#tabla_id').dataTable({
+            "destroy": true,
+            "aaSorting": [],
+            "bServerSide": false,
+            "dom": 'Blfrtip',
+            "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+            "buttons": [
+                { extend: 'copy', text: 'Copiar' },
+                'csv',
+                'excel',
+                'pdf',
+                { extend: 'print', text: 'Imprimir' },
+            ],
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false
+        });
+
+        $('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $("#btnVer").attr("disabled", "disabled");
+                $("#idTooltipPaymentMethods1").removeClass('tooltipAai');
+                $('#idTooltipPaymentMethods1').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un usuario'
+                });
+                $("#btnEditPaymentMethods").attr("disabled", "disabled");
+                $("#idTooltipAai").removeClass('tooltipAai');
+                $('#idTooltipAai').tooltip({
+                    container: 'body',
+                    title: "Seleccione un cliente"
+                });
+            }
+            else {
+                $('#tabla_id tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $("#btnEditPaymentMethods").removeAttr("disabled", "disabled");
+                $("#idTooltipAai").tooltip('destroy');
+                $("#btnVer").removeAttr("disabled", "disabled");
+                $("#idTooltipPaymentMethods1").tooltip('destroy');
+                id = table.fnGetData(this)[0];
+            }
+        });
+        $('.tooltipAai').tooltip({
+            container: 'body',
+            title: "Seleccione un cliente"
+        });
+        $('.tooltipPaymentMethods1').tooltip({
+            container: 'body',
+            title: 'Seleccione un cliente'
+        });
+
+        $('#btnEditPaymentMethods').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/PaymentMethods/Edit?id=" + id, null)
+        });
+
+        $('#btnAddPaymentMethods').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/PaymentMethods/Create", null)
+        });
+
+    });
+</script>
+

@@ -1,0 +1,261 @@
+﻿@model Multigroup.Portal.Models.Collection.VoucherVm
+<div class="filter-container">
+</div>
+
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-laptop"></i>
+                    <span class="caption-subject bold uppercase">Registrar Comprobante de Pago</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-default" id="adjuntar" data-toggle="modal" data-target="#adjuntarModal">
+                        <i class="fa fa-paperclip"></i> <span id="attachText"> Adjuntar Comprobante</span>
+                    </a>
+                </div>
+            </div>
+            @using (Ajax.BeginForm("CreateVoucher", "Collections", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnBegin = "OnStart",
+                OnComplete = "OnComplete",
+                OnFailure = "FailMessage",
+                OnSuccess = "SuccessReturn"
+            }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="portlet-body form">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Total:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", @type = "number", })
+                                    @Html.ValidationMessageFor(model => model.Amount, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Fecha Comprobante:</label>
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(model => model.PaymentDate, new { @class = "form-control form-control-inline date-picker", @type = "text", @placeholder = "dd/mm/aaaa" })
+                                    @Html.ValidationMessageFor(model => model.PaymentDate, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5" style="display:none">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Número Contrato:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.ContractNumber, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Número Comprobante:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.Voucher, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Voucher, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5" id="PMDiv" style="display:none">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Forma de Pago:</label>
+                                <div class="col-md-9">
+                                    @Html.DropDownListFor(m => m.ddlPaymentMethod.SelectedItem, Model.ddlPaymentMethod.ListItems, new { @id = "ddlPaymentMethod", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-12">Comentario:</label>
+                                <div class="col-md-12">
+                                    @Html.TextAreaFor(model => model.Commentary, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" id="calcular">
+                            <div class="col-md-9">
+                                <a class="btn btn-default" data-toggle="modal" id="btnPM2">Calcular Cuotas Según Monto</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                    <br />
+                    <div class="row" id="tabla">
+                        <div class="col-md-6">
+                            <!-- BEGIN Portlet PORTLET-->
+                            <div class="portlet box blue-dark">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-calculator"></i>Cobros a Registrar
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div id="WarnedDiv" style="position: relative; overflow: hidden; width: auto; min-height: 200px;">
+                                        <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                            <thead>
+                                                <tr>
+                                                    <th style="display: none">Id</th>
+                                                    <th>Cuota</th>
+                                                    <th>Monto</th>
+                                                    <th>Pagado</th>
+                                                    <th>Metodo Pago</th>
+                                                    <th>Canal</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.installments)
+                                                {
+                                                    <tr>
+                                                        <td style="display: none">@Html.DisplayFor(modelItem => item.AssignPaymentPreferenceId)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.Cuota)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.PaymentAmount)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.PaymentMethod)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.Channel)</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END Portlet PORTLET-->
+                        </div>
+
+                    </div>
+
+                    <div class="row" id="tablaColor" style="display:none">
+                        <div class="col-md-6">
+                            <!-- BEGIN Portlet PORTLET-->
+                            <div class="portlet box blue-dark">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-calculator"></i>Cobros a Registrar
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div id="installmentDiv" style="position: relative; overflow: hidden; width: auto; min-height: 200px;">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END Portlet PORTLET-->
+                        </div>
+
+                    </div>
+
+                    <br />
+
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-5">
+                                <button class="btn btn-primary" id="btnProcess" style="display:none">Guardar</button>
+                                <button type="button" class="btn default" id="btnCancel">Volver</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="confirmModal" class="modal fade" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">Guardar Comprobante</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <h3>¿Desea guardar el Comprobante?</h3>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" id="btnProcess" class="btn btn-primary">Aceptar</button>
+                                <button type="button" data-dismiss="modal" class="btn default">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Comienzo Modal Adjuntar -->
+<div id="adjuntarModal" class="modal fade" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    @Html.Action("GetSavedFiles", "Collections")
+</div>
+
+<script type="text/javascript">
+    var PromoAplicada;
+    $(document).ready(function () {
+
+        $('#adjuntar').click(function (event) {
+            var myDropzone = new Dropzone("form#uploadFiles", {
+                url: '/Collections/LoadFile', addRemoveLinks: true, maxFilesize: 5, init: function () {
+                    this.on("removedfile", function (file) {
+                        var params = new Object;
+                        params.fileDelete = file.name;
+                        CallSericeAjax(function (data) {
+                            //SuccessMessage();
+                        }, "/Collections/RemoveFiles", params, 'POST');
+                    });
+                }
+            });
+        });
+
+        var Amount = @ViewBag.Amount
+            $("#Amount").val(Amount);
+
+        $('select').multiselect();
+
+        $("#PaymentDate").datepicker();
+
+    });
+
+    $('#calcular').click(function (event) {
+        var total = $('#Amount').val();
+        var param = new Object;
+        param.total = total;
+        CallBackGet(function (data) {
+            $('#PMDiv').show();
+            $('#btnProcess').show();
+            $('#tablaColor').show();
+            $('#tablaColor').show();
+            $('#tabla').hide();
+            $("#installmentDiv").html(data);
+        }, "/Collections/InstallmentByAmount", param)
+    });
+
+    function SuccessReturn() {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Collections/IndexPaymentVoucher", null)
+        SuccessMessage();
+    }
+
+    $('#btnCancel').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+
+        }, "/Collections/IndexPaymentVoucher", null)
+    });
+
+</script>

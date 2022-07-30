@@ -1,0 +1,540 @@
+﻿@model IEnumerable<Multigroup.Portal.Models.Menu.MenuComponentVm>
+
+<div class="page-sidebar-wrapper">
+    <div class="page-sidebar navbar-collapse collapse">
+        <ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" id="sidebarMenu">
+            <li class="sidebar-toggler-wrapper">
+                <!-- FIN SIDEBAR TOGGLER BUTTON -->
+                <!-- FIN BUSCAR -->
+                <div id="toggleSidebar" class="sidebar-toggler">
+                    <i class="fa fa-outdent"></i>
+                </div>
+                <!-- FIN SIDEBAR TOGGLER BUTTON -->
+            </li>
+            <li class="start active" id="btnHomeMenu">
+                <a href="/" id="homeRedirect">
+                    <i class="fa fa-home"></i>
+                    <span class="title">Home</span>
+                </a>
+            </li>
+            @foreach (var item in Model.Where(x => x.ParentId == null).OrderBy(p => p.SortOrder))
+            {
+                <li>
+                    <a href="javascript:;">
+                        <i class="fa @item.Icon"></i>
+                        <span class="title">@item.Name</span>
+                        @if (item.ParentId == null)
+                        {
+                            <span class="arrow "></span>
+                        }
+
+                    </a>
+                    @if (item.ParentId == null)
+                    {
+                        <ul class="sub-menu">
+                            @foreach (var sub in Model.Where(x => x.ParentId == item.MenuComponentId).OrderBy(y => y.SortOrder))
+                            {
+                                <li>
+                                    <a id="@sub.ButtonId">
+                                        <i class="fa fa-caret-right"></i>
+                                        @sub.Name
+                                        @if (Model.Any(x => x.ParentId == sub.MenuComponentId))
+                                        {
+                                            <span class="arrow "></span>
+                                        }
+                                    </a>
+                                    <ul class="sub-menu" style="display: none">
+                                        @foreach (var level in Model.Where(x => x.ParentId == sub.MenuComponentId))
+                                        {
+                                            <li>
+                                                <a id="@level.ButtonId">
+                                                    <i class="fa fa-caret-right"></i>
+                                                    @level.Name
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </li>
+            }
+        </ul>
+
+        <!-- FIN SIDEBAR MENU -->
+    </div>
+</div>
+<script>
+    //SEGURIDAD
+    $('#btnUsers').click(function (event) {
+        RefreshHistory();
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/User/Index", null, true)
+    });
+    $('#btnCustomer').click(function (event) {
+        RefreshHistory();
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Customer/Index", null, true)
+    });
+    $('#btnAgency').click(function (event) {
+        RefreshHistory();
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Agency/Index", null, true)
+    });
+    $('#btnRoles').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Role/Index", null)
+    });
+    $('#btnNavigationLog').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Report/NavigationLogReport", null)
+    });
+    $('#btnSupervisorSale').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Report/SupervisorSales", null)
+    });
+    $('#btnNavigationAccess').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/NavigationAccess/Index", null)
+    });
+    $('#btnZones').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Zone/Index", null)
+	});
+	$('#btnContractPaper').click(function (event) {
+		CallBackGet(function (data) {
+			$("#dashboard").html(data);
+		}, "/ContractPaper/Index", null)
+    });
+    $('#btnReceip').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Receip/Index", null)
+    });
+    $('#btnCustomers').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Customer/Index", null)
+	});
+	$('#btnAssignVisits').click(function (event) {
+		CallBackGet(function (data) {
+			$("#dashboard").html(data);
+		}, "/Visits/AssignVisit", null)
+	});
+	$('#btnVisits').click(function (event) {
+		CallBackGet(function (data) {
+			$("#dashboard").html(data);
+		}, "/Visits/Index", null)
+	});$('#btnVisits').click(function (event) {
+		CallBackGet(function (data) {
+			$("#dashboard").html(data);
+		}, "/Visits/Index", null)
+	});
+    $('#btnCollectionsHistory').click(function (event) {
+		CallBackGet(function (data) {
+			$("#dashboard").html(data);
+		}, "/Collections/Index", null)
+	});
+    $('#btnContractReport').click(function (event) {
+		CallBackGet(function (data) {
+			$("#dashboard").html(data);
+		}, "/Report/Contract", null)
+    });
+    $('#btnCustomerDebtReport').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Report/CustomerDebt", null)
+    });
+    $('#btnPortfolioReport').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Report/Portfolio", null)
+    });
+	$('#btnCollectorMenu').click(function (event) {
+		CallBackGet(function (data) {
+			$("#dashboard").html(data);
+		}, "/Collector/Index", null)
+	});
+	$('#btnCustomerPortfolio').click(function (event) {
+		CallBackGet(function (data) {
+			$("#dashboard").html(data);
+		}, "/PortfolioCustomer/Index", null)
+	});
+    $('#btnArticle').click(function (event) {
+        RefreshHistory();
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Article/Index", null, true)
+    });
+    $('#btnHeading').click(function (event) {
+        RefreshHistory();
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Heading/Index", null, true)
+    });
+    $('#btnCashier').click(function (event) {
+        RefreshHistory();
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Cashier/Index", null, true)
+    });
+    $('#btnContract').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Contract/Index", null)
+    });
+    $('#btnContractTMK').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Contract/IndexTMK", null)
+    });
+    $('#btnContractWeb').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Contract/IndexWeb", null)
+    });
+	$('#btnNewContract').click(function (event) {
+		CallBackGet(function (data) {
+			$("#dashboard").html(data);
+		}, "/Contract/Create", null)
+	});
+	$('#btnNewContractWeb').click(function (event) {
+	    CallBackGet(function (data) {
+	        $("#dashboard").html(data);
+	    }, "/Contract/CreateWeb", null)
+	});
+    $('#btnContractHouse').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Contract/CreateHouse", null)
+    });
+    
+	$('#btnNewCollection').click(function (event) {
+		CallBackGet(function (data) {
+			$("#dashboard").html(data);
+		}, "/Collections/Create", null)
+	});
+	$('#btnPaymentMethods').click(function (event) {
+		CallBackGet(function (data) {
+			$("#dashboard").html(data);
+		}, "/PaymentMethods/Index", null)
+    });
+    $('#btnUserType').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/UserType/Index", null)
+    });
+    $('#btnPaymentHistory').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Report/PaymentHistory", null)
+    });
+    $('#btnProvider').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Provider/Index", null)
+    });
+    $('#btnEmployee').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Employee/Index", null)
+    });
+    $('#btnNewScheduledExpense').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/ScheduledExpense/Create", null)
+    });
+    $('#btnScheduledExpense').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/ScheduledExpense/Index", null)
+    });
+    $('#btnAuthScheduledExpense').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/ScheduledExpense/IndexAuth", null)
+    });
+    $('#btnNewExpenseAuthorization').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/ExpenseAuthorization/Create", null)
+    });
+    $('#btnExpenseAuthorization').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/ExpenseAuthorization/Index", null)
+    });
+    $('#btnNewPurchaseRequest').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/PurchaseRequest/Create", null)
+    });
+    $('#btnPurchaseRequest').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/PurchaseRequest/Index", null)
+    });
+    $('#btnNewSpending').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Spending/Create", null)
+    });
+    $('#btnSpending').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Spending/Index", null)
+    });
+    $('#btnSalaryAllocation').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/SalaryAllocation/Index", null)
+    });
+
+    $('#btnSalarySettlement').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/SalaryAllocation/IndexSettlement", null)
+    });
+    $('#btnPartner').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Partner/Index", null)
+    });
+    $('#btnPartnerPercentage').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Partner/IndexPercentage", null)
+    });
+    $('#btnPromissory').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Promissory/Index", null)
+    });
+    $('#btnNewPromissory').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Promissory/Create", null)
+    });
+    $('#btnPromissoryPayment').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/PromissoryPayment/Index", null)
+    });
+    $('#btnNewPromissoryPayment').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/PromissoryPayment/Create", null)
+    });
+    $('#btnPromissorySurrender').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/PromissorySurrender/Index", null)
+    });
+    $('#btnNewPromissorySurrender').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/PromissorySurrender/Create", null)
+    });
+    $('#btnSpendingPayment').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/SpendingPayment/Index", null)
+    });
+    $('#btnNewSpendingPayment').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/SpendingPayment/Create", null)
+    });
+    $('#btnSallaryPayment').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/SallaryPayment/Index", null)
+    });
+    $('#btnNewSallaryPayment').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/SallaryPayment/Create", null)
+    });
+    $('#btnEarningsAllocation').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/EarningsAllocation/Index", null)
+    });
+    $('#btnContributionAllocation').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/ContributionAllocation/Index", null)
+    });
+    $('#btnRetirementPartner').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/RetirementPartner/Index", null)
+    });
+    $('#btnIncomePartner').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/IncomePartner/Index", null)
+    });
+    $('#btnCloseCycle').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/CashCycle/CloseCycle", null)
+    });
+    $('#btnOpenCash').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/CashCycle/IndexOpenCash", null)
+    });
+    $('#btnTransfer').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/CashCycle/Transfer", null)
+    });
+    $('#btnTransferMP').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/CashCycle/TransferPM", null)
+    });
+    $('#btnCloseCash').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/CashCycle/IndexCloseCash", null)
+    });
+    $('#btnReportZone').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Report/IndexZone", null)
+    });
+    $('#btnVerification').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Conciliation/IndexVerification", null)
+    });
+    $('#btnFondosPaymentMethod').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/CashCycle/IndexMovement", null)
+    });
+    $('#btnBalances').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/CashCycle/IndexBalances", null)
+    });
+    $('#btnReconciled').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Conciliation/IndexReconciled", null)
+    });
+    $('#btnBalancePartner').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Partner/IndexBalance", null)
+    });
+
+    $('#btnEmployeeCurrentAccount').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Employee/IndexCurrentAcount", null)
+    });
+    $('#btnProviderCurrentAccount').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Provider/IndexCurrentAcount", null)
+    });
+    $('#btnReportInstallment').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Report/IndexInstallment", null)
+    });
+    $('#btnStatusReport').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Report/StatusContract", null)
+    });
+
+    $('#btnManagedRequest').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/PurchaseRequest/IndexManaged", null)
+    });
+
+    $('#btnManagedScheduledExpense').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/ScheduledExpense/IndexManaged", null)
+    });
+    $('#btnManagedAuthorization').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/ExpenseAuthorization/IndexManaged", null)
+    });
+    $('#btnPaymentPreference').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/PaymentPreference/Index", null)
+    });
+    $('#btnAssignPaymentMethod').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Visits/IndexAssignPaymentMethod", null)
+    });
+    $('#btnChannelWarned').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Visits/IndexChannelWarned", null)
+    });
+    $('#btnPaymentVoucher').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Collections/IndexPaymentVoucher", null)
+    });
+    $('#btnNewContactCall').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/ContactCall/Create", null)
+    });
+    $('#btnContactCall').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/ContactCall/Index", null)
+    });
+    $('#btnContractWebDelete').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Contract/IndexWebDelete", null)
+    });
+    $('#btnImputPayment').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Collections/IndexImputPayment", null)
+    });
+    $('#btnCollectorManagement').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Collector/IndexManagement", null)
+    });
+    $('#btnCollectorSurrender').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Collector/IndexSurrender", null)
+    });
+    $('#btnCollectorState').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Collector/IndexState", null)
+    });
+    $('#btnSurrenderImput').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Collector/IndexSurrenderImput", null)
+    });
+</script>

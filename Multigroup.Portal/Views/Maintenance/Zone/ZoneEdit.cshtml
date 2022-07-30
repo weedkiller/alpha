@@ -1,0 +1,108 @@
+﻿@model Multigroup.Portal.Models.Maintenance.ZoneListVm
+<div class="modal-dialog">
+	@using (Ajax.BeginForm("Edit", "Zone", new AjaxOptions
+	{
+		HttpMethod = "POST",
+		OnBegin = "OnStart",
+		OnComplete = "OnComplete",
+		OnFailure = "FailMessage",
+		OnSuccess = "SuccessMessage",
+		UpdateTargetId = "dashboard"
+	}))
+	{
+	@Html.AntiForgeryToken()
+	@Html.HiddenFor(model => model.ZoneId)
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h4 class="modal-title">Editar Zona</h4>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="control-label col-md-4">Nombre:</label>
+						<div class="col-md-8">
+							@Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+							@Html.ValidationMessageFor(model => model.Name, string.Empty, new { @class = "validate-error" })
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="control-label col-md-4">Comisión:</label>
+						<div class="col-md-8">
+							@Html.TextBoxFor(model => model.CommissionRate, new { @class = "form-control" })
+							@Html.ValidationMessageFor(model => model.CommissionRate, string.Empty, new { @class = "validate-error" })
+						</div>
+					</div>
+				</div>
+			</div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Fecha Libre:</label>
+                        <div class="col-md-8" id="sandbox-container">
+                            @*<input type="checkbox" id="changePassword"/>*@
+                            @Html.CheckBoxFor(model => model.IsPaymentDate, new { @id = "isPaymentDate" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="dates">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Primer Fecha:</label>
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(model => model.PaymentDay1, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.PaymentDay1, string.Empty, new { @class = "validate-error" })
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Segunda Fecha:</label>
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(model => model.PaymentDay2, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.PaymentDay2, string.Empty, new { @class = "validate-error" })
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+            </div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" id="btnProcess" type="submit">Guardar</button>
+			<button type="button" class="btn default" id="btnCancel" data-dismiss="modal">Cerrar</button>
+		</div>
+	</div>
+	}
+</div>
+<script>
+
+	$('#btnProcess').click(function () {
+		$("#modalEditZone").modal('hide');
+	});
+    if ($("#isPaymentDate")[0].checked) {
+        $("#PaymentDay1").attr("disabled", "disabled");
+        $("#PaymentDay1").val('');
+        $("#PaymentDay2").attr("disabled", "disabled");
+        $("#PaymentDay2").val('');
+    } else {
+        $("#PaymentDay1").removeAttr("disabled", "disabled");
+        $("#PaymentDay2").removeAttr("disabled", "disabled");
+    }
+	$("#isPaymentDate").change(function () {
+	    if (this.checked) {
+	        $("#PaymentDay1").attr("disabled", "disabled");
+	        $("#PaymentDay1").val('');
+	        $("#PaymentDay2").attr("disabled", "disabled");
+	        $("#PaymentDay2").val('');
+	    } else {
+	        $("#PaymentDay1").removeAttr("disabled", "disabled");
+	        $("#PaymentDay2").removeAttr("disabled", "disabled");
+	    }
+	});
+	
+</script>

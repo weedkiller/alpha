@@ -1,0 +1,167 @@
+﻿<!-- VISTA: Maintenance/PromissorySurrender.cshtml -->
+@model Multigroup.Portal.Models.Administration.PromissorySurrenderFilterVm
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-PromissorySurrender"></i>
+                    <span class="caption-subject bold uppercase">Rendición de Pagares</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-default" id="btnAddPromissorySurrender">Añadir</a>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnViewPromissorySurrender" disabled="disabled">
+                            Ver
+                        </a>
+                    </div>
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha Cobro Desde:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateFromPayment" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha Cobro Hasta:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateToPayment" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Usuario:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.SelectedUser, Model.ListUser, new { @size = "2" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Socio:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.SelectedPartner, Model.ListPartner, new { @size = "2" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Monto Desde:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.AmountFrom, new { @class = "form-control", @type = "number", @Value = "" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Monto Hasta:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.AmountTo, new { @class = "form-control", @type = "number", @Value = "" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="control-label col-md-4">Solo Rendidos:</label>
+                        <div class="col-md-8" id="sandbox-container">
+                            @*<input type="checkbox" id="changePassword"/>*@
+                            <input type="checkbox" id="chkPaid">
+                        </div>
+                    </div>
+                </div>               
+                <br />
+                
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button id="btnBuscar" class="btn btn-default">Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="table">
+                    <div class="col-md-12" id="acciones">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" id="modalViewPromissorySurrender">
+
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#chkPaid').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '50%' // optional
+        });
+
+        $('.date-picker').datepicker();
+        $('select').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+        });
+        $('.tooltipAai').tooltip({
+            container: 'body',
+            title: "Seleccione un gasto"
+        });
+        $('.tooltipPromissorySurrender1').tooltip({
+            container: 'body',
+            title: 'Seleccione un gasto'
+        });
+        $('#btnViewPromissorySurrender').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/PromissorySurrender/View?id=" + id, null)
+        });
+
+
+        $('#btnAddPromissorySurrender').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/PromissorySurrender/Create", null)
+        });
+
+        $('#btnBuscar').click(function (event) {
+            var params = {};
+            params.SelectedClient = $('#SelectedCustomer').val();
+            params.SelectedUser = $('#SelectedUser').val();
+            params.AmountFrom = $('#AmountFrom').val();
+            params.AmountTo = $('#AmountTo').val();
+            params.DateFromPayment = $('#txtDateFromPayment').val();
+            params.DateToPayment = $('#txtDateToPayment').val();
+            if ($('#chkPaid').is(':checked') == true) {
+                params.isPaid = '1';
+            } else {
+                params.isPaid = '0';
+            }
+            CallBackGet(function (data) {
+                $("#acciones").html(data);
+            }, "/PromissorySurrender/GetTable", params)
+        });       
+
+    });
+</script>
+

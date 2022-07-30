@@ -1,0 +1,148 @@
+﻿
+<!-- VISTA: Maintenance/UserType.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.Maintenance.UserTypeTableVm
+<div class="filter-container">
+</div>
+
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-folder"></i>
+                    <span class="caption-subject bold uppercase">Tipos de Empleados</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-default" id="btnAddUserType">Añadir</a>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnEditUserType" disabled="disabled">
+                            Editar
+                        </a>
+                    </div>
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+                        <div class="form-group">
+                            <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Descripción</th>
+                                        <th>Aplica Comisión</th>
+                                        <th>Comisión</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.UserTypeList)
+                                    {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.UserTypeId)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.IsCommission)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Commission)</td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+$(document).ready(function () {
+            $('#chkIncludedAll').iCheck({
+                checkboxClass: 'icheckbox_square-grey',
+                radioClass: 'iradio_square-grey',
+                increaseArea: '20%' // optional
+            });
+
+            function formatTableToolsButton(node) {
+                $(node).removeClass('DTTT_button');
+                $(node).addClass('btn btn-default');
+            }
+            var table = $('#tabla_id').dataTable({
+                "destroy": true,
+                "aaSorting": [],
+                "bServerSide": false,
+				"dom": 'Blfrtip',
+				"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+				"buttons": [
+					{ extend: 'copy', text: 'Copiar' },
+					'csv',
+					'excel',
+					'pdf',
+					{ extend: 'print', text: 'Imprimir' },
+				],
+                "sScrollYInner": "100%",
+                "sScrollX": "100%",
+                "sScrollXInner": "100%",
+                "scrollCollapse": true,
+                "bProcessing": false
+            });
+
+            $('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+                event.stopPropagation();
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                    $("#btnVer").attr("disabled", "disabled");
+                    $("#idTooltipUserType1").removeClass('tooltipAai');
+                    $('#idTooltipUserType1').tooltip({
+                        container: 'body',
+                        title: 'Seleccione un usuario'
+                    });
+                    $("#btnEditUserType").attr("disabled", "disabled");
+                    $("#idTooltipAai").removeClass('tooltipAai');
+                    $('#idTooltipAai').tooltip({
+                        container: 'body',
+                        title: "Seleccione un cliente"
+                    });
+                }
+                else {
+                    $('#tabla_id tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                    $("#btnEditUserType").removeAttr("disabled", "disabled");
+                    $("#idTooltipAai").tooltip('destroy');
+                    $("#btnVer").removeAttr("disabled", "disabled");
+                    $("#idTooltipUserType1").tooltip('destroy');
+                    id = table.fnGetData(this)[0];
+                }
+            });
+            $('.tooltipAai').tooltip({
+                container: 'body',
+                title: "Seleccione un cliente"
+            });
+            $('.tooltipUserType1').tooltip({
+                container: 'body',
+                title: 'Seleccione un cliente'
+            });
+
+            $('#btnEditUserType').click(function (event) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+                }, "/UserType/Edit?id=" + id, null)
+            });
+
+            $('#btnAddUserType').click(function (event) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+                }, "/UserType/Create", null)
+            });
+
+       });
+</script>
+

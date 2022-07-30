@@ -1,0 +1,84 @@
+﻿@model Multigroup.Portal.Models.Collection.AssignPaymentPreferenceVm
+<div class="modal-dialog">
+    @using (Ajax.BeginForm("AssignPaymentPreference", "Visits", new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnBegin = "OnStart",
+        OnComplete = "OnComplete",
+        OnFailure = "FailMessage",
+        OnSuccess = "SuccessMessage",
+        UpdateTargetId = "dashboard"
+    }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.AssignPaymentPreferenceId)
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Cargar Asignación</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4" style="display: none">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Número cuota:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.InstallmentId, new { @class = "form-control" })
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Forma de Pago:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.ddlPaymentPreference.SelectedItem, Model.ddlPaymentPreference.ListItems, new { @id = "ddlPaymentPreference", @size = 2 })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Monto:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.Amount, new { @class = "form-control" })
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha de Pago:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.PaymentDate, new { @class = "form-control form-control-inline date-picker" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-12">Observaciones:</label>
+                            <div class="col-md-12">
+                                @Html.TextAreaFor(model => model.Observations, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Observations, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="btnProcess" type="submit">Guardar</button>
+                <button type="button" class="btn default" id="btnCancel" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $('#btnProcess').click(function () {
+        $("#modalPaymentPreference").modal('hide');
+    });
+    $('.date-picker').datepicker();
+    $('select').multiselect();
+</script>

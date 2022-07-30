@@ -1,0 +1,242 @@
+﻿<!-- VISTA: Maintenance/Expense.cshtml -->
+@model Multigroup.Portal.Models.Administration.ExpenseAuthorizationFilterVm
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-Expense"></i>
+                    <span class="caption-subject bold uppercase">Autorización de Gastos</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-default" id="btnAddExpenseAuthorization">Añadir</a>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnViewExpenseAuthorization" disabled="disabled">
+                            Ver
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnEditExpenseAuthorization" disabled="disabled">
+                            Editar
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnDeleteExpenseAuthorization" disabled="disabled">
+                            Eliminar
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnSPExpenseAuthorization" disabled="disabled">
+                            Generar Gasto
+                        </a>
+                    </div>
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-3" style="display: none">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Comprador:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.UserCreateId, new { @class = "form-control", @readonly = true })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha creado Desde:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateFromCreate" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha creado Hasta:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateToCreate" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Solicitud de Compra / Pago Programado:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.PurchaseRequest, new { @class = "form-control", @type = "number", @Value = "" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Usuario Creador:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.SelectedUser, Model.ListUser, new { @size = "2" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha compra Desde:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateFromPurchase" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha compra Hasta:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateToPurchase" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Proveedor:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.SelectedProvider, Model.ListProvider, new { @size = "2" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Monto Desde:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.AmounFrom, new { @class = "form-control", @type = "number", @Value = "" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Monto Hasta:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.AmountTo, new { @class = "form-control", @type = "number", @Value = "" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Usuario Comprador:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.SelectedUserBuyer, Model.ListUserBuyer, new { @size = "2" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Procesado:</label>
+                            <div class="col-md-8" id="sandbox-container">
+                                @*<input type="checkbox" id="changePassword"/>*@
+                                <input type="checkbox" id="chkProcessed">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button id="btnBuscar" class="btn btn-default">Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" id="modalViewExpense">
+
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#chkProcessed').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
+        $('.date-picker').datepicker();
+        $('select').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+        });
+        $('.tooltipAai').tooltip({
+            container: 'body',
+            title: "Seleccione un gasto"
+        });
+        $('.tooltipExpense1').tooltip({
+            container: 'body',
+            title: 'Seleccione un gasto'
+        });
+        $('#btnViewExpenseAuthorization').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/ExpenseAuthorization/View?id=" + id, null)
+        });
+        $('#btnEditExpenseAuthorization').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/ExpenseAuthorization/Edit?id=" + id, null)
+        });
+
+        $('#btnDeleteExpenseAuthorization').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/ExpenseAuthorization/Delete?id=" + id, null)
+        });
+
+        $('#btnAddExpenseAuthorization').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/ExpenseAuthorization/Create", null)
+        });
+
+        $('#btnSPExpenseAuthorization').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/Spending/CreateFromExpenseAuthorization?expenseAuthorizationId=" + id, null)
+        });
+
+        $('#btnBuscar').click(function (event) {
+            var params = {};
+            params.SelectedProvider = $('#SelectedProvider').val();
+            params.SelectedUser = $('#SelectedUser').val();
+            params.AmountFrom = $('#AmounFrom').val();
+            params.AmountTo = $('#AmountTo').val();
+            params.DateFromCreate = $('#txtDateFromCreate').val();
+            params.DateToCreate = $('#txtDateToCreate').val();
+            params.DateFromPurchase = $('#txtDateFromPurchase').val();
+            params.DateToPurchase = $('#txtDateToPurchase').val();
+            params.PurchaseRequestId = $('#PurchaseRequest').val();
+            params.SelectedUserBuyer = $('#SelectedUserBuyer').val();
+            if ($('#chkProcessed').is(':checked') == true) {
+                params.Processed = '1';
+            } else {
+                params.Processed = '0';
+            }
+            CallBackGet(function (data) {
+                $("#acciones").html(data);
+            }, "/ExpenseAuthorization/GetTable", params)
+        });
+
+    });
+</script>
+

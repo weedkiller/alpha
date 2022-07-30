@@ -1,0 +1,227 @@
+﻿
+<!-- VISTA: Maintenance/Partner.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.Administration.ProviderCADetailTableVm
+<div class="filter-container">
+</div>
+
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-Partner"></i>
+                    <span class="caption-subject bold uppercase">Cuenta Corriente del Proveedor</span>
+                </div>
+                <div class="actions">
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnPayment" disabled="disabled">
+                            Pagar
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnImputPayment" disabled="disabled">
+                            Imputar
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnDetail" disabled="disabled">
+                            Ver Detalle
+                        </a>
+                    </div>
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">Nombre:</label>
+                                        <div class="col-md-9">
+                                            @Html.DisplayFor(model => model.name)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">Saldo:</label>
+                                        <div class="col-md-8">
+                                            @Html.DisplayFor(model => model.balance)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+                            <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                <thead>
+                                    <tr>
+                                        <th style="display: none">Id</th>
+                                        <th>Movimiento</th>
+                                        <th>Descripción</th>
+                                        <th>Monto</th>
+                                        <th>Fecha</th>
+                                        <th>Saldo sin Imputación</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.ProviderCADetailList)
+                                    {
+                                        <tr>
+                                            <td style="display: none">@Html.DisplayFor(modelItem => item.MovementId)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Movement)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Date)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.BalanceNotImput)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-5">
+                        <button type="button" class="btn default" id="btnCancel">Volver</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).ready(function () {
+            $('#chkIncludedAll').iCheck({
+                checkboxClass: 'icheckbox_square-grey',
+                radioClass: 'iradio_square-grey',
+                increaseArea: '20%' // optional
+            });
+
+            function formatTableToolsButton(node) {
+                $(node).removeClass('DTTT_button');
+                $(node).addClass('btn btn-default');
+            }
+            var table = $('#tabla_id').dataTable({
+                "destroy": true,
+                "aaSorting": [],
+				"bServerSide": false,
+				"buttons": [
+					{ extend: 'copy', text: 'Copiar' },
+					'csv',
+					'excel',
+					'pdf',
+					{ extend: 'print', text: 'Imprimir' },
+				],
+				"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+                "dom": 'Blfrtip',
+                "sScrollYInner": "100%",
+                "sScrollX": "100%",
+                "sScrollXInner": "100%",
+                "scrollCollapse": true,
+                "bProcessing": false
+            });
+
+            $('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+                event.stopPropagation();
+
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                    $("#btnVer").attr("disabled", "disabled");
+                    $("#idTooltipPartner1").removeClass('tooltipAai');
+                    $('#idTooltipPartner1').tooltip({
+                        container: 'body',
+                        title: 'Seleccione un usuario'
+                    });
+                    $("#btnDetail").attr("disabled", "disabled");
+                    $("#btnPayment").attr("disabled", "disabled");
+                    $("#btnImputPayment").attr("disabled", "disabled");
+                    $("#idTooltipAai").removeClass('tooltipAai');
+                    $('#idTooltipAai').tooltip({
+                        container: 'body',
+                        title: "Seleccione un cliente"
+                    });
+                }
+                else {
+                    $('#tabla_id tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                    $("#btnDetail").removeAttr("disabled", "disabled");
+                    tipo = table.fnGetData(this)[1];
+                    monto = table.fnGetData(this)[5];
+                    if (tipo == 'Gasto' && monto != '0') {
+                        $("#btnPayment").removeAttr("disabled", "disabled");
+                    }
+                    else {
+                        $("#btnPayment").attr("disabled", "disabled");
+                    }
+                    if (tipo == 'Pago' && monto != '0') {
+                        $("#btnImputPayment").removeAttr("disabled", "disabled");
+                    }
+                    else {
+                        $("#btnImputPayment").attr("disabled", "disabled");
+                    }
+                    $("#idTooltipAai").tooltip('destroy');
+                    $("#btnVer").removeAttr("disabled", "disabled");
+                    $("#idTooltipPartner1").tooltip('destroy');
+                    id = table.fnGetData(this)[0];
+                    
+                }
+            });
+            $('.tooltipAai').tooltip({
+                container: 'body',
+                title: "Seleccione un cliente"
+            });
+            $('.tooltipPartner1').tooltip({
+                container: 'body',
+                title: 'Seleccione un cliente'
+            });
+
+            $('#btnPayment').click(function (event) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+                }, "/Provider/CreateSpengingPayment?id=" + id, null)
+            });
+
+            $('#btnImputPayment').click(function (event) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+                }, "/Provider/ImputPayment?id=" + id, null)
+            });
+
+            $('#btnDetail').click(function (event) {
+                if (tipo == 'Gasto') {
+                    CallBackGet(function (data) {
+                        $("#dashboard").html(data);
+                    }, "/Provider/SpendingView?id=" + id, null)
+                }
+                if (tipo == 'Pago') {
+                    CallBackGet(function (data) {
+                        $("#dashboard").html(data);
+                    }, "/Provider/SpendingPaymentView?id=" + id, null)
+                }
+            });
+
+            $('#btnCancel').click(function (event) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+                }, "/Provider/IndexCurrentAcount", null)
+            });
+
+       });
+    });
+</script>
+

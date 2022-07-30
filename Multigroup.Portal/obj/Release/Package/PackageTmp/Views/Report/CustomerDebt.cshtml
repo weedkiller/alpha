@@ -1,0 +1,135 @@
+﻿
+<!-- VISTA: Maintenance/Agency.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.Shared.CustomerDebtTableVm
+<div class="filter-container">
+</div>
+
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-Agency"></i>
+                    <span class="caption-subject bold uppercase">Deudas de Clientes</span>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+                        <div class="form-group">
+                            <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                <thead>
+                                    <tr>
+                                        <th>Número Contrato</th>
+                                        <th>DNI</th>
+                                        <th>Nombre</th>
+                                        <th>Apellido</th>
+                                        <th>Estado</th>
+                                        <th>Cuotas Adeudadas</th>
+                                        <th>Monto de Cuotas</th>
+                                        <th>Monto Intereses</th>
+                                        <th>Monto Total</th>
+                                        <th>Telemarketer</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.CustomerDebtList)
+                                    {
+                                        <tr style="color: @item.Color; font-weight: bold">
+                                            <td>@Html.DisplayFor(modelItem => item.Number)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.IdentificationNumber)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Surname)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.StatusContract)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Count)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Interest)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Total)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.User)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).ready(function () {
+            $('#chkIncludedAll').iCheck({
+                checkboxClass: 'icheckbox_square-grey',
+                radioClass: 'iradio_square-grey',
+                increaseArea: '20%' // optional
+            });
+
+            function formatTableToolsButton(node) {
+                $(node).removeClass('DTTT_button');
+                $(node).addClass('btn btn-default');
+            }
+            var table = $('#tabla_id').dataTable({
+                "destroy": true,
+                "aaSorting": [],
+				"bServerSide": false,
+				"buttons": [
+					{ extend: 'copy', text: 'Copiar' },
+					'csv',
+					'excel',
+					'pdf',
+					{ extend: 'print', text: 'Imprimir' },
+				],
+				"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+                "dom": 'Blfrtip',
+                "sScrollYInner": "100%",
+                "sScrollX": "100%",
+                "sScrollXInner": "100%",
+                "scrollCollapse": true,
+                "bProcessing": false
+            });
+
+            $('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+                event.stopPropagation();
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                    $("#idTooltipAgency1").removeClass('tooltipAai');
+                    $('#idTooltipAgency1').tooltip({
+                        container: 'body',
+                        title: 'Seleccione un usuario'
+                    });
+                    $("#idTooltipAai").removeClass('tooltipAai');
+                    $('#idTooltipAai').tooltip({
+                        container: 'body',
+                        title: "Seleccione un cliente"
+                    });
+                }
+                else {
+                    $('#tabla_id tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                    $("#idTooltipAai").tooltip('destroy');
+                    $("#idTooltipAgency1").tooltip('destroy');
+                    id = table.fnGetData(this)[0];
+                }
+            });
+            $('.tooltipAai').tooltip({
+                container: 'body',
+                title: "Seleccione un cliente"
+            });
+            $('.tooltipAgency1').tooltip({
+                container: 'body',
+                title: 'Seleccione un cliente'
+            });
+       });
+    });
+</script>
+

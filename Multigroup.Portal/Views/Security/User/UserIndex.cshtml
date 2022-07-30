@@ -1,0 +1,255 @@
+﻿<!-- VISTA: User/UserList.cshtml -->
+@model IEnumerable<Multigroup.Portal.Models.Shared.UserListVm>
+	<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-shield"></i>
+                    <span class="caption-subject bold uppercase"> Usuarios</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-default" id="btnCreate">
+                        Añadir
+                    </a>
+                    <div class="tooltipUser btn-group" id="idTooltipUser">
+                        <a class="btn btn-default" id="btnEdit" disabled="disabled">
+                            Editar
+                        </a>
+                    </div>
+                    <div class="tooltipUser1 btn-group" id="idTooltipUser1">
+                        <a class="btn btn-default bootstro" id="btnVer" disabled="disabled">
+                            Ver Detalles
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipUser2">
+                        <a class="btn btn-default bootstro" id="btnVerTypeChange" disabled="disabled">
+                            Ver cambios de cargo
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipUser3">
+                        <a class="btn btn-default bootstro" id="btnLimitUser" disabled="disabled" data-toggle="modal" data-target="#modalLimit">
+                            Modificar Límite Compra
+                        </a>
+                    </div>
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+			<div class="portlet-body form">
+				<div class="row">
+					<div class="col-md-12">
+						<table id="tableUserList" class="display table table-bordered table-striped table-condensed flip-content">
+							<thead class="flip-content">
+                                <tr>
+                                    <th style="display:none">Id Usuario</th>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>E-mail</th>
+                                    <th>Usuario</th>
+                                    <th>Rol</th>
+                                    <th>Activo</th>
+                                    <th>Limite Compra</th>
+                                </tr>
+							</thead>
+							@foreach (var item in Model)
+							{
+								<tr>
+									<td style="display:none">@Html.DisplayFor(modelItem => item.UserId)</td>
+									<td>@Html.DisplayFor(modelItem => item.Names)</td>
+									<td>@Html.DisplayFor(modelItem => item.Surname)</td>
+									<td>@Html.DisplayFor(modelItem => item.Email)</td>
+									<td>@Html.DisplayFor(modelItem => item.UserName)</td>
+									<td>@Html.DisplayFor(modelItem => item.RoleName)</td>
+									<td>@Html.DisplayFor(modelItem => item.Active)</td>
+									<td>@Html.DisplayFor(modelItem => item.Limit)</td>
+								</tr>
+							}
+						</table>
+					</div>
+				</div>
+			</div>
+        </div>
+    </div>
+</div>
+<div id="modalUserTypeHistory" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" id="tableUserTypeHistory">
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" id="modalLimit">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modificar Limite</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Nuevo Límite de Compra:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="limit" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn default" id="btnLimiteCompra">Aceptar</button>
+                <button type="button" class="btn default" id="btnCancel" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnEdit').click(function (event) {
+            var params = new Object;
+            params.Id = idUser;
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/User/Edit", params)
+        });
+        $('#btnVer').click(function (event) {
+            var params = new Object;
+            params.Id = idUser;
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/User/Details", params)
+        });
+        $('#btnVerTypeChange').click(function (event) {
+            var params = new Object;
+            params.Id = idUser;
+            CallBackGet(function (data) {
+                $("#tableUserTypeHistory").html(data);
+            }, "/User/UserTypeHistory", params)
+            $('#modalUserTypeHistory').modal('show');
+        });
+        $('#btnCreate').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/User/Create", null)
+        });
+        function formatTableToolsButton(node) {
+            $(node).removeClass('DTTT_button');
+            $(node).addClass('btn btn-default');
+        }
+        //LoadUserListTable();
+        var table = $('#tableUserList').dataTable({
+            "aaSorting": [],
+            "destroy": true,
+            "bServerSide": false,
+			"sScrollYInner": "100%",
+			"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+            "dom": 'Blfrtip',
+			"buttons": [
+				{ extend: 'copy', text: 'Copiar' },
+				'csv',
+				'excel',
+				'pdf',
+				{ extend: 'print', text: 'Imprimir' },
+			],
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false
+        });
+
+        $('.tooltipUser').tooltip({
+            container: 'body',
+            title: 'Seleccione un usuario'
+        });
+        $('.tooltipUser1').tooltip({
+            container: 'body',
+            title: 'Seleccione un usuario'
+        });
+        $('.tooltipUser2').tooltip({
+            container: 'body',
+            title: 'Seleccione un usuario'
+        });
+        $('#tableUserList tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $("#btnVer").attr("disabled", "disabled");
+                $("#btnVerTypeChange").attr("disabled", "disabled");
+                $("#btnLimitUser").attr("disabled", "disabled");
+                $("#idTooltipUser1").removeClass('tooltipAai');
+                $('#idTooltipUser1').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un usuario'
+                });
+                $("#idTooltipUser2").removeClass('tooltipAai');
+                $('#idTooltipUser2').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un usuario'
+                });
+                $("#btnEdit").attr("disabled", "disabled");
+                $("#idTooltipUser").removeClass('tooltipAai');
+                $('#idTooltipUser').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un usuario'
+                });
+            }
+            else {
+                $('#tableUserList tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $("#btnEdit").removeAttr("disabled", "disabled");
+                $("#idTooltipUser").tooltip('destroy');
+                $("#btnVer").removeAttr("disabled", "disabled");
+                $("#btnVerTypeChange").removeAttr("disabled", "disabled");
+                if (@ViewBag.Rol == 1017) {
+                    $("#btnLimitUser").removeAttr("disabled", "disabled");
+				}
+				else
+                    $("#btnLimitUser").attr("disabled", "disabled");
+                $("#idTooltipUser1").tooltip('destroy');
+                $("#idTooltipUser2").tooltip('destroy');
+                idUser = table.fnGetData(this)[0];
+            }
+        });
+
+        $('#btnLimiteCompra').click(function (event) {
+            var params = {};
+            params.Id = idUser;
+            params.Limit = $('#limit').val();
+            CallSericeAjax(function (data) {
+                $('modalLimit').modal('hide');
+                $('.modal-backdrop').remove();
+            }, "/User/UpdateLimit", params, 'POST')
+        });
+    });
+
+    $('#btnLimiteCompra').click(function (event) {
+        var params = {};
+        params.Id = idUser;
+        params.Limit = $('#limit').val();
+        CallSericeAjax(function (data) {
+            $('modalLimit').modal('hide');
+            $('.modal-backdrop').remove();
+        }, "/User/UpdateLimit", params, 'POST')
+    });
+
+    $('#btnCancel').click(function (event) {
+        RefreshHistory();
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/User/Index", null, true)
+    });
+
+    function OnStartPre()
+    {
+        OnStart();
+        var param = new Object;
+        param.SelectedSites = $('#ddlSites').val();
+        UpdateLastState(param);
+    }
+</script>
+

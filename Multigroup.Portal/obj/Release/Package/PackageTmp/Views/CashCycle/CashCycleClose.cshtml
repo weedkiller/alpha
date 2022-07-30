@@ -1,0 +1,114 @@
+@model Multigroup.Portal.Models.Administration.CashCycleVm
+<div class="filter-container">
+</div>
+
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-laptop"></i>
+                    <span class="caption-subject bold uppercase">Cerrar Ciclo de Caja</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            @using (Ajax.BeginForm("Close", "CashCycle", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnBegin = "OnStart",
+                OnComplete = "OnComplete",
+                OnFailure = "FailMessage",
+                OnSuccess = "SuccessReturn"
+            }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="portlet-body form">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Caja:</label>
+                                <div class="col-md-9">
+                                    @Html.DisplayFor(model => model.Cashier)
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Último Cierre:</label>
+                                <div class="col-md-9">
+                                    @Html.DisplayFor(model => model.lastDate)
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->                     
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Valida:</label>
+                                <div class="col-md-9">
+                                    @Html.DropDownListFor(m => m.ddlUserValidate.SelectedItem, Model.ddlUserValidate.ListItems, new { @id = "ddlUserValidate", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                    </div>
+                    <!--/span-->                    
+                    <br />
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-5">
+                                <button class="btn btn-primary" id="btnOpenModal" data-toggle="modal" data-target="#confirmModal">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="confirmModal" class="modal fade" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">Cerrar Ciclo</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <h3>¿Desea cerrar el ciclo de caja?</h3>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" id="btnProcess" class="btn btn-primary">Aceptar</button>
+                                <button type="button" data-dismiss="modal" class="btn default">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+       
+        $('select').multiselect();
+
+    });
+
+    function SuccessReturn() {
+        $('#confirmModal').modal('hide');
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/CashCycle/CloseCycle", null)
+        SuccessMessage();
+    }
+
+</script>

@@ -1,0 +1,279 @@
+﻿<!-- VISTA: Contract/ContractCreate.cshtml -->
+@model Multigroup.Portal.Models.ContractModel.ContractVm
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+	<div class="col-md-12 column">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-user"></i>
+					<span class="caption-subject bold uppercase">Ver Contrato</span>
+				</div>
+			</div>@using (Ajax.BeginForm("Edit", "Contract", new AjaxOptions
+			{
+				HttpMethod = "POST",
+				OnBegin = "OnStart",
+				OnComplete = "OnComplete",
+				OnFailure = "FailMessage",
+				OnSuccess = "SuccessMessage",
+				UpdateTargetId = "dashboard"
+			}))
+			{
+				<div class="portlet-body form">
+					<div class="form-body">
+						@Html.AntiForgeryToken()
+						@Html.HiddenFor(model => model.ContractId)
+						<div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Tipo de Contrato:</label>
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(m => m.ddlContractType.SelectedItem, Model.ddlContractType.ListItems, new { @id = "ddlContractType", @size = 2, @readonly = true })
+                                    </div>
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label col-md-4">Bien Solicitado:</label>
+									<div class="col-md-8">
+										@Html.TextBoxFor(model => model.GoodRequested, new { @class = "form-control", @readonly = true })
+										@Html.ValidationMessageFor(model => model.GoodRequested, string.Empty, new { @class = "validate-error" })
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label col-md-4">Color:</label>
+									<div class="col-md-8">
+										@Html.TextBoxFor(model => model.GoodRequestedColour, new { @class = "form-control", @readonly = true })
+										@Html.ValidationMessageFor(model => model.GoodRequestedColour, string.Empty, new { @class = "validate-error" })
+									</div>
+								</div>
+							</div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Lugar de Pago:</label>
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(m => m.ddlPaymentPlace.SelectedItem, Model.ddlPaymentPlace.ListItems, new { @id = "ddlPaymentPlace", @size = 2, @readonly = true })
+                                    </div>
+                                </div>
+                            </div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label col-md-4">Usado Marca:</label>
+									<div class="col-md-8">
+										@Html.TextBoxFor(model => model.VehicleBrand, new { @class = "form-control", @readonly = true })
+										@Html.ValidationMessageFor(model => model.VehicleBrand, string.Empty, new { @class = "validate-error" })
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label col-md-4">Usado Modelo:</label>
+									<div class="col-md-8">
+										@Html.TextBoxFor(model => model.VehicleModel, new { @class = "form-control", @readonly = true })
+										@Html.ValidationMessageFor(model => model.VehicleModel, string.Empty, new { @class = "validate-error" })
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label col-md-4">Usado KM:</label>
+									<div class="col-md-8">
+										@Html.TextBoxFor(model => model.VehicleMileage, new { @class = "form-control", @readonly = true })
+										@Html.ValidationMessageFor(model => model.VehicleMileage, string.Empty, new { @class = "validate-error" })
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label col-md-4">Usado Patente:</label>
+									<div class="col-md-8">
+										@Html.TextBoxFor(model => model.VehicleRegistrationPlate, new { @class = "form-control", @readonly = true })
+										@Html.ValidationMessageFor(model => model.VehicleRegistrationPlate, string.Empty, new { @class = "validate-error" })
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label col-md-4">Número:</label>
+									<div class="col-md-8">
+										@Html.TextBoxFor(model => model.Number, new { @class = "form-control", @readonly = true })
+										@Html.ValidationMessageFor(model => model.Number, string.Empty, new { @class = "validate-error" })
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label col-md-4">Fecha de pedido:</label>
+									<div class="col-md-8">
+										@Html.TextBoxFor(model => model.RegistrationDate, new { @class = "form-control form-control-inline date-picker", @placeholder = "dd/mm/aaaa", @readonly = true })
+										@Html.ValidationMessageFor(model => model.RegistrationDate, string.Empty, new { @class = "validate-error" })
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label col-md-4">Agencia:</label>
+									<div class="col-md-8">
+										@Html.DropDownListFor(m => m.ddlAgency.SelectedItem, Model.ddlAgency.ListItems, new { @id = "ddlAgency", @size = 2, @readonly = true })
+									</div>
+								</div>
+							</div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Preferencia de pago:</label>
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(m => m.ddlPaymentPreference.SelectedItem, Model.ddlPaymentPreference.ListItems, new { @id = "ddlPaymentPreference", @size = 2, @readonly = true })
+                                    </div>
+                                </div>
+                            </div>
+						</div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Vendedor:</label>
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(m => m.ddlSeller.SelectedItem, Model.ddlSeller.ListItems, new { @id = "ddlSeller", @size = 2, @readonly = true })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Supervisor:</label>
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(m => m.ddlSupervisor.SelectedItem, Model.ddlSupervisor.ListItems, new { @id = "ddlSupervisor", @size = 2, @readonly = true })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Gerente:</label>
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(m => m.ddlManager.SelectedItem, Model.ddlManager.ListItems, new { @id = "ddlManager", @size = 2, @readonly = true })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						<div class="row">
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label col-md-4">Cuota N 1:</label>
+									<div class="col-md-8">
+										@Html.TextBoxFor(model => model.FirstAdvanceAmount, new { @class = "form-control", @readonly = true })
+										@Html.ValidationMessageFor(model => model.FirstAdvanceAmount, string.Empty, new { @class = "validate-error" })
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label col-md-4">Cuota N 2 al 36:</label>
+									<div class="col-md-8">
+										@Html.TextBoxFor(model => model.AdvancesAmount, new { @class = "form-control", @readonly = true })
+										@Html.ValidationMessageFor(model => model.AdvancesAmount, string.Empty, new { @class = "validate-error" })
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label col-md-4">Suscripcion:</label>
+									<div class="col-md-8">
+										@Html.TextBoxFor(model => model.SubscriptionAmount, new { @class = "form-control", @readonly = true })
+										@Html.ValidationMessageFor(model => model.SubscriptionAmount, string.Empty, new { @class = "validate-error" })
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label col-md-4">Fecha de pago:</label>
+									<div class="col-md-8">
+										@Html.DropDownListFor(m => m.ddlPaymentDate.SelectedItem, Model.ddlPaymentDate.ListItems, new { @id = "ddlPaymentDate", @size = 2, @readonly = true })
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label col-md-4">6 a 12 Anticipo:</label>
+									<div class="col-md-8">
+										@Html.TextBoxFor(model => model.FirstAdvanceDiscount, new { @class = "form-control", @readonly = true })
+										@Html.ValidationMessageFor(model => model.FirstAdvanceDiscount, string.Empty, new { @class = "validate-error" })
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label col-md-4">13 a 18 anticipo:</label>
+									<div class="col-md-8">
+										@Html.TextBoxFor(model => model.SecondAdvanceDiscount, new { @class = "form-control", @readonly = true })
+										@Html.ValidationMessageFor(model => model.SecondAdvanceDiscount, string.Empty, new { @class = "validate-error" })
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label col-md-4">19 a 36 anticipo:</label>
+									<div class="col-md-8">
+										@Html.TextBoxFor(model => model.ThirdAdvanceDiscount, new { @class = "form-control", @readonly = true })
+										@Html.ValidationMessageFor(model => model.ThirdAdvanceDiscount, string.Empty, new { @class = "validate-error" })
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label class="control-label col-md-12">Observaciones:</label>
+									<div class="col-md-12">
+										@Html.TextAreaFor(model => model.Observations, new { @class = "form-control", @readonly = true })
+										@Html.ValidationMessageFor(model => model.Observations, string.Empty, new { @class = "validate-error" })
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="form-actions">
+						<div class="row">
+							<div class="col-md-offset-5">
+								<button type="button" class="btn default" id="btnCancel">Volver</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+		<div class="portlet portlet-sortable-empty">
+		</div>
+		<input type="text" id="customerId" style="display:none" />
+	</div>
+</div>
+<!-- Comienzo Modal Adjuntar -->
+
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+
+		$('select').multiselect();
+		$(".date-picker").datepicker();
+
+
+		$('#btnCancel').click(function (event) {
+			CallBackGet(function (data) {
+				$("#dashboard").html(data);
+
+			}, "/Contract/IndexTMK", null)
+		});
+	});
+</script>
+
+
+
+

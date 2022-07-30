@@ -1,0 +1,125 @@
+﻿@model Multigroup.Portal.Models.Collection.AssignPaymentPreferenceWithVoucherTableVm
+<div class="form-group">
+    <table id="tablaa" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <thead>
+            <tr>
+                <th style="display: none">ID</th>
+                <th style="display: none">IdCuota</th>
+                <th style="display: none">IdMetodo</th>
+                <th style="display: none">Saldado</th>
+                <th>Contrato</th>
+                <th>Cliente</th>
+                <th>Celular</th>
+                <th>Cuota</th>
+                <th>Monto</th>
+                <th>Medio Pago</th>
+                <th>Canal Pago</th>
+                <th>Fecha Aviso</th>
+                <th>Monto Pagado</th>
+                <th>Comprobante</th>
+                <th>Fecha Pago</th>
+                <th>Telemarketer</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.AssignPaymentPreferenceWithVoucherList)
+            {
+                <tr>
+                    <td style="display:none">@Html.DisplayFor(modelItem => item.AssignPaymentPreferenceId)</td>
+                    <td style="display:none">@Html.DisplayFor(modelItem => item.InstallmentId)</td>
+                    <td style="display:none">@Html.DisplayFor(modelItem => item.PaymentMethodId)</td>
+                    <td style="display:none">@Html.DisplayFor(modelItem => item.Saldado)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Number)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Customer)</td>
+                    <td>@Html.DisplayFor(modelItem => item.CustomerMobile)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Cuota)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PaymentMethod)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Channel)</td>
+                    <td>@Html.DisplayFor(modelItem => item.WarnedDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PaymentAmount)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Voucher)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PaymentDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Telemarketer)</td>
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    var tableee;
+    function formatTableToolsButton(node) {
+        $(node).removeClass('DTTT_button');
+        $(node).addClass('btn btn-default');
+    }
+    var table = $('#tablaa').dataTable({
+        "destroy": true,
+        "aaSorting": [],
+        "bServerSide": false,
+        "buttons": [
+            { extend: 'copy', text: 'Copiar' },
+            'csv',
+            'excel',
+            'pdf',
+            { extend: 'print', text: 'Imprimir' },
+        ],
+        "dom": 'Blfrtip',
+        "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+        "sScrollYInner": "100%",
+        "sScrollX": "100%",
+        "sScrollXInner": "100%",
+        "scrollCollapse": true,
+        "bProcessing": false
+    });
+
+    $('#tablaa tbody').unbind("click").on('click', 'tr', function (event) {
+        event.stopPropagation();
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+            $("#asd").attr("disabled", "disabled");
+            $("#btnRegister").attr("disabled", "disabled");
+            $("#idTooltipAai").removeClass('tooltipAai');
+            $('#idTooltipAai').tooltip({
+                container: 'body',
+                title: "Seleccione un rol"
+            });
+        }
+        else {
+            saldado = table.fnGetData(this)[3];
+            $('#tablaa tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+            $("#asd").removeAttr("disabled", "disabled");
+            if (saldado == 'No') {
+                $("#btnRegister").removeAttr("disabled", "disabled");
+            }
+            else {
+                $("#btnRegister").attr("disabled", "disabled");
+            }
+            $("#idTooltipAai").tooltip('destroy');
+            AssignPaymentPreferenceId = table.fnGetData(this)[0];
+            installment = table.fnGetData(this)[1];
+            PaymentMethod = table.fnGetData(this)[2];
+            Contract = table.fnGetData(this)[4];
+        }
+    });
+
+
+    $('#btnRegister').click(function (event) {
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Collections/VoucherRegister?number=" + Contract, null)
+    });
+
+    $('.tooltipAai').tooltip({
+        container: 'body',
+        title: "Seleccione un pago"
+    });
+    $('.tooltipCustomer1').tooltip({
+        container: 'body',
+        title: 'Seleccione un pago'
+    });
+</script>

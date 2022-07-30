@@ -1,0 +1,107 @@
+﻿@model Multigroup.Portal.Models.Collection.AssignPaymentPreferenceCollectorTableVm
+<div class="form-group">
+    <table id="tablaa" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="checkAll"></th>
+                <th style="display: none">ID</th>
+                <th style="display: none">IdCuota</th>
+                <th>Contrato</th>
+                <th>Cliente</th>
+                <th>Celular</th>
+                <th>Cuota</th>
+                <th>Monto</th>
+                <th>Fecha Cobro</th>
+                <th>Telemarketer</th>
+                <th>Rendido</th>
+                <th>Procesado</th>
+                <th>Cobrador</th>
+                <th>Fecha Visita</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.AssignPaymentPreferenceCollectorList)
+            {
+                <tr>
+                    <th><input type="checkbox" class="checkboxes"></th>
+                    <td style="display:none">@Html.DisplayFor(modelItem => item.AssignPaymentPreferenceId)</td>
+                    <td style="display:none">@Html.DisplayFor(modelItem => item.InstallmentId)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Number)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Customer)</td>
+                    <td>@Html.DisplayFor(modelItem => item.CustomerMobile)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Cuota)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PaymentDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Telemarketer)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Surrender)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Register)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Collector)</td>
+                    <td>@Html.DisplayFor(modelItem => item.VisitDate)</td>
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+		$('#checkAll').click(function () {
+			if ($(this).is(":checked")) {
+				$('input.checkboxes').each(function () {
+					$(this).prop('checked', true);
+					$(this).attr('checked', true);
+				});
+			} else {
+				$('input.checkboxes').each(function () {
+					$(this).prop('checked', false);
+					$(this).attr('checked', false);
+				});
+			}
+
+		});
+		function formatTableToolsButton(node) {
+			$(node).removeClass('DTTT_button');
+			$(node).addClass('btn btn-default');
+		}
+		var table = $('#tabla_id').dataTable({
+			"destroy": true,
+			"aaSorting": [],
+			"bServerSide": false,
+			"buttons": [
+				{ extend: 'copy', text: 'Copiar' },
+				'csv',
+				'excel',
+				'pdf',
+				{ extend: 'print', text: 'Imprimir' },
+			],
+			"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+			"dom": 'Blfrtip',
+			"sScrollYInner": "100%",
+			"sScrollX": "100%",
+			"sScrollXInner": "100%",
+			"scrollCollapse": true,
+			"bProcessing": false
+		});
+	});
+
+
+    $('#btnSurrender').click(function (event) {
+        var menuItems = [];
+        $('input.checkboxes').each(function () {
+            if ($(this).is(":checked")) {
+                var menuId = $(this).closest('tr').find("td").eq(0).html()
+                menuItems.push(menuId.trim());
+            }
+        });
+        var params = new Object;
+        params.Cuotas = menuItems;
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/Collector/SurrenderSummary", params)
+
+    });
+
+</script>

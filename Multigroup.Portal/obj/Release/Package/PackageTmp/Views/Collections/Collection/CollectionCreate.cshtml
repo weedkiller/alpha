@@ -1,0 +1,293 @@
+﻿<!-- VISTA: Maintenance/AgencyCreate.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.Collection.CollectionVm
+<div class="clearfix">
+</div>
+<div class="row">
+	<div class="col-md-12 column">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-money"></i>
+					<span class="caption-subject bold uppercase">Nuevo Cobro</span>
+				</div>
+                <div class="actions">
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnEditCustomer" disabled="disabled">
+                            Ver estado contrato
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnDeletePayment" style="display: none" disabled="disabled" data-toggle="modal" data-target="#deleteModal">
+                            Borrar ultimo pago
+                        </a>
+                    </div>
+                </div>
+			</div>
+				<div class="portlet-body form">
+					<div class="form-body">
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="control-label col-md-4">Fecha de pago:</label>
+									<div class="col-md-8">
+										<input type="text" class="form-control form-control-inline date-picker" placeholder="dd/mm/aaaa" id="PaymentDate" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="control-label col-md-4">DNI:</label>
+									<div class="col-md-8">
+										<input type="number" id="documentNumber" class="form-control" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="control-label col-md-4">N Contrato:</label>
+									<div class="col-md-8">
+										<select id="ContractNumber"></select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="control-label col-md-4">Monto:</label>
+									<div class="col-md-8">
+										<input type="number" id="Amount" class="form-control" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="control-label col-md-4">N de Recibo:</label>
+									<div class="col-md-8">
+										<input type="text" id="ReceipNumber" class="form-control" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="control-label col-md-4">Medio de Pago:</label>
+									<div class="col-md-8">
+										@Html.DropDownListFor(m => m.SelectedPaymentMethod, Model.ListPaymentMethod, new { @size = 2 })
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4" id="mercadopago" style="display:none">
+								<div class="form-group">
+									<label class="control-label col-md-4">Cuenta de Mercadopago:</label>
+									<div class="col-md-8">
+                                        @Html.DropDownListFor(m => m.ddlMPSellerAccount.SelectedItem, Model.ddlMPSellerAccount.ListItems, new { @id = "ddlMPSellerAccount", @size = 2 })
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="control-label col-md-4">Tipo de Pago:</label>
+									<div class="col-md-8">
+										@Html.DropDownListFor(m => m.SelectedType, Model.ListType, new { @size = 2 })
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label class="control-label col-md-12">Observaciones:</label>
+									<div class="col-md-12">
+										<textarea class="form-control" id="Observations"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-actions">
+						<div class="row">
+							<div class="col-md-offset-5">
+								<button class="btn btn-primary" id="btnOpenModal" data-toggle="modal" data-target="#myModal">Guardar</button>
+								<button type="button" class="btn default" id="btnCancel">Volver</button>
+							</div>
+						</div>
+					</div>
+				</div>
+		</div>
+		<div class="portlet portlet-sortable-empty">
+		</div>
+	</div>
+</div>
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirmar cobro</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>Por favor, verifique los datos ingresados, una vez cargados en el sistema no podran ser modificados. Esta seguro que desea confirmar el cobro?</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-pimary" data-dismiss="modal" id="btnProcess">Confirmar Cobro</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="resumeModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Resumen de contrato</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-6"  id="modalDiv">
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="deleteModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Borrar ultimo pago</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>¿Confirma que desea borrar el ultimo pago?</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="deletePaymentModalBtn">Confirmar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('select').multiselect();
+        if (@ViewBag.Rol == 1 || @ViewBag.Rol == 10) {
+            $('#btnDeletePayment').show();
+        }
+		$('#SelectedPaymentMethod').change(function () {
+		    if ($('#SelectedPaymentMethod').val() == '3') {
+				$('#mercadopago').show();
+			} else { 
+				$('#mercadopago').hide();
+			} 
+			$('select').multiselect();
+        });
+        $('#ContractNumber').change(function () {
+            $("#btnEditCustomer").removeAttr("disabled", "disabled");
+            $("#btnDeletePayment").removeAttr("disabled", "disabled");
+            $("#idTooltipAai").tooltip('destroy');
+        });
+        $('.tooltipAai').tooltip({
+            container: 'body',
+            title: "Seleccione un contrato"
+        });
+        $("#btnEditCustomer").click(function (event) {
+            CallBackGet(function (data) {
+                $("#modalDiv").html(data);
+                $('#resumeModal').modal('show');
+            }, "/Collections/Resume?id=" + $('#ContractNumber').val(), null)
+        });
+        $("#deletePaymentModalBtn").click(function (event) {
+            var params = {
+                contractId: $('#ContractNumber').val()
+            }
+            CallSericeAjax(function (data) {
+                $(".modal-backdrop").remove();
+                $('#deleteModal').modal('hide');
+                SuccessMessage("success", "Cobro eliminado con exito");
+                CallSericeAjax(function (data) {
+                    $('#ContractNumber').empty();
+                    for (var i = 0; i < data.length; i++) {
+                        $('#ContractNumber').append('<option value="' + data[i].ContractId + '">' + data[i].Number + ' - ' + data[i].GoodRequested + '</option>')
+                    }
+                    $("#ContractNumber").multiselect('destroy');
+                    $("#ContractNumber").multiselect();
+                    $("#btnEditCustomer").removeAttr("disabled", "disabled");
+                    $("#btnDeletePayment").removeAttr("disabled", "disabled");
+                    $("#idTooltipAai").tooltip('destroy');
+                    CallSericeAjax(function (data) {
+                        $("#Amount").val(data);
+                    }, "/Contract/GetAmountByContractId?ContractId=" + $('#ContractNumber').val() + "&PaymentDate=" + $('#PaymentDate').val(), null, 'GET')
+                }, "/Contract/GetContractByDNI?DNI=" + $('#documentNumber').val(), null, 'GET')
+
+            }, "/Contract/DeleteLastPayment", params, 'POST')
+        });
+		$('#btnProcess').click(function (event) {
+			var params = {};
+			params.PaymentDate = $('#PaymentDate').val();
+			params.ContractNumber = $('#ContractNumber').val();
+			params.Amount = $('#Amount').val();
+			params.ReceipNumber = $('#ReceipNumber').val();
+			params.SelectedPaymentMethod = $('#SelectedPaymentMethod').val();
+			params.MPSellerAccountId = $('#ddlMPSellerAccount').val();
+			params.SelectedType = $('#SelectedType').val();
+			params.Observations = $('#Observations').val();
+			CallSericeAjax(function (data) {
+				$("#dashboard").html(data);
+			}, "/Collections/Create", params, 'POST')
+		});
+		$('#documentNumber').keydown(function (e) {
+			var code = e.keyCode || e.which;
+			if (code === 9) {
+				e.preventDefault();
+				CallSericeAjax(function (data) {
+					$('#ContractNumber').empty();
+					for (var i = 0; i < data.length; i++) {
+						$('#ContractNumber').append('<option value="' + data[i].ContractId + '">' + data[i].Number + ' - ' + data[i].GoodRequested+'</option>')
+					}
+					$("#ContractNumber").multiselect('destroy');
+                    $("#ContractNumber").multiselect();
+                    $("#btnEditCustomer").removeAttr("disabled", "disabled");
+                    $("#btnDeletePayment").removeAttr("disabled", "disabled");
+                    $("#idTooltipAai").tooltip('destroy');
+					CallSericeAjax(function (data) {
+						$("#Amount").val(data);
+					}, "/Contract/GetAmountByContractId?ContractId=" + $('#ContractNumber').val() + "&PaymentDate=" + $('#PaymentDate').val(), null, 'GET')
+				}, "/Contract/GetContractByDNI?DNI=" + $('#documentNumber').val(), null, 'GET')
+				
+			}
+		});
+		$('#ContractNumber').change(function (e) {
+		    CallSericeAjax(function (data) {
+				$("#Amount").val(data);
+			}, "/Contract/GetAmountByContractId?ContractId=" + $('#ContractNumber').val(), null, 'GET')
+		});
+		$('.date-picker').datepicker();
+        $('#btnCancel').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+			}, "/Collections/Create", null)
+        });
+    });
+</script>
+
+
+
+
+

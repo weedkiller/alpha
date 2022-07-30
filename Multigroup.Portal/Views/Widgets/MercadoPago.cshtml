@@ -1,0 +1,90 @@
+<!-- VISTA: Maintenance/Role.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.Widgets.MPWidgetTableVm
+<div class="filter-container">
+</div>
+
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-user"></i>
+                    <span class="caption-subject bold uppercase">Cuentas MercadoPago</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+                        <div class="form-group">
+                            <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                <thead>
+                                    <tr>
+                                        <th style="display: none">Id</th>
+                                        <th>Vendedor</th>
+                                        <th>Cuenta</th>
+                                        <th>Monto ($)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.MPWidgetList)
+                                    {
+                                        <tr style="color: @item.Color; font-weight: bold">
+                                            <td style="display: none">@Html.DisplayFor(modelItem => item.Id)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.UserId)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Token)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).ready(function () {
+            function formatTableToolsButton(node) {
+                $(node).removeClass('DTTT_button');
+                $(node).addClass('btn btn-default');
+            }
+			var table = $('#tabla_id').dataTable({
+				"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+                "destroy": true,
+                "aaSorting": [],
+                "bServerSide": false,
+				"dom": 'Bfrtip',
+				"buttons": [
+					{ extend: 'copy', text: 'Copiar' },
+					'csv',
+					'excel',
+					'pdf',
+					{ extend: 'print', text: 'Imprimir' },
+				],
+                "sScrollYInner": "100%",
+                "sScrollX": "100%",
+                "sScrollXInner": "100%",
+                "scrollCollapse": true,
+                "bProcessing": false
+            });
+
+            
+            });
+    });
+</script>
+

@@ -1,0 +1,107 @@
+﻿<!-- VISTA: Maintenance/ContractPaper.cshtml -->
+@model Multigroup.Portal.Models.Maintenance.ContractPaperFilterVm
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-ContractPaper"></i>
+                    <span class="caption-subject bold uppercase">Contratos</span>
+                </div>
+				<div class="actions">
+					<a class="btn btn-default" id="btnAddContractPaper">Añadir</a>
+					<div class="tooltipAai btn-group" id="idTooltipAai">
+						<a class="btn btn-default bootstro" id="btnEditContractPaper" disabled="disabled">
+							Editar
+						</a>
+					</div>
+					<div class="tooltipAai btn-group" id="idTooltipAai">
+						<a class="btn btn-default bootstro" id="btnStatus" onclick="loadModal()">
+							Actualizar Estado
+						</a>
+					</div>
+					<a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+					</a>
+				</div>
+            </div>
+			<div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Estado:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.SelectedStatus, Model.ListStatus, new { @size = "2" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Tipo de Contrato:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.ddlContractType.SelectedItem, Model.ddlContractType.ListItems, new { @id = "ddlContractType", @size = 2 })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button id="btnBuscar" class="btn btn-default">Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				<div class="row">
+					<div class="col-md-12" id="acciones">
+
+					</div>
+				</div>
+			</div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" id="modalEditContractPaper">
+
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+  $(document).ready(function () {
+        $('select').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+        });
+        $('.tooltipAai').tooltip({
+            container: 'body',
+			title: "Seleccione un contrato"
+        });
+        $('.tooltipContractPaper1').tooltip({
+            container: 'body',
+            title: 'Seleccione un contrato'
+        });
+        $('#btnEditContractPaper').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/ContractPaper/Edit?id=" + id, null)
+        });
+
+        $('#btnAddContractPaper').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/ContractPaper/Create", null)
+        });
+
+		$('#btnBuscar').click(function (event) {
+			var params = {};
+            params.SelectedStatus = $('#SelectedStatus').val();
+            params.SelectedContractType = $('#ddlContractType').val()
+			CallBackGet(function (data) {
+				$("#acciones").html(data);
+			}, "/ContractPaper/GetTable", params)
+		});
+			
+    });
+</script>
+

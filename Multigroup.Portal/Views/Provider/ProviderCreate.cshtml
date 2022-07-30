@@ -1,0 +1,159 @@
+<!-- VISTA: Maintenance/ContractPaperCreate.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.Administration.ProviderVm
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-user"></i>
+                    <span class="caption-subject bold uppercase">Crear Proveedor</span>
+                </div>
+                <div class="actions">
+                </div>
+            </div>
+            @using (Ajax.BeginForm("Create", "Provider", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnBegin = "OnStart",
+                OnComplete = "OnComplete",
+                OnFailure = "FailMessage",
+                OnSuccess = "SuccessMessage",
+                UpdateTargetId = "dashboard"
+            }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="portlet-body form">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Nombre Fantasía:</label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Name, string.Empty, new { @class = "validate-error" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">DNI:</label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.Document, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Document, string.Empty, new { @class = "validate-error" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Teléfono:</label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.Telephone, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Telephone, string.Empty, new { @class = "validate-error" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Mail:</label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Email, string.Empty, new { @class = "validate-error" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Tipo Proveedor:</label>
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(m => m.ddlProviderType.SelectedItem, Model.ddlProviderType.ListItems, new { @id = "ddlProviderType", @size = 2 })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Posición IVA:</label>
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(m => m.ddlIVAPosition.SelectedItem, Model.ddlIVAPosition.ListItems, new { @id = "ddlIVAPosition", @size = 2 })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="rowIVA" style="display:none">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Razón Social:</label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.BusinessName, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.BusinessName, string.Empty, new { @class = "validate-error" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">CUIT:</label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.CUIT, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.CUIT, string.Empty, new { @class = "validate-error" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-12">Comentarios:</label>
+                                    <div class="col-md-12">
+                                        @Html.TextAreaFor(model => model.Commentary, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Commentary, string.Empty, new { @class = "validate-error" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-5">
+                                <button class="btn btn-primary" id="btnProcess">Guardar</button>
+                                <button type="button" class="btn default" id="btnCancel">Volver</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('select').multiselect();
+
+        $('#btnCancel').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+
+            }, "/Provider/Index", null)
+        });
+
+        $('#ddlIVAPosition').change(function () {
+            if ($('#ddlIVAPosition').val() == "4")
+                $('#rowIVA').hide();
+            else
+                $('#rowIVA').show();
+            $('select').multiselect();
+        });
+    });
+</script>
+
+
+
+

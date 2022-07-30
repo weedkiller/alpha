@@ -1,0 +1,211 @@
+﻿<!-- VISTA: User/UserList.cshtml -->
+@model Multigroup.Portal.Models.Administration.SpendingTableVm
+
+<div class="form-group">
+    <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <thead>
+            <tr>
+                <th style="display: none">Número</th>
+                <th>Fecha Ejecución</th>
+                <th>Descripción</th>
+                <th>Comprobante Número </th>
+                <th>Monto</th>
+                <th>Saldo</th>           
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.SpendingList)
+            {
+            <tr>
+                <td style="display: none">@Html.DisplayFor(modelItem => item.SpendingId)</td>
+                <td>@Html.DisplayFor(modelItem => item.ExecutionDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                <td>@Html.DisplayFor(modelItem => item.Receipt)</td>
+                <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                <td>@Html.DisplayFor(modelItem => item.Balance)</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div id="ImputModal" class="modal fade" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Imputar Gasto en Pago</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6" style="display: none">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Id</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="SpendingId" readonly="readonly" />
+                            </div>
+                        </div>
+                    </div>                  
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Descripción</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="description" readonly="readonly"  />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Nro Recibo</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="receipt" readonly="readonly"  />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Monto</label>
+                            <div class="col-md-6">
+                                <input type="number" class="form-control" id="balance" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnImput" class="btn btn-primary">Aceptar</button>
+                <button type="button" data-dismiss="modal" class="btn default">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        function formatTableToolsButton(node) {
+            $(node).removeClass('DTTT_button');
+            $(node).addClass('btn btn-default');
+        }
+        var table = $('#tabla_id').dataTable({
+            "destroy": true,
+            "aaSorting": [],
+            "bServerSide": false,
+            "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+            "dom": 'Blfrtip',
+            "buttons": [
+                { extend: 'copy', text: 'Copiar' },
+                'csv',
+                'excel',
+                'pdf',
+                { extend: 'print', text: 'Imprimir' },
+            ],
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false
+        });
+
+        $('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $("#btnVer").attr("disabled", "disabled");
+                $("#idTooltipSpending1").removeClass('tooltipAai');
+                $('#idTooltipSpending1').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un empleado'
+                });
+                $("#btnImputSpending").attr("disabled", "disabled");
+                $("#idTooltipAai").removeClass('tooltipAai');
+                $('#idTooltipAai').tooltip({
+                    container: 'body',
+                    title: "Seleccione un empleado"
+                });
+            }
+            else {
+                $('#tabla_id tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $("#btnImputSpending").removeAttr("disabled", "disabled");
+                $("#idTooltipAai").tooltip('destroy');
+                $("#btnVer").removeAttr("disabled", "disabled");
+                $("#idTooltipSpending1").tooltip('destroy');
+                id = table.fnGetData(this)[0];
+                balance = table.fnGetData(this)[5];
+                description = table.fnGetData(this)[2];
+                receipt = table.fnGetData(this)[3];
+            }
+        });
+
+        imput = @ViewBag.Imput
+        saldo = @ViewBag.Balance
+
+        $('#btnImputSpending').click(function (event) {
+            $('#SpendingId').val(id);
+            $('#balance').val(balance);
+            $('#description').val(description);
+            $('#receipt').val(receipt);
+        });
+
+        $('#btnImput').click(function (event) {
+            var param = new Object;
+            param.SpendingId = $('#SpendingId').val();
+            param.Amount = $('#balance').val();
+            if (param.Amount == '' || parseFloat(param.Amount) > parseFloat(balance) || 0 > parseFloat(param.Amount) ) {
+                Command: toastr["error"]("El monto debe ser mayor a 0 y menor o igual al saldo del gasto")
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-center",
+                    "preventDuplicates": true,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            }
+            else if
+                (parseFloat(param.Amount) > saldo) {
+                Command: toastr["error"]("El monto ingresado excede el saldo del Pago que es: " + saldo)
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-center",
+                    "preventDuplicates": true,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            }
+            else
+
+                CallBackGet(function (data) {
+                    $('#ImputModal').modal('hide');
+                    $('.modal-backdrop').remove();
+                    $("#accionesSpending").html(data);
+                    $('#Imput').val(imput);
+                    $('#Balance').val(saldo);
+                }, "/SpendingPayment/AddImput", param)
+        });
+
+    });
+</script>

@@ -1,0 +1,323 @@
+﻿<!-- VISTA: Maintenance/Customer.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.Maintenance.PortfolioCustomerFilterVm
+<div class="filter-container">
+</div>
+
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+	<div class="col-md-12 column">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-Customer"></i>
+					<span class="caption-subject bold uppercase">Cartera de Clientes</span>
+				</div>
+                <div class="actions">
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default" id="btnStatus" data-toggle="modal" data-target="#modalEditCustomer">
+                            Asignar Clientes
+                        </a>
+                    </div>
+                    <a class="btn btn-default" data-toggle="modal" data-target="#modalRepeat">
+                        Repetir asignación
+                    </a>
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+			</div>
+			<div class="portlet-body form">
+				<div class="row">
+					<div class="col-md-3 col-md-offset-4">
+						<table class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+							<tbody>
+								@foreach (var item in Model.Resume)
+								{
+									<tr>
+										<td>@Html.DisplayFor(modelItem => item.User)</td>
+										<td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+					</div>
+                    <div class="col-md-3 col-md-offset-4">
+                        <table class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                            <tbody>
+                                @foreach (var item in Model.ResumeNext)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.User)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+				</div>
+				<div class="form-actions top">
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Mes:</label>
+								<div class="col-md-8">
+									@Html.DropDownListFor(m => m.SelectedMonth, Model.ListMonths, new { size = "2" })
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Año:</label>
+								<div class="col-md-8">
+									@Html.TextBoxFor(m => m.Year, new { @class = "form-control", @type = "number" })
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Fecha de pago:</label>
+								<div class="col-md-8">
+									@Html.ListBoxFor(m => m.ddlPaymentDate.SelectedItem, Model.ddlPaymentDate.ListItems, new { multiple = "multiple" })
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Estado:</label>
+								<div class="col-md-8">
+									@Html.ListBoxFor(m => m.SelectedStatus, Model.ListStatus, new { multiple = "multiple" })
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Zona:</label>
+								<div class="col-md-8">
+									@Html.ListBoxFor(m => m.SelectedZones, Model.ListZones, new { multiple = "multiple" })
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label col-md-4">Telemarketer:</label>
+								<div class="col-md-8">
+									@Html.ListBoxFor(m => m.SelectedUser, Model.ListUsers, new { multiple = "multiple" })
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<div class="col-md-12">
+									<button id="btnBuscar" class="btn btn-default">Buscar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12" id="acciones">
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="portlet portlet-sortable-empty">
+		</div>
+	</div>
+</div>
+<div class="modal fade" role="dialog" id="modalEditCustomer">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Asignar cartera de clientes</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">Telemarketer:</label>
+							<div class="col-md-8">
+								@Html.DropDownListFor(m => m.SelectedUserAsign, Model.ListUsersAsign, new { @size = 2 })
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" id="btnProcess" type="submit">Asignar</button>
+				<button type="button" class="btn default" id="btnCancel" data-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" role="dialog" id="modalRepeat">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Repetir asignación</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Mes a repetir:</label>
+                            <div class="col-md-8">
+                                <select id="monthToRepeat">
+                                    <option value="1">Enero</option>
+                                    <option value="2">Febrero</option>
+                                    <option value="3"> marzo</option>
+                                    <option value="4">Abril</option>
+                                    <option value="5">Mayo</option>
+                                    <option value="6">Junio</option>
+                                    <option value="7">Julio</option>
+                                    <option value="8">Agosto</option>
+                                    <option value="9">Septiembre</option>
+                                    <option value="10">Octubre</option>
+                                    <option value="11">Noviembre</option>
+                                    <option value="12">Diciembre</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Año:</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="number" id="yearToRepeat" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Mes a aplicar:</label>
+                            <div class="col-md-8">
+                                <select id="monthToApply">
+                                    <option value="1">Enero</option>
+                                    <option value="2">Febrero</option>
+                                    <option value="3"> marzo</option>
+                                    <option value="4">Abril</option>
+                                    <option value="5">Mayo</option>
+                                    <option value="6">Junio</option>
+                                    <option value="7">Julio</option>
+                                    <option value="8">Agosto</option>
+                                    <option value="9">Septiembre</option>
+                                    <option value="10">Octubre</option>
+                                    <option value="11">Noviembre</option>
+                                    <option value="12">Diciembre</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Año:</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="number" id="yearToApply" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="btnRepeat" data-dismiss="modal">Repetir asignación</button>
+                <button type="button" class="btn default" id="btnCancel" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+                $('select').multiselect({
+                    includeSelectAllOption: true,
+                    enableFiltering: false,
+                });
+
+                $('#SelectedZones').multiselect({
+                    includeSelectAllOption: true,
+                    enableFiltering: false,
+                });
+                $('#SelectedUser').multiselect({
+                    includeSelectAllOption: true,
+                    enableFiltering: false,
+                });
+                
+
+                $('#chkIncludedAll').iCheck({
+                    checkboxClass: 'icheckbox_square-grey',
+                    radioClass: 'iradio_square-grey',
+                    increaseArea: '20%' // optional
+                });
+
+                $('.tooltipAai').tooltip({
+                    container: 'body',
+                    title: "Seleccione un cliente"
+                });
+                $('.tooltipCustomer1').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un cliente'
+                });
+                $('#btnProcess').click(function (event) {
+                    var menuItems = [];
+                    $('input.checkboxes').each(function () {
+                        if ($(this).is(":checked")) {
+                            var menuId = $(this).closest('tr').find("td").eq(0).html()
+                            menuItems.push(menuId.trim());
+                        }
+                    });
+                    var param = new Object;
+                    param.UserId = $('#SelectedUserAsign').val();
+                    param.Customers = menuItems;
+                    param.Month = $('#SelectedMonth').val();
+                    param.Year = $('#Year').val();
+                    CallSericeAjax(function (data) {
+                        CallBackGet(function (data) {
+                            $("#dashboard").html(data);
+                            $('.modal-backdrop').remove();
+                            SuccessMessage("success", "Clientes asignados con exito");
+                        }, "/PortfolioCustomer/Index", null)
+                    }, "/PortfolioCustomer/AsociateCustomer", param, 'POST')
+                });
+
+                $('#btnBuscar').click(function (event) {
+                    var params = {};
+                    params.SelectedStatus = $('#SelectedStatus').val();
+                    params.SelectedZones = $('#SelectedZones').val();
+                    params.SelectedPaymentDate = $('#ddlPaymentDate_SelectedItem').val();
+                    params.SelectedPaymentMethod = $('#ddlPaymentMethod_SelectedItem').val();
+                    params.UserId = $('#SelectedUser').val();
+                    params.Month = $('#SelectedMonth').val(); 
+                    params.Year = $('#Year').val();
+                    CallBackGet(function (data) {
+                        $("#acciones").html(data);
+                    }, "/PortfolioCustomer/GetTable", params)
+                });
+                $('#btnRepeat').click(function (event) {
+                    var params = {};
+                    params.monthToApply = $('#monthToApply').val();
+                    params.yearToApply = $('#yearToApply').val();
+                    params.monthToRepeat = $('#monthToRepeat').val();
+                    params.yearToRepeat = $('#yearToRepeat').val();
+                    CallSericeAjax(function (data) {
+                        $('.modal-backdrop').remove();
+                        SuccessMessage("success", "Cartera repetida con exito");
+                        CallBackGet(function (data) {
+                            $("#dashboard").html(data);
+                        }, "/PortfolioCustomer/Index", null)
+                    }, "/Visits/RepeatAsignation", params, 'POST')
+                });
+
+            });
+    </script>
+</div>
+

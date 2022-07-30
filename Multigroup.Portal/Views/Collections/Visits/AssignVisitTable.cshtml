@@ -1,0 +1,283 @@
+﻿@model Multigroup.Portal.Models.Collection.AssignVisitTableVm
+<div class="form-group">
+	<table id="tablaa" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+		<thead>
+			<tr>
+				<th style="display: none">ID</th>
+				<th style="display: none">ID</th>
+				<th style="display: none">ID</th>
+                <th>Contrato</th>
+				<th>Nombre</th>
+				<th>Teléfono</th>
+				<th>E-mail</th>
+				<th>Dirección</th>
+				<th>Zona</th>
+				<th>Estado Cliente</th>
+				<th>N° de cuota</th>
+				<th>Cuotas Adeudadas</th>
+				<th>Monto adeudado</th>
+				<th>Estado Asignacion</th>
+				<th style="display: none">Fecha estimada Pago</th>
+				<th>Observaciones</th>
+                <th style="display: none">ID</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model.AssignVisitList)
+{
+    <tr style="color: @item.Color; font-weight: bold">
+        <td style="display:none">@Html.DisplayFor(modelItem => item.CustomerId)</td>
+        <td style="display:none">@Html.DisplayFor(modelItem => item.ZoneId)</td>
+        <td style="display:none">@Html.DisplayFor(modelItem => item.CommissionRate)</td>
+        <td>@Html.DisplayFor(modelItem => item.Number)</td>
+        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+        <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+        <td>@Html.DisplayFor(modelItem => item.Email)</td>
+        <td>@Html.DisplayFor(modelItem => item.Address)</td>
+        <td>@Html.DisplayFor(modelItem => item.Zone)</td>
+        <td>@Html.DisplayFor(modelItem => item.StatusClient)</td>
+        <td>@Html.DisplayFor(modelItem => item.InstallmentNumber)</td>
+        <td>@Html.DisplayFor(modelItem => item.InstallmentsOwed)</td>
+        <td>@Html.DisplayFor(modelItem => item.AmountOwed)</td>
+        <td>@Html.DisplayFor(modelItem => item.StatusInstallent)</td>
+        <td style="display: none">@Html.DisplayFor(modelItem => item.ScheduledPaymentDate)</td>
+        <td>@Html.DisplayFor(modelItem => item.Observations)</td>
+        <td style="display:none">@Html.DisplayFor(modelItem => item.PaymentPreference)</td>
+
+    </tr>
+}
+		</tbody>
+	</table>
+</div>
+<div id="observationsModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Observaciones</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="observationsContent">
+                   
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var tableee;
+	function formatTableToolsButton(node) {
+		$(node).removeClass('DTTT_button');
+		$(node).addClass('btn btn-default');
+	}
+	var table = $('#tablaa').dataTable({
+		"destroy": true,
+		"aaSorting": [],
+		"bServerSide": false,
+		"buttons": [
+			{ extend: 'copy', text: 'Copiar' },
+			'csv',
+			'excel',
+			'pdf',
+			{ extend: 'print', text: 'Imprimir' },
+		],
+		"dom": 'Blfrtip',
+		"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+		"sScrollYInner": "100%",
+		"sScrollX": "100%",
+		"sScrollXInner": "100%",
+		"scrollCollapse": true,
+		"bProcessing": false
+	});
+
+	$('#tablaa tbody').unbind("click").on('click', 'tr', function (event) {
+		event.stopPropagation();
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+            $("#asd").attr("disabled", "disabled");
+            $("#ChangeStatus").attr("disabled", "disabled");
+            $("#btnObservations").attr("disabled", "disabled");
+            $("#btnDetailCustomer").attr("disabled", "disabled");
+            $("#btnAssign").attr("disabled", "disabled");
+            $("#btnFollow").attr("disabled", "disabled");
+            $("#idTooltipAai").removeClass('tooltipAai');
+            $('#idTooltipAai').tooltip({
+                container: 'body',
+                title: "Seleccione un rol"
+            });
+        }
+        else {
+            $('#tablaa tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+            $("#asd").removeAttr("disabled", "disabled");
+            $("#ChangeStatus").removeAttr("disabled", "disabled");
+            $("#btnObservations").removeAttr("disabled", "disabled");
+            $("#btnDetailCustomer").removeAttr("disabled", "disabled");
+
+            $("#idTooltipAai").tooltip('destroy');
+            CustomerId = table.fnGetData(this)[0];
+            ZoneId = table.fnGetData(this)[1];
+            CommissionRate = table.fnGetData(this)[2];
+            AmountOwed = table.fnGetData(this)[12];
+            PaymentPreference = table.fnGetData(this)[16];
+            Asigned = table.fnGetData(this)[13];
+            if (Asigned == "No Asignado") {
+                $("#btnAssign").removeAttr("disabled", "disabled");
+                $("#btnFollow").removeAttr("disabled", "disabled");
+            }
+            else {
+                $("#btnAssign").attr("disabled", "disabled");
+                $("#btnFollow").attr("disabled", "disabled");
+            }
+        }
+    });
+    $('#btnObservations').click(function (event) {
+        CallBackGet(function (data) {
+            
+            $("#observationsContent").html(data);
+            $('#observationsModal').modal('show');
+            function formatTableToolsButton(node) {
+                $(node).removeClass('DTTT_button');
+                $(node).addClass('btn btn-default');
+            }
+            tableee = $('#tabla_id').dataTable({
+                "destroy": true,
+                "aaSorting": [],
+                "bServerSide": false,
+                "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+                "dom": 'Blfrtip',
+                "buttons": [
+                    { extend: 'copy', text: 'Copiar' },
+                    'csv',
+                    'excel',
+                    'pdf',
+                    { extend: 'print', text: 'Imprimir' },
+                ],
+                "sScrollYInner": "100%",
+                "sScrollX": "100%",
+                "sScrollXInner": "100%",
+                "scrollCollapse": true,
+                "bProcessing": false
+            });
+            tableee.fnDraw();
+        }, "/Customer/CustomerObservationsLast?id=" + CustomerId, null)
+    });
+    $("#observationsModal").on('shown', function () {
+        tableee.fnDraw();
+    });
+    $('#observationsModal').on('shown.bs.modal', function (e) {
+        tableee.fnDraw();
+    })
+    $('#asd').click(function (event) {
+        if (PaymentPreference == 1 && Asigned == 'No Asignado') {
+            $('#myModal').modal('show');
+            $('#myModal2').modal('hide');
+            $('#assignedDate').empty();
+            $("#assignedDate").multiselect('destroy');
+            CallSericeAjax(function (data) {
+                if (data[0].Name == null && data[1].Name == null) {
+                    $('#assignedDateFree').show();
+                    $('#assignedDate').hide();
+                } else {
+                    $("#assignedDate").empty();
+                    $('#assignedDateFree').hide();
+                    for (var i = 0; i < data.length; i++) {
+                        $('#assignedDate').append('<option value="' + data[i].Name + '">' + data[i].Name + '</option>')
+                    }
+                    $("#assignedDate").multiselect();
+                }
+
+            }, "/Zone/GetPaymentDatesByZone?id=" + ZoneId, null, 'GET')
+        } else if (PaymentPreference != 1) {
+            $('#myModal2').modal('show');
+            $('#myModal').modal('hide');
+        } else {
+            NotifyMessage("info", "La visita ya fue asignada a un cobrador");
+        }
+		
+	});
+
+	$('#ChangeStatus').click(function (event) {
+	        $('#myModal3').modal('show');
+	});
+
+
+    $('#GenerateVisit').click(function (event) {
+		event.preventDefault();
+		event.stopPropagation();
+		var params = new Object;
+		params.CustomerId = CustomerId;
+		params.ZoneId = ZoneId;
+		params.CommissionRate = CommissionRate;
+		params.AmountOwed = AmountOwed;
+		params.observationsCollector = $('#observationsCollector').val();
+        params.ScheduledVisitDate = ($('#assignedDate').val() !== null && $('#assignedDate').val() !== '' && $('#assignedDate').val() !== undefined) ? $('#assignedDate').val() : $('#assignedDateFree').val();
+		CallBackGet(function (data) {
+			$("#dashboard").html(data);
+			$('.modal-backdrop').remove();
+            SuccessMessage("success", "Visita generada con éxito");
+		}, "/Visits/GenerateVisit", params)
+	});
+    $('#GenerateAgency').click(function (event) {
+		event.preventDefault();
+		event.stopPropagation();
+		var params = new Object;
+		params.CustomerId = CustomerId;
+		params.dateAgency = $('#dateAgency').val();
+		params.observationsAgency = $('#observationsAgency').val();
+		CallBackGet(function (data) {
+			$("#dashboard").html(data);
+			$('.modal-backdrop').remove();
+			SuccessMessage("success", "Visita generada con éxito");
+		}, "/Visits/GenerateAgency", params)
+	});
+
+    $('#GenerateChangeStatus').click(function (event) {
+	    event.preventDefault();
+	    event.stopPropagation();
+	    var params = new Object;
+	    params.CustomerId = CustomerId;
+	    params.Status = $('#ddlStatus_SelectedItem').val();
+	    params.observations = $('#observationsChangeStatus').val();
+	    CallBackGet(function (data) {
+	        $("#dashboard").html(data);
+	        $('.modal-backdrop').remove();
+	        SuccessMessage("success", "El estado se ha cambiado con exito");
+	    }, "/Visits/GenerateChangeStatus", params)
+	});
+
+    function loadModal() {
+        CallBackGet(function (data) {
+            $("#modalPaymentPreference").html(data);
+            $("#modalPaymentPreference").modal('show');
+        }, "/Visits/AssignPaymentPreference?id=" + CustomerId, null)
+    }
+
+    function loadModalFollow() {
+        CallBackGet(function (data) {
+            $("#modalFollow").html(data);
+            $("#modalFollow").modal('show');
+        }, "/Visits/Follow?id=" + CustomerId, null)
+    }
+
+    $('#btnDetailCustomer').click(function (event) {
+        var params = new Object;
+        params.Id = CustomerId;
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/Visits/DetailCustomer", params)
+    });
+
+
+	$('.tooltipAai').tooltip({
+		container: 'body',
+		title: "Seleccione una visita"
+	});
+	$('.tooltipCustomer1').tooltip({
+		container: 'body',
+		title: 'Seleccione una visita'
+	});
+</script>

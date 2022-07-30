@@ -1,0 +1,287 @@
+﻿<!-- VISTA: Maintenance/PurchaseRequest.cshtml -->
+@model Multigroup.Portal.Models.Administration.PurchaseRequestFilterVm
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-PurchaseRequest"></i>
+                    <span class="caption-subject bold uppercase">Solicitudes de Compra</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-default" id="btnAddPurchaseRequest">Añadir</a>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnViewPurchaseRequest" disabled="disabled">
+                            Ver
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnEditPurchaseRequest" disabled="disabled">
+                            Editar
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnDeletePurchaseRequest" disabled="disabled">
+                            Eliminar
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnSEPurchaseRequest" disabled="disabled">
+                            Generar Gasto Programado
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnEAPurchaseRequest" disabled="disabled">
+                            Generar Autorización Compra
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnSPPurchaseRequest" disabled="disabled">
+                            Generar Gasto
+                        </a>
+                    </div>
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-3" style="display: none" >
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Autorizador:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.UserId, new { @class = "form-control", @readonly = true })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha creado Desde:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateFromCreate" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha creado Hasta:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateToCreate" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Urgencia:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.SelectedUrgency, Model.ListUrgency, new { @size = "2" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Usuario Creador:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.SelectedUser, Model.ListUser, new { @size = "2" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha necesidad Desde:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateFromNeed" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Fecha necesidad Hasta:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control form-control-inline date-picker" id="txtDateToNeed" placeholder="dd/mm/aaaa" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Proveedor:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.SelectedProvider, Model.ListProvider, new { @size = "2" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Monto Desde:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.AmountFrom, new { @class = "form-control", @type = "number", @Value = "" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Monto Hasta:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.AmountTo, new { @class = "form-control", @type = "number", @Value = "" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Procesado:</label>
+                            <div class="col-md-8" id="sandbox-container">
+                                @*<input type="checkbox" id="changePassword"/>*@
+                                <input type="checkbox" id="chkProcessed">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Activo:</label>
+                            <div class="col-md-8" id="sandbox-container">
+                                @*<input type="checkbox" id="changePassword"/>*@
+                                @Html.CheckBoxFor(model => model.Active, new { @id = "Active", @checked = true })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Autorizador / Comprador:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.SelectedUserAuthorized, Model.ListUserAuthorized, new { @size = "2" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button id="btnBuscar" class="btn btn-default">Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" id="modalViewPurchaseRequest">
+
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#Active').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
+        $('#chkProcessed').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
+        $('.date-picker').datepicker();
+        $('select').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+        });
+        $('.tooltipAai').tooltip({
+            container: 'body',
+            title: "Seleccione un gasto"
+        });
+        $('.tooltipPurchaseRequest1').tooltip({
+            container: 'body',
+            title: 'Seleccione un gasto'
+        });
+        $('#btnViewPurchaseRequest').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/PurchaseRequest/View?id=" + id, null)
+        });
+
+        $('#btnEditPurchaseRequest').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/PurchaseRequest/Edit?id=" + id, null)
+        });
+
+        $('#btnDeletePurchaseRequest').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/PurchaseRequest/Delete?id=" + id, null)
+        });
+
+        $('#btnSEPurchaseRequest').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/ScheduledExpense/CreateFromPurchaseRequest?purchaseRequestId=" + id, null)
+        });
+
+        $('#btnEAPurchaseRequest').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/ExpenseAuthorization/CreateFromPurchaseRequest?purchaseRequestId=" + id, null)
+        });
+
+        $('#btnSPPurchaseRequest').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/Spending/CreateFromPurchaseRequest?purchaseRequestId=" + id, null)
+        });
+
+        $('#btnAddPurchaseRequest').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/PurchaseRequest/Create", null)
+        });
+
+        $('#btnBuscar').click(function (event) {
+            var params = {};
+            params.SelectedUrgency = $('#SelectedUrgency').val();
+            params.SelectedProvider = $('#SelectedProvider').val();
+            params.SelectedUser = $('#SelectedUser').val();
+            params.SelectedUserAuthorized = $('#SelectedUserAuthorized').val();
+            params.AmountFrom = $('#AmountFrom').val();
+            params.AmountTo = $('#AmountTo').val();
+            params.DateFromCreate = $('#txtDateFromCreate').val();
+            params.DateToCreate = $('#txtDateToCreate').val();
+            params.DateFromNeed = $('#txtDateFromNeed').val();
+            params.DateToNeed = $('#txtDateToNeed').val();
+            if ($('#Active').is(':checked') == true) {
+                params.Active = '1';
+            } else {
+                params.Active = '0';
+            }
+            if ($('#chkProcessed').is(':checked') == true) {
+                params.Processed = '1';
+            } else {
+                params.Processed = '0';
+            }
+            CallBackGet(function (data) {
+                $("#acciones").html(data);
+            }, "/PurchaseRequest/GetTable", params)
+        });
+
+    });
+</script>
+

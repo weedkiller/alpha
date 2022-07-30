@@ -1,0 +1,198 @@
+﻿
+<!-- VISTA: Maintenance/Heading.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.Administration.PurchaseRequestTableVm
+<div class="filter-container">
+</div>
+
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-Heading"></i>
+                    <span class="caption-subject bold uppercase">Gestión de Solicitudes</span>
+                </div>
+                <div class="actions">
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnViewPurchaseRequestManaged" disabled="disabled">
+                            Ver
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnEditPurchaseRequestManaged" disabled="disabled">
+                            Gestionar
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnSEMPurchaseRequest" disabled="disabled">
+                            Generar Gasto Programado
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnEAMPurchaseRequest" disabled="disabled">
+                            Generar Autorización Compra
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnSPMPurchaseRequest" disabled="disabled">
+                            Generar Gasto
+                        </a>
+                    </div>
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+                        <div class="form-group">
+                            <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                <thead>
+                                    <tr>
+                                        <th>Número</th>
+                                        <th>Usuario Creador</th>
+                                        <th>Monto</th>
+                                        <th>Fecha Necesidad</th>
+                                        <th>Fecha Creación</th>
+                                        <th>Urgencia</th>
+                                        <th>Autorizador/Comprador</th>
+                                        <th>Proveedor</th>
+                                        <th>Comentario</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.PurchaseRequestList)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.PurchaseRequestId)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.User)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.NeedDate)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.CreateDate)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Urgency)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.UserAuthorized)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Proveedor)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Commentary)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).ready(function () {
+            $('#chkIncludedAll').iCheck({
+                checkboxClass: 'icheckbox_square-grey',
+                radioClass: 'iradio_square-grey',
+                increaseArea: '20%' // optional
+            });
+
+            function formatTableToolsButton(node) {
+                $(node).removeClass('DTTT_button');
+                $(node).addClass('btn btn-default');
+            }
+            var table = $('#tabla_id').dataTable({
+                "destroy": true,
+                "aaSorting": [],
+				"bServerSide": false,
+				"buttons": [
+					{ extend: 'copy', text: 'Copiar' },
+					'csv',
+					'excel',
+					'pdf',
+					{ extend: 'print', text: 'Imprimir' },
+				],
+				"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+                "dom": 'Blfrtip',
+                "sScrollYInner": "100%",
+                "sScrollX": "100%",
+                "sScrollXInner": "100%",
+                "scrollCollapse": true,
+                "bProcessing": false
+            });
+
+            $('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+                event.stopPropagation();
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                    $("#btnVer").attr("disabled", "disabled");
+                    $("#idTooltipPurchaseRequest1").removeClass('tooltipAai');
+                    $('#idTooltipPurchaseRequest1').tooltip({
+                        container: 'body',
+                        title: 'Seleccione una solicitud'
+                    });
+                    $("#btnViewPurchaseRequestManaged").attr("disabled", "disabled");
+                    $("#btnEditPurchaseRequestManaged").attr("disabled", "disabled");
+                    $("#btnSEMPurchaseRequest").attr("disabled", "disabled");
+                    $("#btnEAMPurchaseRequest").attr("disabled", "disabled");
+                    $("#btnSPMPurchaseRequest").attr("disabled", "disabled");
+                    $("#idTooltipAai").removeClass('tooltipAai');
+                    $('#idTooltipAai').tooltip({
+                        container: 'body',
+                        title: "Seleccione una solicitud"
+                    });
+                }
+                else {
+                    $('#tabla_id tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                    $("#btnViewPurchaseRequestManaged").removeAttr("disabled", "disabled");
+                    $("#btnEditPurchaseRequestManaged").removeAttr("disabled", "disabled");
+                    $("#btnSEMPurchaseRequest").removeAttr("disabled", "disabled");
+                    $("#btnEAMPurchaseRequest").removeAttr("disabled", "disabled");
+                    $("#btnSPMPurchaseRequest").removeAttr("disabled", "disabled");
+                    $("#idTooltipAai").tooltip('destroy');
+                    $("#btnVer").removeAttr("disabled", "disabled");
+                    $("#idTooltipPurchaseRequest1").tooltip('destroy');
+                    id = table.fnGetData(this)[0];
+                }
+            });
+
+            $('#btnViewPurchaseRequestManaged').click(function (event) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+                }, "/PurchaseRequest/ViewManaged?id=" + id, null)
+            });
+
+            $('#btnEditPurchaseRequestManaged').click(function (event) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+                }, "/PurchaseRequest/EditManaged?id=" + id, null)
+            });
+
+            $('#btnSEMPurchaseRequest').click(function (event) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+                }, "/ScheduledExpense/CreateFromPurchaseRequest?purchaseRequestId=" + id, null)
+            });
+
+            $('#btnEAMPurchaseRequest').click(function (event) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+                }, "/ExpenseAuthorization/CreateFromPurchaseRequest?purchaseRequestId=" + id, null)
+            });
+
+            $('#btnSPMPurchaseRequest').click(function (event) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+                }, "/Spending/CreateFromPurchaseRequest?purchaseRequestId=" + id, null)
+            });
+
+
+       });
+    });
+</script>
+

@@ -1,0 +1,83 @@
+﻿<!-- VISTA: Maintenance/ContractPaperCreate.cshtml -->
+@model Multigroup.Portal.Models.Maintenance.ContractPaperVm
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+	<div class="col-md-12 column">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-user"></i>
+					<span class="caption-subject bold uppercase">Editar Contrato</span>
+				</div>
+				<div class="actions">
+				</div>
+			</div>
+			@using (Ajax.BeginForm("Edit", "ContractPaper", new AjaxOptions
+			{
+				HttpMethod = "POST",
+				OnBegin = "OnStart",
+				OnComplete = "OnComplete",
+				OnFailure = "FailMessage",
+				OnSuccess = "SuccessMessage",
+				UpdateTargetId = "dashboard"
+			}))
+			{
+				@Html.AntiForgeryToken()
+				@Html.HiddenFor(model => model.PaperContractId)
+				<div class="portlet-body form">
+					<div class="form-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Tipo de Contrato:</label>
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(m => m.ddlContractType.SelectedItem, Model.ddlContractType.ListItems, new { @id = "ddlContractType", @size = 2 })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Numero:</label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.Number, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Number, string.Empty, new { @class = "validate-error" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+					</div>
+					<div class="form-actions">
+						<div class="row">
+							<div class="col-md-offset-5">
+								<button class="btn btn-primary" id="btnProcess">Guardar</button>
+								<button type="button" class="btn default" id="btnCancel">Volver</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+		<div class="portlet portlet-sortable-empty">
+		</div>
+	</div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('select').multiselect();
+
+        $('#btnCancel').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+
+            }, "/ContractPaper/Index", null)
+        });
+    });
+</script>
+
+
+
+

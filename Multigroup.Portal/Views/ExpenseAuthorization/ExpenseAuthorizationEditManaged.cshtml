@@ -1,0 +1,205 @@
+@model Multigroup.Portal.Models.Administration.ExpenseAuthorizationVm
+<div class="filter-container">
+</div>
+
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-laptop"></i>
+                    <span class="caption-subject bold uppercase">Editar Autorización De Compra</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-default" data-toggle="modal" data-target="#PurchaseRequestModal">Cargar desde Solicitud de Compra</a>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-default" data-toggle="modal" data-target="#ScheduledExpenseModal">Cargar desde Gasto Programado</a>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            @using (Ajax.BeginForm("EditManaged", "ExpenseAuthorization", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnBegin = "OnStart",
+                OnComplete = "OnComplete",
+                OnFailure = "FailMessage",
+                OnSuccess = "SuccessMessage",
+                UpdateTargetId = "dashboard"
+            }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.ExpenseAuthorizationId)
+                <div class="portlet-body form">
+                    <div class="row" style="display: none">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Fecha Creación:</label>
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(model => model.CreateDate, new { @class = "form-control form-control-inline date-picker", @type = "text", @placeholder = "dd/mm/aaaa", @readonly = true })
+                                    @Html.ValidationMessageFor(model => model.CreateDate, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Proveedor:</label>
+                                <div class="col-md-9">
+                                    @Html.DropDownListFor(m => m.ddlProvider.SelectedItem, Model.ddlProvider.ListItems, new { @id = "ddlProvider", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                    </div>
+                    <div class="row" style="display: none">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Creador:</label>
+                                <div class="col-md-9">
+                                    @Html.DropDownListFor(m => m.ddlUser.SelectedItem, Model.ddlUser.ListItems, new { @id = "ddlUser", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-12">Comentario:</label>
+                                <div class="col-md-12">
+                                    @Html.TextAreaFor(model => model.Commentary, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--/span-->
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!-- BEGIN Portlet PORTLET-->
+                            <div class="portlet box blue-dark">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-calculator"></i>Conceptos
+                                    </div>
+                                    <div class="actions">
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div id="articlesTableDiv" style="position: relative; overflow: hidden; width: auto; min-height: 200px;">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END Portlet PORTLET-->
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3" style="display: none" id="PurchaseRequestDiv">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Solicitud de Compra</label>
+                                <div class="col-md-4">
+                                    @Html.TextBoxFor(model => model.PurchaseRequestId, new { @class = "form-control", @id = "PurchaseRequestId", @readonly = "readonly " })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3" style="display: none" id="ScheduleExpenseDiv">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Gasto Programado</label>
+                                <div class="col-md-4">
+                                    @Html.TextBoxFor(model => model.ScheduledExpenseId, new { @class = "form-control", @id = "ScheduledExpenseId", @readonly = "readonly " })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Total:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", @type = "number", @readonly = "readonly " })
+                                    @Html.ValidationMessageFor(model => model.Amount, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Comprador:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.ddlUserBuyer.SelectedItem, Model.ddlUserBuyer.ListItems, new { @id = "ddlUserBuyer", @size = 2 })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-5">
+                                <button class="btn btn-primary" id="btnProcess">Guardar</button>
+                                <a class="btn btn-primary" id="btnVolver">Volver</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="confirmModal" class="modal fade" data-backdrop-limit="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">Guardar Concepto</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <h3>¿Desea guardar la solicitud de compra?</h3>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" id="btnProcess" class="btn btn-primary">Aceptar</button>
+                                <button type="button" data-dismiss="modal" class="btn default">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var PromoAplicada;
+    $(document).ready(function () {
+
+        if ($('#PurchaseRequestId').val() != "")
+            $('#PurchaseRequestDiv').show();
+
+        if ($('#ScheduledExpenseId').val() != "")
+            $('#ScheduledExpenseDiv').show();
+
+        $('select').multiselect();
+
+        $("#CreateDate").datepicker();
+
+        $("#NeedDate").datepicker();
+
+
+        CallBackGet(function (data) {
+            $("#articlesTableDiv").html(data);
+        }, "/ExpenseAuthorization/IndexArticles");
+
+        $('#btnVolver').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/ExpenseAuthorization/IndexManaged", null)
+        });
+
+    });
+
+
+</script>

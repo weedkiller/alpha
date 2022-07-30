@@ -1,0 +1,146 @@
+﻿<!-- VISTA: Maintenance/Customer.cshtml -->
+@model Multigroup.Portal.Models.Collection.AssignPaymentPreferenceFiltersVm
+<div class="filter-container">
+</div>
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-Customer"></i>
+                    <span class="caption-subject bold uppercase">Detalle de Cliente</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""></a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="form-actions top">
+                    <div class="row">
+                        <div class="col-md-4" style="display: none">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">customer:</label>
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(model => model.SelectedCustomer, new { @class = "form-control", @type = "number" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Fecha Cobro Desde:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control form-control-inline date-picker" id="txtDateFromPayment" placeholder="dd/mm/aaaa" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Fecha Cobro Hasta:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control form-control-inline date-picker" id="txtDateToPayment" placeholder="dd/mm/aaaa" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Forma de Pago:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.SelectedPaymentPreference, Model.ListPaymentPreference, new { @size = "2" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Estado:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.SelectedAssignState, Model.ListAssignState, new { @size = "2" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Telemarketer:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.SelectedUser, Model.ListUser, new { @size = "2" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Cuota:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.InstallmentNumber, new { @class = "form-control", @type = "number", @Value = "" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <button id="btnBuscar" class="btn btn-default">Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-md-offset-5">
+                            <button type="button" class="btn default" id="btnCancel">Volver</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" role="dialog" id="modalDetail">
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".date-picker").datepicker();
+        $('select').multiselect({
+            includeSelectAllOption: false,
+            enableFiltering: true
+        });
+
+        $('#btnBuscar').click(function (event) {
+            var params = new Object;
+            params.State = $('#SelectedAssignState').val();
+            params.Telemarketer = $('#SelectedUser').val();
+            params.PaymentPreference = $('#SelectedPaymentPreference').val();
+            params.DateFrom = $('#txtDateFromPayment').val();
+            params.DateTo = $('#txtDateToPayment').val();
+            params.Customer = $('#SelectedCustomer').val();
+            params.Cuota = $('#InstallmentNumber').val();
+            CallBackGet(function (data) {
+                $("#acciones").html(data);
+            }, "/Visits/GetTableDetail", params)
+        });
+
+        $('#btnCancel').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+
+            }, "/Visits/AssignVisit", null)
+        });
+    });
+</script>
+

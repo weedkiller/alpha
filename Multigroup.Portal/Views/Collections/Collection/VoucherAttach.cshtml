@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Multigroup.Portal.Models.Shared.DataUploadFilesResultVm>
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">Adjuntar</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <script src="~/Scripts/dropzone.js"></script>
+                    <form method="post" class="dropzone" id="uploadFiles"></form>
+                </div>
+            </div>
+            <div class="row">
+               
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" id="cancelFiles">Cancelar</button>
+            <button type="submit" class="btn btn-primary" data-dismiss="modal" id="saveFiles">Guardar</button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.attach-delete').click(function (event) {
+            $(this).parent().remove();
+        });
+    });
+</script>

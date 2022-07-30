@@ -1,0 +1,100 @@
+﻿<!-- VISTA: Maintenance/PartnerEdit.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.Maintenance.PartnerVm
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-folder"></i>
+                    <span class="caption-subject bold uppercase">Editar Socio</span>
+                </div>
+                <div class="actions">
+                </div>
+            </div>
+            @using (Ajax.BeginForm("Edit", "Partner", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnBegin = "OnStart",
+                OnComplete = "OnComplete",
+                OnFailure = "FailMessage",
+                OnSuccess = "SuccessMessage",
+                UpdateTargetId = "dashboard"
+            }))
+            {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.PartnerId)
+            <div class="portlet-body form">
+                <div class="form-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Nombre:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Name, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Porcentaje:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.Percentage, new { @class = "form-control", @type = "number" })
+                                    @Html.ValidationMessageFor(model => model.Percentage, string.Empty, new { @class = "validate-error" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Activo:</label>
+                                <div class="col-md-8" id="sandbox-container">
+                                    @Html.CheckBoxFor(model => model.Active)
+                                    @Html.ValidationMessageFor(model => model.Active)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-md-offset-5">
+                            <button class="btn btn-primary" id="btnProcess">Guardar</button>
+                            <button type="button" class="btn default" id="btnCancel">Volver</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#Active').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+        $('#ddlUsers').multiselect();
+        $('#ddlTypes').multiselect();
+
+
+        $('#btnCancel').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+                 
+            }, "/Partner/Index", null)
+        });
+    });
+</script>
+
+
+
+

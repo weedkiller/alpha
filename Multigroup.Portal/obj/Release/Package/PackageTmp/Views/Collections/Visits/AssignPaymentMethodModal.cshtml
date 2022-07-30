@@ -1,0 +1,83 @@
+﻿@model Multigroup.Portal.Models.Collection.AssignPaymentPreferenceVm
+<div class="modal-dialog">
+    @using (Ajax.BeginForm("AssignPaymentMethod", "Visits", new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnBegin = "OnStart",
+        OnComplete = "OnComplete",
+        OnFailure = "FailMessage",
+        OnSuccess = "SuccessMessage",
+        UpdateTargetId = "dashboard"
+    }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.AssignPaymentPreferenceId)
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Cargar Asignación</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4" style="display: none">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Número:</label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.AssignPaymentPreferenceId, new { @class = "form-control" })
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Medio de Pago:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.ddlPaymentMethod.SelectedItem, Model.ddlPaymentMethod.ListItems, new { @id = "ddlPaymentMethod", @size = 2 })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-12">Canal:</label>
+                            <div class="col-md-12">
+                                @Html.TextAreaFor(model => model.Channel, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Channel, string.Empty, new { @class = "validate-error" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="btnProcess" type="submit">Guardar</button>
+                <button type="button" class="btn default" id="btnCancel" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $(document).ready(function () {
+
+        $('#ddlPaymentMethod').change(function () {
+            var param = new Object;
+            param.PaymentMethodId = $('#ddlPaymentMethod').val();
+            param.Id = $('#AssignPaymentPreferenceId').val();
+            CallBackGet(function (data) {
+                $("#modalPaymentMethod").html(data);
+                if ($('#Channel').val() != "")
+                    $('#Channel').attr("disabled", "disabled");
+                else
+                    $('#Channel').removeAttr("disabled", "disabled");
+            }, "/Visits/GetChannel", param);
+        });
+    });
+
+    $('#btnProcess').click(function () {
+        $("#modalPaymentMethod").modal('hide');
+    });
+    $('.date-picker').datepicker();
+    $('select').multiselect();
+
+
+</script>

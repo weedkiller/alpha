@@ -1,0 +1,52 @@
+﻿@model Multigroup.Portal.Models.ContractModel.InterestTableVm
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Confirmar cobro</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <table id="NavigationAccesTable" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                <thead>
+                    <tr>
+                        <th>Fecha de inicio de pago</th>
+                        <th>N de cuota</th>
+                        <th>Monto</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.InterestList)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InitialDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Number)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                        <td>
+                            <i class="fa fa-trash" onclick="deleteInterest(@item.InstallmentInterestsId)"></i>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+</div>
+<script type="text/javascript">
+    function deleteInterest(idint) {
+        var params = new Object;
+        params.Id = idint;
+        CallSericeAjax(function (data) {
+            ConfirmMessage('success', 'Intereses eliminados correctamente.');
+        }, "/Contract/Delete", params, 'POST')
+    }
+</script>

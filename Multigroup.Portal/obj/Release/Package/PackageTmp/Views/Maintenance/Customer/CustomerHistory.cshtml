@@ -1,0 +1,111 @@
+﻿<!-- VISTA: Maintenance/Agency.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.Collection.PaymentTableVm
+<div class="clearfix">
+</div>
+<div class="row">
+	<div class="col-md-12 column">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-Agency"></i>
+					<span class="caption-subject bold uppercase">Historial de pagos</span>
+				</div>
+				<div class="actions">
+					<a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+					</a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<div class="row">
+					<div class="col-md-12" id="acciones">
+						<div class="form-group">
+							<table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+								<thead>
+									<tr>
+										<th>Numero de contrato</th>
+										<th>Fecha de pago</th>
+										<th>Numero de recibo</th>
+										<th>Metodo de pago</th>
+                                        <th>Tipo de pago</th>
+										<th>Monto ($)</th>
+                                        <th>Observaciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									@foreach (var item in Model.PaymentList)
+									{
+									<tr>
+										<td>@Html.DisplayFor(modelItem => item.ContractNumber)</td>
+										<td>@Html.DisplayFor(modelItem => item.PaymentDate)</td>
+										<td>@Html.DisplayFor(modelItem => item.ReceipNumber)</td>
+										<td>@Html.DisplayFor(modelItem => item.PaymentMethod)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.type)</td>
+										<td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Observations)</td>
+
+									</tr>
+									}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+        <div class="row">
+            <div class="col-md-offset-7">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Total:</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="totalTxt" />
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="portlet portlet-sortable-empty">
+		</div>
+	</div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).ready(function () {
+
+            var total = @ViewBag.Total
+            $("#totalTxt").val(total);
+
+            $('#chkIncludedAll').iCheck({
+                checkboxClass: 'icheckbox_square-grey',
+                radioClass: 'iradio_square-grey',
+                increaseArea: '20%' // optional
+            });
+
+            function formatTableToolsButton(node) {
+                $(node).removeClass('DTTT_button');
+                $(node).addClass('btn btn-default');
+            }
+            var table = $('#tabla_id').dataTable({
+                "destroy": true,
+                "aaSorting": [],
+				"bServerSide": false,
+				"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+                "dom": 'Blfrtip',
+				"buttons": [
+					{ extend: 'copy', text: 'Copiar' },
+					'csv',
+					'excel',
+					'pdf',
+					{ extend: 'print', text: 'Imprimir' },
+				],
+                "sScrollYInner": "100%",
+                "sScrollX": "100%",
+                "sScrollXInner": "100%",
+                "scrollCollapse": true,
+                "bProcessing": false
+            });
+       });
+    });
+</script>
+
+

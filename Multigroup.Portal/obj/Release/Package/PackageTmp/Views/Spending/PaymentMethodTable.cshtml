@@ -1,0 +1,78 @@
+﻿@using Resources
+@model Multigroup.Portal.Models.Administration.SpendingVm
+
+<table id="paymentMethodTable" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+    <thead>
+        <tr>
+            <th style="display: none">Id</th>
+            <th>Medio de Pago</th>
+            <th>Monto</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.PaymentMethods)
+        {
+        <tr>
+            <td style="display: none">@item.PaymentMethodId</td>
+            <td>@item.PaymentMethod</td>
+            <td>@item.Amount</td>          
+        </tr>
+        }
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(document).ready(function () {    
+
+        var errorPayment = @ViewBag.ErrorMessagePayment;
+       
+
+        if (errorPayment == true) {
+            Command: toastr["error"]("El metodo ingresado ya existe.")
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        }
+
+        var tablePayments = $('#paymentMethodTable').dataTable({
+            "destroy": true, 
+            "aaSortitablePaymentsng": [],
+            "bServerSide": false,
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false,
+            "searching": false,
+            "bLengthChange": false
+        });
+
+        $('#paymentMethodTable tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            paymentId = tablePayments.fnGetData(this)[0];
+          
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $("#btnRemovePaymentMethod").attr("disabled", "disabled");             
+            }
+            else {
+                $('#articlesTable tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $("#btnRemovePaymentMethod").removeAttr("disabled", "disabled");               
+            }
+        });
+    });
+</script>

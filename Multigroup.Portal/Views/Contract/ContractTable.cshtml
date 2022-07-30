@@ -1,0 +1,201 @@
+﻿@model Multigroup.Portal.Models.ContractModel.ContractTableVm
+<div class="form-group">
+	<table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+		<thead>
+            <tr>
+                <th style="display:none">Contrato Id</th>
+                <th>N° Contrato</th>
+                <th>Tipo</th>
+                <th>Fecha de Ingreso</th>
+                <th>Fecha de Registro</th>
+                <th>Fecha de Inicio</th>
+                <th>Cuota Inicial</th>
+                <th>Valor Cuota</th>
+                <th>Agencia</th>
+                <th>Cliente</th>
+                <th>DNI</th>
+                <th>Zona</th>
+                <th>Estado Contrato</th>
+                <th>Registrado Por</th>
+            </tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model.ContractList)
+			{
+            <tr style="color: @item.Color; font-weight: bold">
+                <td style="display:none">@Html.DisplayFor(modelItem => item.ContractId)</td>
+                <td>@Html.DisplayFor(modelItem => item.Number)</td>
+                <td>@Html.DisplayFor(modelItem => item.ContractType)</td>
+                <td>@Html.DisplayFor(modelItem => item.RegistrationDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.AdmissionDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.InitDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.FirstInstallmentAmount)</td>
+                <td>@Html.DisplayFor(modelItem => item.InstallmentAmount)</td>
+                <td>@Html.DisplayFor(modelItem => item.Agency)</td>
+                <td>@Html.DisplayFor(modelItem => item.Customer)</td>
+                <td>@Html.DisplayFor(modelItem => item.DNI)</td>
+                <td>@Html.DisplayFor(modelItem => item.Zone)</td>
+                <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                <td>@Html.DisplayFor(modelItem => item.User)</td>
+            </tr>
+			}
+		</tbody>
+	</table>
+</div>
+<script>
+	 $(document).ready(function () {
+        function formatTableToolsButton(node) {
+            $(node).removeClass('DTTT_button');
+            $(node).addClass('btn btn-default');
+        }
+        var table = $('#tabla_id').dataTable({
+			"destroy": true,
+			"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+            "aaSorting": [],
+			"bServerSide": false,
+			"buttons": [
+				{ extend: 'copy', text: 'Copiar' },
+				'csv',
+				'excel',
+				'pdf',
+				{ extend: 'print', text: 'Imprimir' },
+			],
+            "dom": 'Blfrtip',
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false
+        });
+
+        $('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $("#btnVer").attr("disabled", "disabled");
+                $("#btnReacomodar").attr("disabled", "disabled");
+				$("#btnVerStatus").attr("disabled", "disabled");
+                $("#idTooltipCustomer1").removeClass('tooltipAai');
+                $('#idTooltipCustomer1').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un usuario'
+                });
+                $("#btnDeleteInterest").attr("disabled", "disabled");
+                $("#btnVerStatusChange").attr("disabled", "disabled");
+
+                $("#btnEditCustomer").attr("disabled", "disabled");
+                $("#btnDeleteCustomer").attr("disabled", "disabled");
+                $("#idTooltipAai").removeClass('tooltipAai');
+                $('#idTooltipAai').tooltip({
+                    container: 'body',
+                    title: "Seleccione un cliente"
+                });
+            }
+            else {
+                $('#tabla_id tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $("#btnEditCustomer").removeAttr("disabled", "disabled");
+                if (@ViewBag.Rol == 1) {
+                    $("#btnDeleteCustomer").removeAttr("disabled", "disabled");
+                }
+                $("#idTooltipAai").tooltip('destroy');
+                if (@ViewBag.Rol == 9) {
+                    $("#btnVer").removeAttr("disabled", "disabled");
+                }
+                $("#btnReacomodar").removeAttr("disabled", "disabled");
+                $("#btnVerStatus").removeAttr("disabled", "disabled");
+                $("#btnDeleteInterest").removeAttr("disabled", "disabled");
+                $("#btnVerStatusChange").removeAttr("disabled", "disabled");
+                $("#idTooltipCustomer1").tooltip('destroy');
+                id = table.fnGetData(this)[0];
+                tipo = table.fnGetData(this)[2];
+            }
+        });
+        $('.tooltipAai').tooltip({
+            container: 'body',
+            title: "Seleccione un contrato"
+        });
+        $('.tooltipCustomer1').tooltip({
+            container: 'body',
+            title: 'Seleccione un contrato'
+         });
+         $('#btnDeleteInterest').click(function (event) {
+             var params = new Object;
+			 params.Id = id;
+			 CallBackGet(function (data) {
+                 $("#tableInterest").html(data);
+			 }, "/Contract/InterestList", params)
+             $('#modalInterest').modal('show');
+         });
+         $('#btnVerStatusChange').click(function (event) {
+             var params = new Object;
+             params.Id = id;
+             CallBackGet(function (data) {
+                 $("#tableStatusChange").html(data);
+             }, "/Contract/StatusChangeList", params)
+             $('#modalStatusChange').modal('show');
+         });
+		 $('#btnEditCustomer').click(function (event) {
+			 var params = new Object;
+			 params.Id = id;
+			 debugger;
+             if (tipo === 'Casa') {
+                 CallBackGet(function (data) {
+                     $("#dashboard").html(data);
+                 }, "/Contract/EditHouse", params)
+             } else {
+                 CallBackGet(function (data) {
+                     $("#dashboard").html(data);
+                 }, "/Contract/Edit", params)
+             }
+
+		 });
+		 $('#deleteContractModalBtn').click(function (event) {
+		     var params = new Object;
+		     params.Id = id;
+		     debugger;
+		         CallBackGet(function (data) {
+		             $("#dashboard").html(data);
+		         }, "/Contract/DeleteContract", params)
+		 });
+         $('#btnReacomodarCuotas').click(function (event) {
+             var params = {};
+             params.Id = id;
+             params.InstallmentNumber = $('#InstallmentNumber').val();
+             CallSericeAjax(function (data) {
+                 $('modalReacomodar').modal('hide');
+             }, "/Contract/ReacomodarCuotas", params, 'POST')
+         });
+	});
+	function loadModalGeneralStatus() {
+		CallSericeAjax(function (data) {
+			$('#Customer').val(data.Customer);
+			$('#ContractNumber').val(data.ContractNumber);
+			$('#Agency').val(data.Agency);
+			$('#GoodRequested').val(data.GoodRequested);
+			$('#ContractTerm').val(data.ContractTerm);
+			$('#StartDate').val(data.StartDate);
+			$('#EndDate').val(data.EndDate);
+			$('#TotalInstallments').val(data.TotalInstallments);
+			$('#PaidInstallments').val(data.PaidInstallments);
+			$('#InstallmentsToExpire').val(data.InstallmentsToExpire);
+			$('#PartialInstallments').val(data.PartialInstallments);
+			$('#OwedInstallments').val(data.OwedInstallments);
+            $('#AdvanceOfCapital').val(data.Advance);
+            $('#Bonification').val(data.Bonification);
+            $('#TotalSaved').val(data.Monto);
+            var params = {};
+            params.id = id;
+            CallBackPost(function (data) {
+                $("#TablaCuotas").html(data);
+            }, "/Contract/GetCuotas", params)
+			$("#modalGeneralStatus").modal('show');
+		}, "/Contract/GeneralStatus?id=" + id, null)
+	}
+	function loadModal() {
+		CallBackGet(function (data) {
+			$("#modalEditContract").html(data);
+			$("#modalEditContract").modal('show');
+		}, "/Contract/ChangeStatus?id=" + id, null)
+	}
+</script>

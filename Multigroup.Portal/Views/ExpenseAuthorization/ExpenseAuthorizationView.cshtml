@@ -1,0 +1,186 @@
+﻿@model Multigroup.Portal.Models.Administration.ExpenseAuthorizationVm
+<div class="filter-container">
+</div>
+
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-laptop"></i>
+                    <span class="caption-subject bold uppercase">Ver Autorización de Compra</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+        @using (Ajax.BeginForm("Create", "IngresarTrabajo", new AjaxOptions
+                                {
+                                    HttpMethod = "POST",
+                                    OnBegin = "OnStartIngresoTrabajo",
+                                    OnComplete = "OnComplete",
+                                    OnFailure = "FailMessage",
+                                    OnSuccess = "SuccessMessageIngresoTrabajo",
+                                    UpdateTargetId = "dashboard"
+                                }))
+                                {
+            @Html.AntiForgeryToken()
+        <div class="portlet-body form">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Fecha Creación:</label>
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.CreateDate, new { @class = "form-control form-control-inline date-picker", @type = "text", @placeholder = "dd/mm/aaaa", @readonly = true })
+                            @Html.ValidationMessageFor(model => model.CreateDate, string.Empty, new { @class = "validate-error" })
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Proveedor:</label>
+                        <div class="col-md-9">
+                            @Html.DropDownListFor(m => m.ddlProvider.SelectedItem, Model.ddlProvider.ListItems, new { @id = "ddlProvider", @size = 2, @readonly = true })
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Creador:</label>
+                        <div class="col-md-9">
+                            @Html.DropDownListFor(m => m.ddlUser.SelectedItem, Model.ddlUser.ListItems, new { @id = "ddlUser", @size = 2, @readonly = true })
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Comprador:</label>
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(m => m.ddlUserBuyer.SelectedItem, Model.ddlUserBuyer.ListItems, new { @id = "ddlUserBuyer", @size = 2, @readonly = true })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-12">Comentario:</label>
+                        <div class="col-md-12">
+                            @Html.TextAreaFor(model => model.Commentary, new { @class = "form-control", @readonly = true })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- BEGIN Portlet PORTLET-->
+                    <div class="portlet box blue-dark">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="fa fa-calculator"></i>Conceptos
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <div id="articlesTableDiv" style="position: relative; overflow: hidden; width: auto; min-height: 200px;">
+                                <table id="articlesTable" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                    <thead>
+                                        <tr>
+                                            <th style="display: none">Id</th>
+                                            <th>Concepto</th>
+                                            <th>Descripción</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Details)
+                                        {
+                                        <tr>
+                                            <td style="display: none">@item.ArticleId</td>
+                                            <td>@item.Article</td>
+                                            <td>@item.Description</td>
+                                            <td class="cantidad">@item.Quantity</td>
+                                            <td>@item.Price</td>
+                                            <td>@item.Total</td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END Portlet PORTLET-->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3" style="display: none" id="PurchaseRequestDiv">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Solicitud de Compra</label>
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(model => model.PurchaseRequestId, new { @class = "form-control", @id = "PurchaseRequestId", @readonly = "readonly " })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" style="display: none" id="ScheduleExpenseDiv">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Gasto Programado</label>
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(model => model.ScheduledExpenseId, new { @class = "form-control", @id = "ScheduledExpenseId", @readonly = "readonly " })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Total:</label>
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", @type = "number", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.Amount, string.Empty, new { @class = "validate-error" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-5">
+                        <a class="btn btn-primary" id="btnVolver">Volver</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        if ($('#PurchaseRequestId').val() != "")
+            $('#PurchaseRequestDiv').show();
+
+        if ($('#ScheduledExpenseId').val() != "")
+            $('#ScheduledExpenseDiv').show();
+
+
+        $("#CreateDate").datepicker();
+        $('select').multiselect();      
+
+        $('#btnVolver').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/ExpenseAuthorization/Index", null)
+        });
+
+    });
+</script>

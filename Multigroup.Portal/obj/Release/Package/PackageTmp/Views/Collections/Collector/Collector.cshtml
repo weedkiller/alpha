@@ -1,0 +1,72 @@
+﻿@model Multigroup.Portal.Models.Collection.AssignVisitFilterVm
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-Customer"></i>
+                    <span class="caption-subject bold uppercase">Cobrador</span>
+                </div>
+                <div class="actions">
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnEditCustomer" disabled="disabled" data-toggle="modal" data-target="#myModal">
+                            Actualizar Estado de Cobro
+                        </a>
+                    </div>
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="form-actions top">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Zona:</label>
+                                <div class="col-md-8">
+                                    @Html.ListBoxFor(m => m.SelectedZones, Model.ListZones, new { @multiple = "@multiple" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <button id="btnBuscar" class="btn btn-default">Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+        $(document).ready(function () {
+            $('.date-picker').datepicker();
+            $('select').multiselect({
+                includeSelectAllOption: true,
+                enableFiltering: true
+            });
+            $('#btnBuscar').click(function (event) {
+                var params = new Object;
+                params.ZoneId = $('#SelectedZones').val();
+                CallBackGet(function (data) {
+                    $("#acciones").html(data);
+                }, "/Collector/CollectorTable", params)
+            });
+        });
+</script>
+

@@ -1,0 +1,122 @@
+﻿<!-- VISTA: User/UserList.cshtml -->
+@model Multigroup.Portal.Models.Administration.SpendingPaymentTableVm
+
+<div class="form-group">
+    <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <thead>
+            <tr>
+                <th style="display: none">Número</th>
+                <th>Fecha Pago</th>
+                <th>Proveedor</th>
+                <th>Comprobante Número </th>
+                <th>Monto</th>
+                <th>Saldo</th>
+                <th>Fecha Carga</th>
+                <th>Comentario</th>
+                <th>Usuario</th>      
+                <th style="display: none">userId</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.SpendingPaymentList)
+            {
+            <tr>
+                <td style="display: none">@Html.DisplayFor(modelItem => item.SpendingPaymentId)</td>
+                <td>@Html.DisplayFor(modelItem => item.ExecutionDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.Proveedor)</td>
+                <td>@Html.DisplayFor(modelItem => item.Receipt)</td>
+                <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                <td>@Html.DisplayFor(modelItem => item.Balance)</td>
+                <td>@Html.DisplayFor(modelItem => item.SystemDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.Commentary)</td>
+                <td>@Html.DisplayFor(modelItem => item.User)</td>
+                <td style="display: none">@Html.DisplayFor(modelItem => item.UserId)</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#deleteSpendingPaymentModalBtn').click(function (event) {
+            var params = new Object;
+            params.Id = id;
+            CallBackPost(function (data) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+                }, "/SpendingPayment/Index", null)
+            }, "/SpendingPayment/Delete", params);
+        });
+
+        function formatTableToolsButton(node) {
+            $(node).removeClass('DTTT_button');
+            $(node).addClass('btn btn-default');
+        }
+        var table = $('#tabla_id').dataTable({
+            "destroy": true,
+            "aaSorting": [],
+            "bServerSide": false,
+            "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+            "dom": 'Blfrtip',
+            "buttons": [
+                { extend: 'copy', text: 'Copiar' },
+                'csv',
+                'excel',
+                'pdf',
+                { extend: 'print', text: 'Imprimir' },
+            ],
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false
+        });
+
+        $('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $("#btnVer").attr("disabled", "disabled");
+                $("#idTooltipSpendingPayment1").removeClass('tooltipAai');
+                $('#idTooltipSpendingPayment1').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un empleado'
+                });
+                $("#btnViewSpendingPayment").attr("disabled", "disabled");
+                $("#btnDeleteSpendingPayment").attr("disabled", "disabled");
+                $("#btnEditSpendingPayment").attr("disabled", "disabled");
+                $("#btnImputPayment").attr("disabled", "disabled");
+                $("#idTooltipAai").removeClass('tooltipAai');
+                $('#idTooltipAai').tooltip({
+                    container: 'body',
+                    title: "Seleccione un empleado"
+                });
+            }
+            else {
+                saldo = table.fnGetData(this)[5];
+                usuario = table.fnGetData(this)[9];
+                $('#tabla_id tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $("#btnViewSpendingPayment").removeAttr("disabled", "disabled");
+                if (usuario == $("#UserId").val()) {
+                    $("#btnDeleteSpendingPayment").removeAttr("disabled", "disabled");
+                    $("#btnEditSpendingPayment").removeAttr("disabled", "disabled");
+                }
+                else {
+                    $("#btnDeleteSpendingPayment").attr("disabled", "disabled");
+                    $("#btnEditSpendingPayment").attr("disabled", "disabled");
+                }
+                if (saldo != 0)
+                    $("#btnImputPayment").removeAttr("disabled", "disabled");
+                else 
+                    $("#btnImputPayment").attr("disabled", "disabled");
+                $("#idTooltipAai").tooltip('destroy');
+                $("#btnVer").removeAttr("disabled", "disabled");
+                $("#idTooltipSpendingPayment1").tooltip('destroy');
+                id = table.fnGetData(this)[0];
+            }
+        });
+    });
+
+</script>

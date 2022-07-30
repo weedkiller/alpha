@@ -1,0 +1,162 @@
+﻿<!-- VISTA: Maintenance/Customer.cshtml -->
+@model Multigroup.Portal.Models.Collection.AssignPaymentPreferenceFiltersVm
+<div class="filter-container">
+</div>
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-Customer"></i>
+                    <span class="caption-subject bold uppercase">Registro Comprobante de de pago</span>
+                </div>
+                <div class="actions">
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <div class="actions">
+                            <a class="btn btn-default bootstro" id="btnRegister" disabled="disabled">
+                                Registrar Comprobante de Pago
+                            </a>
+                        </div>
+                    </div>
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""></a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="form-actions top">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Medio de Pago:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.SelectedPaymentMethod, Model.ListPaymentMethod, new { @size = "2" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Telemarketer:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.SelectedUser, Model.ListUser, new { @size = "2" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Cliente:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.SelectedCustomers, Model.ListCustomers, new { @size = "2" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Pendiente de Cobro:</label>
+                                <div class="col-md-8" id="sandbox-container">
+                                    @*<input type="checkbox" id="changePassword"/>*@
+                                    @Html.CheckBoxFor(model => model.Pending, new { @id = "isPending" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Aviso Desde:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control form-control-inline date-picker" id="txtDateFrom" placeholder="dd/mm/aaaa" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Aviso Hasta:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control form-control-inline date-picker" id="txtDateTo" placeholder="dd/mm/aaaa" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Pago Desde:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control form-control-inline date-picker" id="txtDatePaymentFrom" placeholder="dd/mm/aaaa" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Pago Hasta:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control form-control-inline date-picker" id="txtDatePaymentTo" placeholder="dd/mm/aaaa" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <button id="btnBuscar" class="btn btn-default">Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#isPending').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
+        $(".date-picker").datepicker();
+        $('select').multiselect({
+            includeSelectAllOption: false,
+            enableFiltering: true
+        });
+
+        $('#btnBuscar').click(function (event) {
+            var params = new Object;
+            params.Telemarketer = $('#SelectedUser').val();
+            params.PaymentMethod = $('#SelectedPaymentMethod').val();
+            params.Customer = $('#SelectedCustomers').val();
+            if ($('#isPending').is(':checked') == true) {
+                params.IsPending = '1';
+            } else {
+                params.IsPending = '0';
+            }
+            params.DateFrom = $('#txtDateFrom').val();
+            params.DateTo = $('#txtDateTo').val();
+            params.DatePaymentFrom = $('#txtDatePaymentFrom').val();
+            params.DatePaymentTo = $('#txtDatePaymentTo').val();
+            CallBackGet(function (data) {
+                $("#acciones").html(data);
+            }, "/Collections/GetTablePaymentVoucher", params)
+        });
+
+    });
+</script>
+

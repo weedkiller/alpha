@@ -1,0 +1,98 @@
+﻿<!-- VISTA: User/UserList.cshtml -->
+@model IEnumerable<Multigroup.Portal.Models.Shared.UserListVm>
+
+<table id="tableUserList" class="display table table-bordered table-striped table-condensed flip-content">
+	<thead class="flip-content">
+		<tr>
+			<th style="display:none">Id Usuario</th>
+			<th>Nombre</th>
+			<th>Apellido</th>
+			<th>E-mail</th>
+			<th>Usuario</th>
+			<th>Rol</th>
+			<th>Activo</th>
+		</tr>
+	</thead>
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td style="display:none">@Html.DisplayFor(modelItem => item.UserId)</td>
+			<td>@Html.DisplayFor(modelItem => item.Names)</td>
+			<td>@Html.DisplayFor(modelItem => item.Surname)</td>
+			<td>@Html.DisplayFor(modelItem => item.Email)</td>
+			<td>@Html.DisplayFor(modelItem => item.UserName)</td>
+			<td>@Html.DisplayFor(modelItem => item.RoleName)</td>
+			<td>@Html.DisplayFor(modelItem => item.Active)</td>
+		</tr>
+	}
+</table>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+		function formatTableToolsButton(node) {
+			$(node).removeClass('DTTT_button');
+			$(node).addClass('btn btn-default');
+		}
+		//LoadUserListTable();
+		var table = $('#tableUserList').dataTable({
+			"aaSorting": [],
+			"destroy": true,
+			"bServerSide": false,
+			"sScrollYInner": "100%",
+			"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+			"dom": 'Blfrtip',
+			"buttons": [
+				{ extend: 'copy', text: 'Copiar' },
+				'csv',
+				'excel',
+				'pdf',
+				{ extend: 'print', text: 'Imprimir' },
+			],
+			"sScrollX": "100%",
+			"sScrollXInner": "100%",
+			"scrollCollapse": true,
+			"bProcessing": false
+		});
+		$('#tableUserList tbody').unbind("click").on('click', 'tr', function (event) {
+			event.stopPropagation();
+			if ($(this).hasClass('selected')) {
+				$(this).removeClass('selected');
+				$("#btnVer").attr("disabled", "disabled");
+				$("#btnVerTypeChange").attr("disabled", "disabled");				
+				$("#idTooltipUser1").removeClass('tooltipAai');
+				$('#idTooltipUser1').tooltip({
+					container: 'body',
+					title: 'Seleccione un usuario'
+				});
+				$("#idTooltipUser2").removeClass('tooltipAai');
+				$('#idTooltipUser2').tooltip({
+				    container: 'body',
+				    title: 'Seleccione un usuario'
+				});
+				$("#btnEdit").attr("disabled", "disabled");
+				$("#idTooltipUser").removeClass('tooltipAai');
+				$('#idTooltipUser').tooltip({
+					container: 'body',
+					title: 'Seleccione un usuario'
+				});
+			}
+			else {
+				$('#tableUserList tr.selected').removeClass('selected');
+				$(this).addClass('selected');
+				$("#btnEdit").removeAttr("disabled", "disabled");
+				$("#idTooltipUser").tooltip('destroy');
+				$("#btnVer").removeAttr("disabled", "disabled");
+				$("#btnVerTypeChange").removeAttr("disabled", "disabled");		
+				$("#idTooltipUser1").tooltip('destroy');
+				$("#idTooltipUser2").tooltip('destroy');
+
+				idUser = table.fnGetData(this)[0];
+			}
+		});
+    });
+
+    function LoadUserListTable() {
+        
+    }
+</script>
+

@@ -1,0 +1,183 @@
+﻿<!-- VISTA: Maintenance/Expense.cshtml -->
+@model Multigroup.Portal.Models.Administration.ExpenseAuthorizationTableVm
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-Expense"></i>
+                    <span class="caption-subject bold uppercase">Autorización de Gastos</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-default" id="btnAddExpenseAuthorization">Añadir</a>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnViewExpenseAuthorizationManaged" disabled="disabled">
+                            Ver
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnEditExpenseAuthorizationManaged" disabled="disabled">
+                            Editar
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnSPMExpenseAuthorization" disabled="disabled">
+                            Generar Gasto
+                        </a>
+                    </div>
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+                        <div class="form-group">
+                            <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                <thead>
+                                    <tr>
+                                        <th>Número</th>
+                                        <th>Fecha Creación</th>
+                                        <th>Fecha Compra</th>
+                                        <th>Proveedor</th>
+                                        <th>Solicitud De Compra</th>
+                                        <th>Gasto Programado</th>
+                                        <th>Usuario</th>
+                                        <th>Comprador</th>
+                                        <th>Monto</th>
+                                        <th>Procesado?</th>
+                                        <th>Comentario</th>
+                                        <th>Gestionado</th>
+                                        <th style="display: none">userBuyerId</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.ExpenseAuthorizationList)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.ExpenseAuthorizationId)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.CreateDate)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.PurchaseDate)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Proveedor)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.PurchaseRequestId)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.ScheduledExpenseId)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.User)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.UserBuyer)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Processed)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Commentary)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Managed)</td>
+                                            <td style="display: none">@Html.DisplayFor(modelItem => item.UserBuyerId)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" id="modalViewExpense">
+
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#chkProcessed').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
+        $('.date-picker').datepicker();
+        $('select').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+        });
+        $('.tooltipAai').tooltip({
+            container: 'body',
+            title: "Seleccione un gasto"
+        });
+        $('.tooltipExpense1').tooltip({
+            container: 'body',
+            title: 'Seleccione un gasto'
+        });
+        $('#btnViewExpenseAuthorizationManaged').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/ExpenseAuthorization/ViewManaged?id=" + id, null)
+        });
+        $('#btnEditExpenseAuthorizationManaged').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/ExpenseAuthorization/EditManaged?id=" + id, null)
+        });
+
+        $('#btnSPMExpenseAuthorization').click(function (event) {
+            CallBackGet(function (data) {
+                $("#dashboard").html(data);
+            }, "/Spending/CreateFromExpenseAuthorization?expenseAuthorizationId=" + id, null)
+        });
+
+        var table = $('#tabla_id').dataTable({
+            "destroy": true,
+            "aaSorting": [],
+            "bServerSide": false,
+            "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+            "dom": 'Blfrtip',
+            "buttons": [
+                { extend: 'copy', text: 'Copiar' },
+                'csv',
+                'excel',
+                'pdf',
+                { extend: 'print', text: 'Imprimir' },
+            ],
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false
+        });
+
+        $('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $("#btnVer").attr("disabled", "disabled");
+                $("#idTooltipExpense1").removeClass('tooltipAai');
+                $('#idTooltipExpense1').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un empleado'
+                });
+                $("#btnViewExpenseAuthorizationManaged").attr("disabled", "disabled");
+                $("#btnEditExpenseAuthorizationManaged").attr("disabled", "disabled");
+                $("#btnSPMExpenseAuthorization").attr("disabled", "disabled");
+                $("#idTooltipAai").removeClass('tooltipAai');
+                $('#idTooltipAai').tooltip({
+                    container: 'body',
+                    title: "Seleccione un gasto"
+                });
+            }
+            else {
+                $('#tabla_id tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $("#btnViewExpenseAuthorizationManaged").removeAttr("disabled", "disabled");
+                $("#btnEditExpenseAuthorizationManaged").removeAttr("disabled", "disabled");
+                $("#btnSPMExpenseAuthorization").removeAttr("disabled", "disabled");
+                $("#idTooltipAai").tooltip('destroy');
+                $("#btnVer").removeAttr("disabled", "disabled");
+                $("#idTooltipExpense1").tooltip('destroy');
+                id = table.fnGetData(this)[0];
+            }
+        });
+
+    });
+</script>
+

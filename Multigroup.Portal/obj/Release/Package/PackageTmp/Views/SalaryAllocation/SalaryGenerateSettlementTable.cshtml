@@ -1,0 +1,123 @@
+﻿<!-- VISTA: User/UserList.cshtml -->
+@model Multigroup.Portal.Models.Administration.SalaryAllocationTableVm
+
+<div class="form-group">
+    <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <thead>
+            <tr>
+                <th style="display: none">Número</th>
+                <th>Empleado</th>
+                <th>Periodo</th>
+                <th>Concepto</th>
+                <th>Monto</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.SalaryAllocationList)
+            {
+            <tr>
+                <td style="display: none">@Html.DisplayFor(modelItem => item.SalaryAllocationId)</td>
+                <td>@Html.DisplayFor(modelItem => item.Proveedor)</td>
+                <td>@Html.DisplayFor(modelItem => item.LastMonth)</td>
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        function formatTableToolsButton(node) {
+            $(node).removeClass('DTTT_button');
+            $(node).addClass('btn btn-default');
+        }
+        var table = $('#tabla_id').dataTable({
+            "destroy": true,
+            "aaSorting": [],
+            "bServerSide": false,
+            "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+            "dom": 'Blfrtip',
+            "buttons": [
+                { extend: 'copy', text: 'Copiar' },
+                'csv',
+                'excel',
+                'pdf',
+                { extend: 'print', text: 'Imprimir' },
+            ],
+            "sScrollYInner": "100%",
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "bProcessing": false
+        });
+
+        $('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+            event.stopPropagation();
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $("#btnVer").attr("disabled", "disabled");
+                $("#idTooltipSalarySettlement1").removeClass('tooltipAai');
+                $('#idTooltipSalarySettlement1').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un empleado'
+                });
+                $("#btnRemoveEmployee").attr("disabled", "disabled");
+                $("#idTooltipAai").removeClass('tooltipAai');
+                $('#idTooltipAai').tooltip({
+                    container: 'body',
+                    title: "Seleccione un empleado"
+                });
+            }
+            else {
+                authorized = table.fnGetData(this)[6];
+                $('#tabla_id tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $("#idTooltipAai").tooltip('destroy');
+                $("#btnRemoveEmployee").removeAttr("disabled", "disabled");
+                $("#btnVer").removeAttr("disabled", "disabled");
+                $("#idTooltipSalarySettlement1").tooltip('destroy');
+                id = table.fnGetData(this)[0];
+            }
+        });
+
+
+        $('#generateSettlementModalBtn').click(function (event) {
+            var params = {};
+            params.Description = $('#Description').val();
+            if (params.Description == '') {
+                Command: toastr["error"]("Debe ingresar Descripción")
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-center",
+                    "preventDuplicates": true,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            }
+            else
+            CallBackGet(function (data) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+                }, "/SalaryAllocation/IndexSettlement", null)
+            }, "/SalaryAllocation/GenerateSettlement", params)
+        });
+
+        $('#removeEmployeeModalBtn').click(function (event) {
+            CallBackGet(function (data) {
+                $("#btnRemoveEmployee").attr("disabled", "disabled");
+                $("#acciones").html(data);
+            }, "/SalaryAllocation/RemoveEmployee?salaryAllocationId=" + id, null)
+        });
+    });
+</script>

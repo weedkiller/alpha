@@ -1,0 +1,70 @@
+﻿@model Multigroup.Portal.Models.Maintenance.ContractPaperVm
+<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Editar estado de contrato de papel</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label col-md-4">Estado:</label>
+							<div class="col-md-8">
+								@Html.DropDownListFor(m => m.ddlStatus.SelectedItem, Model.ddlStatus.ListItems, new { @id = "ddlStatus", @size = 2 })
+							</div>
+						</div>
+					</div>
+                    <div class="col-md-4" style="display: none" id="userDiv">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Usuario:</label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(m => m.ddlUser.SelectedItem, Model.ddlUser.ListItems, new { @id = "ddlUser", @size = 2 })
+                            </div>
+                        </div>
+                    </div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" id="btnProcess" type="submit">Guardar</button>
+				<button type="button" class="btn default" id="btnCancel" data-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnProcess').click(function (event) {
+            $("#modalEditContractPaper").modal('hide');
+            var menuItems = [];
+            $('input.checkboxes').each(function () {
+                if ($(this).is(":checked")) {
+                    var menuId = $(this).closest('tr').find("td").eq(0).html()
+                    menuItems.push(menuId.trim());
+                }
+            });
+            var param = new Object;
+            param.ddlStatus = { SelectedItem: $('#ddlStatus').val() };
+            param.ddlUser = { SelectedItem: $('#ddlUser').val() };
+            param.Ids = menuItems;
+            CallSericeAjax(function (data) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+                    $('.modal-backdrop').remove();
+                    SuccessMessage("success", "Estados asignados con exito");
+                }, "/ContractPaper/Index", null)
+            }, "/ContractPaper/ChangeStatus", param, 'POST')
+        });
+    $('#ddlStatus').multiselect();
+    $('#ddlUser').multiselect();
+
+    $('#ddlStatus').change(function () {
+        if ($('#ddlStatus').val() == '5') {
+            $('#userDiv').show();
+        } else {
+            $('#userDiv').hide();
+            $('#ddlStatus').multiselect('refresh');
+        }
+    });
+
+    });
+</script>

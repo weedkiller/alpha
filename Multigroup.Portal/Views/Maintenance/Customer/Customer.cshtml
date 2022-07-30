@@ -1,0 +1,148 @@
+﻿<!-- VISTA: Maintenance/Customer.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.Maintenance.CustomerFilterVm
+
+
+<div class="filter-container">
+</div>
+
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-Customer"></i>
+                    <span class="caption-subject bold uppercase">Clientes</span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-default" id="btnAddCustomer">Añadir</a>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnEditCustomer" disabled="disabled">
+                            Editar
+                        </a>
+                    </div>
+                    <div class="tooltipCustomer1 btn-group" id="idTooltipCustomer1">
+                        <a class="btn btn-default bootstro" id="btnVer" disabled="disabled">
+                            Ver Detalles
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnStatus" disabled="disabled" onclick="loadModal()">
+                            Actualizar Estado
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnHistory" disabled="disabled">
+                            Historial de pagos
+                        </a>
+                    </div>
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnObservations" disabled="disabled">
+                           Observaciones
+                        </a>
+                    </div>
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+			<div class="portlet-body form">
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label col-md-4">Estado:</label>
+							<div class="col-md-8">
+								@Html.ListBoxFor(m => m.SelectedStatus, Model.ListStatus, new { multiple = "multiple" })
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label col-md-4">Zona:</label>
+							<div class="col-md-8">
+								@Html.ListBoxFor(m => m.SelectedZones, Model.ListZones, new { multiple = "multiple" })
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<div class="col-md-12">
+								<button id="btnBuscar" class="btn btn-default">Buscar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12" id="acciones">
+
+					</div>
+				</div>
+			</div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" id="modalEditCustomer">
+
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#SelectedStatus').multiselect({
+                includeSelectAllOption: true,
+                enableFiltering: false,
+            });
+
+            $('#SelectedZones').multiselect({
+                includeSelectAllOption: true,
+                enableFiltering: false,
+            });
+
+            $('#chkIncludedAll').iCheck({
+                checkboxClass: 'icheckbox_square-grey',
+                radioClass: 'iradio_square-grey',
+                increaseArea: '20%' // optional
+            });
+           
+            $('.tooltipAai').tooltip({
+                container: 'body',
+                title: "Seleccione un cliente"
+            });
+            $('.tooltipCustomer1').tooltip({
+                container: 'body',
+                title: 'Seleccione un cliente'
+            });
+            $('#btnVer').click(function (event) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+				}, "/Customer/Details?id=" + id, null)
+            });
+            $('#btnEditCustomer').click(function (event) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+                }, "/Customer/Edit?id=" + id, null)
+            });
+
+            $('#btnAddCustomer').click(function (event) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+                }, "/Customer/Create", null)
+            });
+
+			$('#btnBuscar').click(function (event) {
+			    var params = {};
+				params.SelectedStatus = $('#SelectedStatus').val();
+				params.SelectedZones = $('#SelectedZones').val();
+				CallBackGet(function (data) {
+					$("#acciones").html(data);
+				}, "/Customer/GetTable", params)
+			});
+			
+       });
+</script>
+

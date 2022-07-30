@@ -1,0 +1,150 @@
+﻿@model Multigroup.Portal.Models.Collection.AssignPaymentPreferenceTableVm
+<div class="form-group">
+    <table id="tablaa" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <thead>
+            <tr>
+                <th style="display: none">ID</th>
+                <th>Contrato</th>
+                <th>Cliente</th>
+                <th>Celular</th>
+                <th>Cuota</th>
+                <th>Medio Pago</th>
+                <th>Canal Pago</th>
+                <th>Telemarketer</th>
+                <th>Avisado?</th>
+                <th>Fecha Aviso</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.AssignPaymentPreferenceList)
+            {
+                <tr>
+                    <td style="display:none">@Html.DisplayFor(modelItem => item.AssignPaymentPreferenceId)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Number)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Customer)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Actual)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Cuota)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PaymentMethod)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Channel)</td>
+                    <td>@Html.DisplayFor(modelItem => item.User)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Warned)</td>
+                    <td>@Html.DisplayFor(modelItem => item.WarnedDate)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div id="observationsModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Observaciones</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="observationsContent">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var tableee;
+    function formatTableToolsButton(node) {
+        $(node).removeClass('DTTT_button');
+        $(node).addClass('btn btn-default');
+    }
+    var table = $('#tablaa').dataTable({
+        "destroy": true,
+        "aaSorting": [],
+        "bServerSide": false,
+        "buttons": [
+            { extend: 'copy', text: 'Copiar' },
+            'csv',
+            'excel',
+            'pdf',
+            { extend: 'print', text: 'Imprimir' },
+        ],
+        "dom": 'Blfrtip',
+        "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+        "sScrollYInner": "100%",
+        "sScrollX": "100%",
+        "sScrollXInner": "100%",
+        "scrollCollapse": true,
+        "bProcessing": false
+    });
+
+    $('#tablaa tbody').unbind("click").on('click', 'tr', function (event) {
+        event.stopPropagation();
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+            $("#asd").attr("disabled", "disabled");
+            $("#btnWarned").attr("disabled", "disabled");
+            $("#btnCopy").attr("disabled", "disabled");
+            $("#btnDeleteAssign").attr("disabled", "disabled");
+            $("#idTooltipAai").removeClass('tooltipAai');
+            $('#idTooltipAai').tooltip({
+                container: 'body',
+                title: "Seleccione un rol"
+            });
+        }
+        else {
+            avisado = table.fnGetData(this)[8];
+            $('#tablaa tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+            $("#asd").removeAttr("disabled", "disabled");
+            $("#btnCopy").removeAttr("disabled", "disabled");
+            if (avisado == '<input class="check-box" disabled="disabled" type="checkbox">') {
+                $("#btnWarned").removeAttr("disabled", "disabled");
+            }
+            else {
+                $("#btnWarned").attr("disabled", "disabled");
+            }
+            if (avisado != '<input class="check-box" disabled="disabled" type="checkbox">' && @ViewBag.Rol != 7) {
+                $("#btnRemoveWarned").removeAttr("disabled", "disabled");
+            }
+            else {
+                $("#btnRemoveWarned").attr("disabled", "disabled");
+            }
+            $("#idTooltipAai").tooltip('destroy');
+            AssignPaymentPreferenceId = table.fnGetData(this)[0];
+            Canal = table.fnGetData(this)[6];
+        }
+    });
+
+    function loadModal() {
+        CallBackGet(function (data) {
+            $("#modalChannelWarned").html(data);
+            $("#modalChannelWarned").modal('show');
+        }, "/Visits/ChannelWarned?id=" + AssignPaymentPreferenceId, null)
+    }
+
+    function CopiarCanal() {
+        var $bridge = $("<input>")
+        $("body").append($bridge);
+        $bridge.val(Canal).select();
+        document.execCommand("copy");
+        $bridge.remove();
+    }
+
+    $('#deleteWarnedBtn').click(function (event) {
+        var params = new Object;
+        params.Id = AssignPaymentPreferenceId;
+        CallBackGet(function (data) {
+            $("#dashboard").html(data);
+        }, "/Visits/DeleteWarned", params)
+    });
+
+    $('.tooltipAai').tooltip({
+        container: 'body',
+        title: "Seleccione una visita"
+    });
+    $('.tooltipCustomer1').tooltip({
+        container: 'body',
+        title: 'Seleccione una visita'
+    });
+</script>

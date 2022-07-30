@@ -1,0 +1,234 @@
+﻿<!-- VISTA: Maintenance/Customer.cshtml -->
+@model Multigroup.Portal.Models.Administration.MovementFilterVm
+<div class="filter-container">
+</div>
+
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+	<div class="col-md-12 column">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-Customer"></i>
+					<span class="caption-subject bold uppercase">Verificación de Transacciones</span>
+				</div>
+                <div class="actions">
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnVerified" disabled="disabled" data-toggle="modal" data-target="#VerifiedModal">
+                            Verificar
+                        </a>
+                    </div>
+                </div>
+			</div>
+			<div class="portlet-body form">				
+                <div class="form-actions top">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Medio de Pago:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.SelectedPaymentMethod, Model.ListPaymentMethod, new { size = "2" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Fecha Mov. Desde:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control form-control-inline date-picker" id="txtDateFrom" placeholder="dd/mm/aaaa" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Fecha Mov. Hasta:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control form-control-inline date-picker" id="txtDateTo" placeholder="dd/mm/aaaa" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Caja:</label>
+                                <div class="col-md-8">
+                                    @Html.ListBoxFor(m => m.SelectedCashier, Model.ListCashier, new { multiple = "multiple" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Fecha Carga Desde:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control form-control-inline date-picker" id="txtDateSystemFrom" placeholder="dd/mm/aaaa" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Fecha Carga Hasta:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control form-control-inline date-picker" id="txtDateSystemTo" placeholder="dd/mm/aaaa" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Ciclo:</label>
+                                <div class="col-md-8">
+                                    @Html.ListBoxFor(m => m.SelectedCycle, Model.ListCycle, new { multiple = "multiple" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Transacción:</label>
+                                <div class="col-md-8">
+                                    @Html.ListBoxFor(m => m.SelectedMovementType, Model.ListMovementType, new { multiple = "multiple" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Usuario:</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(m => m.SelectedUser, Model.ListUser, new { size = "2" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Monto Desde:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.AmountFrom, new { @class = "form-control", @type = "number", @Value = "" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Monto Hasta:</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.AmountTo, new { @class = "form-control", @type = "number", @Value = "" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Verificado:</label>
+                                <div class="col-md-8">
+                                    @Html.ListBoxFor(m => m.SelectedVerified, Model.ListVerified, new { multiple = "multiple" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <button id="btnBuscar" class="btn btn-default">Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				<div class="row">
+					<div class="col-md-12" id="acciones">
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="portlet portlet-sortable-empty">
+		</div>
+	</div>
+</div>
+<div id="VerifiedModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Verificar Movimiento</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>¿Confirma que desea verificar el Movimiento?</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="verifiedModalBtn">Confirmar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Note the missing multiple attribute! -->
+<div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+                $('select').multiselect({
+                    includeSelectAllOption: true,
+                    enableFiltering: false,
+                });
+
+                $('#SelectedCashier').multiselect({
+                    includeSelectAllOption: true,
+                    enableFiltering: false,
+                });
+
+                $('#SelectedCycle').multiselect({
+                    includeSelectAllOption: true,
+                    enableFiltering: false,
+                });
+                $('#SelectedMovementType').multiselect({
+                    includeSelectAllOption: true,
+                    enableFiltering: false,
+                });
+                $('#SelectedVerified').multiselect({
+                    includeSelectAllOption: true,
+                    enableFiltering: false,
+                });
+                             
+
+                $('.tooltipAai').tooltip({
+                    container: 'body',
+                    title: "Seleccione un cliente"
+                });
+                $('.tooltipCustomer1').tooltip({
+                    container: 'body',
+                    title: 'Seleccione un cliente'
+                });
+               
+
+                $('#btnBuscar').click(function (event) {
+                    var params = {};
+                    params.SelectedUser = $('#SelectedUser').val();
+                    params.SelectedPaymentMethod = $('#SelectedPaymentMethod').val();
+                    params.SelectedMovementType = $('#SelectedMovementType').val();
+                    params.SelectedCashier = $('#SelectedCashier').val();
+                    params.SelectedVerified = $('#SelectedVerified').val();
+                    params.DateFrom = $('#txtDateFrom').val();
+                    params.DateTo = $('#txtDateTo').val();
+                    params.DateSystemFrom = $('#txtDateSystemFrom').val();
+                    params.DateSystemTo = $('#txtDateSystemTo').val();
+                    params.SelectedCycle = $('#SelectedCycle').val();                                                         
+                    params.AmountFrom = $('#AmountFrom').val(); 
+                    params.AmountTo = $('#AmountTo').val();                   
+                    CallBackGet(function (data) {
+                        $("#acciones").html(data);
+                    }, "/Conciliation/GetTableVerification", params)
+                });               
+
+            });
+    </script>
+</div>
+

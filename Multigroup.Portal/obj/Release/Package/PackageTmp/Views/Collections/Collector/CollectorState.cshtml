@@ -1,0 +1,175 @@
+﻿<!-- VISTA: Maintenance/Partner.cshtml -->
+@using Resources
+@model Multigroup.Portal.Models.Collection.CollectorStateTableVm
+<div class="filter-container">
+</div>
+
+
+<!-- FIN TITULO-->
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="col-md-12 column">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-Partner"></i>
+                    <span class="caption-subject bold uppercase">Estado de Cobradores</span>
+                </div>
+                <div class="actions">
+                    <div class="tooltipAai btn-group" id="idTooltipAai">
+                        <a class="btn btn-default bootstro" id="btnImput" disabled="disabled" onclick="loadModalImput()">
+                            Imputar Saldo
+                        </a>
+                        <a class="btn btn-default bootstro" id="btnEntry" disabled="disabled" onclick="loadModalEntry()">
+                            Entrega Medios de Pago
+                        </a>
+                    </div>
+                    <a class="btn btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    <div class="col-md-12" id="acciones">
+                        <div class="form-group">
+                            <table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                <thead>
+                                    <tr>
+                                        <th style="display: none">Id</th>
+                                        <th>Nombre</th>
+                                        <th>Adelantos</th>
+                                        <th>Saldo Negativo</th>
+                                        <th>Saldo Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.CollectorStateList)
+                                    {
+                                        <tr>
+                                            <td style="display: none">@Html.DisplayFor(modelItem => item.CollectorId)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Collector)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.PositiveBalance)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.NegativeBalance)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Balance)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet portlet-sortable-empty">
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" id="modalImput">
+
+</div>
+
+<div class="modal fade" role="dialog" id="modalEntry">
+
+</div>
+<!-- Note the missing multiple attribute! -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).ready(function () {
+
+
+            function formatTableToolsButton(node) {
+                $(node).removeClass('DTTT_button');
+                $(node).addClass('btn btn-default');
+            }
+            var table = $('#tabla_id').dataTable({
+                "destroy": true,
+                "aaSorting": [],
+                "bServerSide": false,
+                "buttons": [
+                    { extend: 'copy', text: 'Copiar' },
+                    'csv',
+                    'excel',
+                    'pdf',
+                    { extend: 'print', text: 'Imprimir' },
+                ],
+                "lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+                "dom": 'Blfrtip',
+                "sScrollYInner": "100%",
+                "sScrollX": "100%",
+                "sScrollXInner": "100%",
+                "scrollCollapse": true,
+                "bProcessing": false
+            });
+
+            $('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+                event.stopPropagation();
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                    $("#idTooltipPartner1").removeClass('tooltipAai');
+                    $('#idTooltipPartner1').tooltip({
+                        container: 'body',
+                        title: 'Seleccione un usuario'
+                    });
+                    $("#btnEntry").attr("disabled", "disabled");
+                    $("#btnImput").attr("disabled", "disabled");
+                    $("#idTooltipAai").removeClass('tooltipAai');
+                    $('#idTooltipAai').tooltip({
+                        container: 'body',
+                        title: "Seleccione un cliente"
+                    });
+                }
+                else {
+                    positivo = table.fnGetData(this)[2];
+                    negativo = table.fnGetData(this)[3];
+                    $('#tabla_id tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                    if (positivo > 0 && negativo > 0)
+                        $("#btnImput").removeAttr("disabled", "disabled");
+                    $("#idTooltipAai").tooltip('destroy');
+                    $("#btnEntry").removeAttr("disabled", "disabled");
+                    $("#idTooltipPartner1").tooltip('destroy');
+                    id = table.fnGetData(this)[0];
+                }
+            });
+            $('.tooltipAai').tooltip({
+                container: 'body',
+                title: "Seleccione un cliente"
+            });
+            $('.tooltipPartner1').tooltip({
+                container: 'body',
+                title: 'Seleccione un cliente'
+            });
+
+            function loadModalImput() {
+                CallBackGet(function (data) {
+                    $("#modalImput").html(data);
+                    $("#modalImput").modal('show');
+                }, "/Collector/ImputSurrender?id=" + id, null)
+            }
+
+            function loadModalEntry() {
+                CallBackGet(function (data) {
+                    $("#modalEntry").html(data);
+                    $("#modalEntry").modal('show');
+                }, "/Collector/EntryAdvancement?id=" + id, null)
+            }
+
+        });
+    });
+
+    function loadModalImput() {
+        CallBackGet(function (data) {
+            $("#modalImput").html(data);
+            $("#modalImput").modal('show');
+        }, "/Collector/ImputSurrender?id=" + id, null)
+    }
+
+    function loadModalEntry() {
+        CallBackGet(function (data) {
+            $("#modalEntry").html(data);
+            $("#modalEntry").modal('show');
+        }, "/Collector/EntryAdvancement?id=" + id, null)
+    }
+</script>
+

@@ -1,0 +1,135 @@
+﻿<!-- VISTA: User/UserList.cshtml -->
+@model Multigroup.Portal.Models.Shared.PaymentHistoryTableVm
+
+<div class="form-group">
+	<table id="tabla_id" class="display table table-bordered table-striped table-condensed flip-content" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+		<thead>
+            <tr>
+                <th>N° de contrato</th>
+                <th>Cliente</th>
+                <th>Forma de pago</th>
+                <th>Fecha de pago</th>
+                <th>Numero de cuota</th>
+                <th>Monto</th>
+                <th>Vendedor</th>
+                <th>Supervisor</th>
+                <th>Telemarketer</th>
+            </tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model.PaymentHistoryList)
+			{
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Number)</td>
+                <td>@Html.DisplayFor(modelItem => item.Customer)</td>
+                <td>@Html.DisplayFor(modelItem => item.PaymentMethod)</td>
+                <td>@Html.DisplayFor(modelItem => item.PaymentDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.InstallmentNumber)</td>
+                <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                <td>@Html.DisplayFor(modelItem => item.Seller)</td>
+                <td>@Html.DisplayFor(modelItem => item.Supervisor)</td>
+                <td>@Html.DisplayFor(modelItem => item.Telemarketer)</td>
+            </tr>
+			}
+		</tbody>
+	</table>
+</div>
+<div class="row">
+    <div class="col-md-offset-6 col-md-3">
+        <div class="form-group">
+            <label class="control-label col-md-4">Cantidad de Pagos:</label>
+            <div class="col-md-8">
+                <input type="text" class="form-control" id="count" disabled/>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label class="control-label col-md-4">Total ($):</label>
+            <div class="col-md-8">
+                <input type="text" class="form-control" id="total" disabled/>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#count').val(@ViewBag.count);
+        $('#total').val(@ViewBag.total);
+
+		function formatTableToolsButton(node) {
+			$(node).removeClass('DTTT_button');
+			$(node).addClass('btn btn-default');
+		}
+		var table = $('#tabla_id').dataTable({
+			"destroy": true,
+			"aaSorting": [],
+			"bServerSide": false,
+			"dom": 'Blfrtip',
+			"lengthMenu": [[10, 50, 200, 500, -1], [10, 50, 200, 500, "Todos"]],
+			"buttons": [
+				{ extend: 'copy', text: 'Copiar' },
+				'csv',
+				'excel',
+				'pdf',
+				{ extend: 'print', text: 'Imprimir' },
+			],
+			"sScrollYInner": "100%",
+			"sScrollX": "100%",
+			"sScrollXInner": "100%",
+			"scrollCollapse": true,
+			"bProcessing": false
+		});
+
+		$('#tabla_id tbody').unbind("click").on('click', 'tr', function (event) {
+			event.stopPropagation();
+			if ($(this).hasClass('selected')) {
+				$(this).removeClass('selected');
+				$("#btnVer").attr("disabled", "disabled");
+				$("#btnHistory").attr("disabled", "disabled");
+				$("#idTooltipCustomer1").removeClass('tooltipAai');
+				$('#idTooltipCustomer1').tooltip({
+					container: 'body',
+					title: 'Seleccione un usuario'
+				});
+				$("#btnEditCustomer").attr("disabled", "disabled");
+                $("#btnStatus").attr("disabled", "disabled");
+                $("#btnObservations").attr("disabled", "disabled");
+				$("#idTooltipAai").removeClass('tooltipAai');
+				$('#idTooltipAai').tooltip({
+					container: 'body',
+					title: "Seleccione un cliente"
+				});
+			}
+			else {
+				$('#tabla_id tr.selected').removeClass('selected');
+				$(this).addClass('selected');
+				$("#btnEditCustomer").removeAttr("disabled", "disabled");
+				$("#idTooltipAai").tooltip('destroy');
+				$("#btnVer").removeAttr("disabled", "disabled");
+				$("#btnStatus").removeAttr("disabled", "disabled");
+                $("#btnHistory").removeAttr("disabled", "disabled");
+                $("#btnObservations").removeAttr("disabled", "disabled");
+				$("#idTooltipCustomer1").tooltip('destroy');
+				id = table.fnGetData(this)[0];
+			}
+			$('#btnHistory').click(function (event) {
+				CallBackGet(function (data) {
+					$("#dashboard").html(data);
+				}, "/Customer/CustomerHistory?id="+id, null)
+            });
+            $('#btnObservations').click(function (event) {
+                CallBackGet(function (data) {
+                    $("#dashboard").html(data);
+                }, "/Customer/CustomerObservations?id=" + id, null)
+            });
+            
+		});
+	});
+	function loadModal() {
+		CallBackGet(function (data) {
+			$("#modalEditCustomer").html(data);
+			$("#modalEditCustomer").modal('show');
+		}, "/Customer/ChangeStatus?id=" + id, null)
+	}
+</script>
